@@ -1,0 +1,1 @@
+export const mainColor: string = "#FFBE1F"
