@@ -1,4 +1,4 @@
-export interface CatalogHeader {
+export default interface CatalogHeader {
     catalog: {
         id: number;
         categoryImage: string;

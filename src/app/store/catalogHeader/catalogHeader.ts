@@ -1,9 +1,9 @@
 import { apiUrl } from "@/config/config";
-import { useCatalogHeader as CatalogHeaderType  } from "@/types/catalogTypes";
+import CatalogHeader from "@/types/catalogTypes";
 import axios from "axios";
 import { create } from "zustand";
 
-export const useCatalogHeader = create<CatalogHeaderType >((set)=>({
+export const useCatalogHeader = create<CatalogHeader >((set)=>({
  catalog: [],
  getCatalog: async ()=>{
   try {

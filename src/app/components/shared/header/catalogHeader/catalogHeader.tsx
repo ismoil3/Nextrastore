@@ -124,31 +124,41 @@ const CatalogHeader: FC = () => {
             </Typography>
             <List>
               {catalog.length > 0 &&
-                catalog.map((el: any) => (
-                  <ListItem
-                    className="duration-300"
-                    key={el.id}
-                    onMouseEnter={() => setIdx(el.id)}
-                    sx={{
-                      padding: "10px 20px",
-                      cursor: "pointer",
-                      "&:hover": {
-                        backgroundColor: mainColor,
-                        color: "#fff",
-                      },
-                    }}
-                  >
-                    <Typography
+                catalog.map(
+                  (el: {
+                    categoryImage: string;
+                    categoryName: string;
+                    id: number;
+                    subCategories: { id: number; subCategoryName: string }[]
+                  }) => (
+                    <ListItem
+                      className="duration-300"
+                      key={el.id}
+                      onMouseEnter={() => setIdx(el.id)}
                       sx={{
-                        fontSize: "16px",
-                        fontWeight: idx === el.id ? "bold" : "normal",
+                        padding: "10px 20px",
+                        cursor: "pointer",
+                        "&:hover": {
+                          backgroundColor: mainColor,
+                          color: "#fff",
+                        },
                       }}
                     >
-                      {el.categoryName}
-                    </Typography>
-                    <ChevronRightIcon />
-                  </ListItem>
-                ))}
+                      <Typography
+                        onClick={() => {
+                          console.log(el);
+                        }}
+                        sx={{
+                          fontSize: "16px",
+                          fontWeight: idx === el.id ? "bold" : "normal",
+                        }}
+                      >
+                        {el.categoryName}
+                      </Typography>
+                      <ChevronRightIcon />
+                    </ListItem>
+                  )
+                )}
             </List>
           </Box>
 
