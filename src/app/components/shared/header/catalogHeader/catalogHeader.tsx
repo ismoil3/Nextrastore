@@ -33,8 +33,6 @@ const CatalogHeader: FC = () => {
   const subcategory: Subcategories | undefined = catalog.find(
     (el: { id: number }) => el.id === idx
   );
-  console.log(catalog.length);
-
   return (
     <Box sx={{ display: { xs: "none", md: "block" } }}>
       {/* Button to open drawer */}
