@@ -1,95 +1,60 @@
 "use client";
+import React, { useRef, useState } from "react";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
 
-import { useEffect, useState } from "react";
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
-export default function Home() {
-  const [time, setTime] = useState(new Date());
+// import required modules
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import Image from "next/image";
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
+const Home = () => {
+  const progressCircle = useRef<null | HTMLDivElement>(null);
+  const progressContent = useRef<null | HTMLSpanElement>(null);
 
-    return () => clearInterval(intervalId); // Cleanup interval on unmount
-  }, []);
-
-  const hours = time.getHours();
-  const minutes = time.getMinutes();
-  const seconds = time.getSeconds();
-
-  const hourDeg = (360 / 12) * (hours % 12); // 360 degrees / 12 hours
-  const minuteDeg = (360 / 60) * minutes; // 360 degrees / 60 minutes
-  const secondDeg = (360 / 60) * seconds; // 360 degrees / 60 seconds
-
+  const onAutoplayTimeLeft = (s: number, time: number, progress: number) => {
+    progressCircle.current.style.setProperty("--progress", 1 - progress);
+    progressContent.current.textContent = `${Math.ceil(time / 1000)}s`;
+  };
   return (
-    <div className="flex items-center justify-center h-screen bg-gradient-to-r from-gray-800 via-gray-900 to-black">
-      <main className="text-center">
-        <h1 className="text-2xl font-bold text-gray-100 mb-8">Enhanced Circle Clock</h1>
-        <div className="relative w-72 h-72 rounded-full border-[10px] border-white shadow-lg shadow-gray-800 bg-gradient-to-b from-gray-700 to-gray-900 flex items-center justify-center">
-          {/* Tick Marks */}
-          {[...Array(60)].map((_, i) => {
-            const isHourTick = i % 5 === 0;
-            const tickLength = isHourTick ? "h-4" : "h-2";
-            const tickColor = isHourTick ? "bg-white" : "bg-gray-400";
-            const angle = i * 6;
-            return (
-              <div
-                key={i}
-                className={`absolute w-[2px] ${tickLength} ${tickColor}`}
-                style={{
-                  transform: `rotate(${angle}deg) translate(0, -140px)`,
-                }}
-              ></div>
-            );
-          })}
+    <div>
+      <Swiper
+        spaceBetween={30}
+        centeredSlides={true}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
+        modules={[Autoplay, Pagination, Navigation]}
+        onAutoplayTimeLeft={onAutoplayTimeLeft}
+        className="mySwiper"
+      >
+        <SwiperSlide>
+          <Image width={"100"} height={"100"} src={"https://alifshop.tj/_next/image?url=https%3A%2F%2Fs3.eu-central-1.amazonaws.com%2Falifcore.storage%2Fmedia%2Fimages%2Fsettings%2F41%2Fbanner-1734685837266.jpg&w=1200&q=85"} alt="my active" />
+        </SwiperSlide>
+        <SwiperSlide>
+          <Image width={"100"} height={"100"} src={"https://alifshop.tj/_next/image?url=https%3A%2F%2Fs3.eu-central-1.amazonaws.com%2Falifcore.storage%2Fmedia%2Fimages%2Fsettings%2F41%2Fbanner-1734685837266.jpg&w=1200&q=85"} alt="my active" />
+        </SwiperSlide>
+        <SwiperSlide>
+          <Image width={"100"} height={"100"} src={"https://alifshop.tj/_next/image?url=https%3A%2F%2Fs3.eu-central-1.amazonaws.com%2Falifcore.storage%2Fmedia%2Fimages%2Fsettings%2F41%2Fbanner-1734685837266.jpg&w=1200&q=85"} alt="my active" />
+        </SwiperSlide>
+        <SwiperSlide>
+          <Image width={"100"} height={"100"} src={"https://alifshop.tj/_next/image?url=https%3A%2F%2Fs3.eu-central-1.amazonaws.com%2Falifcore.storage%2Fmedia%2Fimages%2Fsettings%2F41%2Fbanner-1734685837266.jpg&w=1200&q=85"} alt="my active" />
+        </SwiperSlide>
 
-          {/* Clock Numbers */}
-          {[...Array(12)].map((_, i) => {
-            const angle = (i + 1) * 30; // Each number is 30 degrees apart
-            const x = 50 + 40 * Math.cos((angle - 90) * (Math.PI / 180)); // X position
-            const y = 50 + 40 * Math.sin((angle - 90) * (Math.PI / 180)); // Y position
-            return (
-              <div
-                key={i}
-                className="absolute text-lg font-bold text-white"
-                style={{
-                  top: `${y}%`,
-                  left: `${x}%`,
-                  transform: "translate(-50%, -50%)",
-                }}
-              >
-                {i + 1}
-              </div>
-            );
-          })}
-
-          {/* Hour Hand */}
-          <div
-            className="absolute w-[4px] h-16 bg-red-500 rounded-full shadow-md shadow-red-500/50 origin-bottom"
-            style={{ transform: `rotate(${hourDeg}deg)` }}
-          ></div>
-
-          {/* Minute Hand */}
-          <div
-            className="absolute w-[3px] h-20 bg-yellow-400 rounded-full shadow-md shadow-yellow-400/50 origin-bottom"
-            style={{ transform: `rotate(${minuteDeg}deg)` }}
-          ></div>
-
-          {/* Second Hand */}
-          <div
-            className="absolute w-[2px] h-24 bg-green-500 rounded-full shadow-md shadow-green-500/50 origin-bottom"
-            style={{ transform: `rotate(${secondDeg}deg)` }}
-          ></div>
-
-          {/* Center Circle with Time */}
-          <div className="absolute w-20 h-20 bg-gray-800 rounded-full flex flex-col items-center justify-center text-white shadow-lg border-2 border-gray-600">
-            <div className="text-xl font-bold">{String(hours).padStart(2, "0")}</div>
-            <div className="text-sm font-medium">
-              {String(minutes).padStart(2, "0")} : {String(seconds).padStart(2, "0")}
-            </div>
-          </div>
+        <div className="autoplay-progress" slot="container-end">
+          <svg viewBox="0 0 48 48" ref={progressCircle}>
+            <circle cx="24" cy="24" r="20"></circle>
+          </svg>
+          <span ref={progressContent}></span>
         </div>
-      </main>
+      </Swiper>
     </div>
   );
-}
+};
+
+export default Home;

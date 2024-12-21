@@ -8,12 +8,10 @@ import {
   Drawer,
   List,
   ListItem,
-  Divider,
   IconButton,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { useCatalogHeader } from "@/app/store/catalogHeader/catalogHeader";
 import { mainColor } from "@/theme/main";
 import { Subcategories } from "@/types/catalogTypes";
@@ -38,7 +36,7 @@ const CatalogHeader: FC = () => {
   console.log(catalog.length);
 
   return (
-    <Box sx={{display: {xs:"none",md:"block"}}}>
+    <Box sx={{ display: { xs: "none", md: "block" } }}>
       {/* Button to open drawer */}
       <Button
         onClick={toggleDrawer(true)}
@@ -128,6 +126,7 @@ const CatalogHeader: FC = () => {
               {catalog.length > 0 &&
                 catalog.map((el: any) => (
                   <ListItem
+                    className="duration-300"
                     key={el.id}
                     onMouseEnter={() => setIdx(el.id)}
                     sx={{
@@ -163,6 +162,7 @@ const CatalogHeader: FC = () => {
               padding: "15px",
               overflow: "auto",
             }}
+            className="subList"
           >
             <Box
               sx={{
@@ -174,6 +174,7 @@ const CatalogHeader: FC = () => {
                 alignItems: "center",
                 justifyContent: "space-between",
               }}
+              className="subList"
             >
               <Typography variant="h6">Подкатегории</Typography>
               <IconButton
@@ -188,6 +189,7 @@ const CatalogHeader: FC = () => {
                 {subcategory.subCategories.length > 0 ? (
                   subcategory.subCategories.map((el) => (
                     <ListItem
+                      className="subList"
                       key={el.id}
                       sx={{
                         padding: "10px 15px",

@@ -18,9 +18,8 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title:
     "NexaStore - Магазин смартфонов: iPhone, Samsung, Xiaomi, Oppo и другие",
-  description: `
-    Добро пожаловать в NexaStore! У нас вы найдете Apple iPhone, Samsung Galaxy, Xiaomi Redmi, Oppo, Tecno, Infinix, Realme, Vivo, Huawei, Honor, Google Pixel, Sony Xperia, Motorola, Nokia и другие телефоны. 
-    Лучший выбор, выгодные цены, гарантия качества!`,
+  description: `Добро пожаловать в NexaStore! У нас вы найдете Apple iPhone, Samsung Galaxy, Xiaomi Redmi, Oppo, Tecno, Infinix, Realme, Vivo, Huawei, Honor, Google Pixel, Sony Xperia, Motorola, Nokia и другие телефоны.
+  Лучший выбор, выгодные цены, гарантия качества!`,
 };
 
 export default function RootLayout({
