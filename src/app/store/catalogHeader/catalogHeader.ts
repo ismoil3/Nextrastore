@@ -1,4 +1,3 @@
-import { apiUrl } from "@/config/config";
 import CatalogHeader from "@/types/catalogTypes";
 import axios from "axios";
 import { create } from "zustand";
