@@ -1,1 +1,1 @@
-export const apiUrl: string = process.env.NEXT_PUBLIC_API as string;
+export const apiUrl: string | undefined = process.env.NEXT_PUBLIC_API;
