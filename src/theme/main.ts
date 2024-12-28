@@ -1,1 +1,1 @@
-export const mainColor: string = "#FFBE1F"
+export const mainColor: string = "#A63AFC"

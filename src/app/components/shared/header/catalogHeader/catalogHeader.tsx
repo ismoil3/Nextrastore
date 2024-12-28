@@ -127,7 +127,7 @@ const CatalogHeader: FC = () => {
                     categoryImage: string;
                     categoryName: string;
                     id: number;
-                    subCategories: { id: number; subCategoryName: string }[]
+                    subCategories: { id: number; subCategoryName: string }[];
                   }) => (
                     <ListItem
                       className="duration-300"
@@ -138,7 +138,7 @@ const CatalogHeader: FC = () => {
                         cursor: "pointer",
                         "&:hover": {
                           backgroundColor: mainColor,
-                          color: "#fff",
+                          color: "#999",
                         },
                       }}
                     >
@@ -149,6 +149,7 @@ const CatalogHeader: FC = () => {
                         sx={{
                           fontSize: "16px",
                           fontWeight: idx === el.id ? "bold" : "normal",
+                          color:"#000"
                         }}
                       >
                         {el.categoryName}
@@ -210,6 +211,7 @@ const CatalogHeader: FC = () => {
                       <Typography
                         sx={{
                           fontSize: "14px",
+                          color: "black",
                         }}
                       >
                         {el.subCategoryName}

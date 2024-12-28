@@ -22,7 +22,7 @@ import Image from "next/image";
 import Container from "../container/container";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
-import Headroom from "react-headroom"
+import Headroom from "react-headroom";
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const path = usePathname();
@@ -36,145 +36,147 @@ const Header = () => {
   }, []);
 
   return (
-<div>
-<Headroom>
-     <Container>
-      <div className="p-[10px] gap-[40px] md:flex-nowrap flex-wrap flex justify-around">
-        {/* Logo */}
-        <Box onClick={() => router.push("/")}>
-          <Image
-            priority
-            width={200}
-            height={200}
-            src={"https://alifshop.tj/images/logo.png"}
-            alt="NextraStore Online Shop Logo"
-            className="m-auto cursor-pointer"
-          />
-        </Box>
+    <div className="">
+      <Headroom className="relative z-[1000]  bg-[white]">
+        <div className="header">
+          <Container>
+            <div className="p-[10px] gap-[40px] md:flex-nowrap bg-transparent flex justify-around">
+              {/* Logo */}
+              <Box sx={{display:{md: "block",xs:"none"}}} onClick={() => router.push("/")}>
+                <Image
+                  priority
+                  width={200}
+                  height={200}
+                  src={"https://alifshop.tj/images/logo.png"}
+                  alt="NextraStore Online Shop Logo"
+                  className="m-auto min-w-[120px] cursor-pointer"
+                />
+              </Box>
 
-        {/* Catalog Header */}
-        <CatalogHeader />
+              {/* Catalog Header */}
+              <CatalogHeader />
 
-        {/* Search Input */}
-        <Box
-          sx={{
-            maxWidth: "480px",
-            order: { xs: "1", md: "0" },
-            width: "100%",
-            position: "relative",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <TextField
-            variant="outlined"
-            aria-label="Search for products or articles"
-            placeholder="Название товара или артикул"
-            fullWidth
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "10px",
-                "& fieldset": {
-                  borderColor: mainColor,
-                  borderWidth: "2px",
-                },
-                "&:hover fieldset": {
-                  borderColor: mainColor,
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: mainColor,
-                },
-                backgroundColor: "white",
-                boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
-              },
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
+              {/* Search Input */}
+              <Box
+                sx={{
+                  maxWidth: "480px",
+                  order: { xs: "1", md: "0" },
+                  width: "100%",
+                  position: "relative",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <TextField
+                  variant="outlined"
+                  aria-label="Search for products or articles"
+                  placeholder="Название товара или артикул"
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "10px",
+                      "& fieldset": {
+                        borderColor: mainColor,
+                        borderWidth: "2px",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: mainColor,
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: mainColor,
+                      },
+                      backgroundColor: "white",
+                      boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
+                    },
+                  }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          sx={{
+                            backgroundColor: mainColor,
+                            color: "white",
+                            borderRadius: "10px",
+                            padding: "8px",
+                            marginRight: "4px",
+                            "&:hover": {
+                              backgroundColor: mainColor,
+                              color: "black",
+                            },
+                          }}
+                        >
+                          <SearchIcon aria-label="search" />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Box>
+
+              {/* Profile / Login Section */}
+              <Box sx={{display:{md: "flex",xs:"none"},gap:"20px"}} >
+                {isLoggedIn ? (
+                  <Box
+                    sx={{ display: "flex", alignItems: "center", gap: "10px" }}
+                  >
+                    <IconButton
+                      onClick={() => router.push("/pages/cart")}
+                      sx={{
+                        color: path === "/pages/cart" ? mainColor : "black",
+                        "&:hover": { color: mainColor },
+                      }}
+                    >
+                      <ShoppingCartOutlinedIcon aria-label="cart" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => router.push("/pages/profile")}
+                      sx={{
+                        color: path === "/pages/profile" ? mainColor : "black",
+                        "&:hover": { color: mainColor },
+                      }}
+                    >
+                      <AccountCircleOutlinedIcon aria-label="profile" />
+                    </IconButton>
+                  </Box>
+                ) : (
+                  <Button
+                    onClick={() => router.push("/login")}
                     sx={{
                       backgroundColor: mainColor,
-                      color: "white",
-                      borderRadius: "10px",
-                      padding: "8px",
-                      marginRight: "4px",
+                      color: "black",
+                      padding: "15px 20px",
+                      fontSize: "14px",
+                      borderRadius: "12px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      fontWeight: "bold",
+                      transition: "background-color 0.3s",
                       "&:hover": {
                         backgroundColor: mainColor,
-                        color: "black",
                       },
                     }}
                   >
-                    <SearchIcon aria-label="search" />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Box>
-
-        {/* Profile / Login Section */}
-        <div className="flex gap-[20px]">
-          {isLoggedIn ? (
-            <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <IconButton
-                onClick={() => router.push("/pages/cart")}
-                sx={{
-                  color: path === "/pages/cart" ? mainColor : "black",
-                  "&:hover": { color: mainColor },
-                }}
-              >
-                <ShoppingCartOutlinedIcon aria-label="cart" />
-              </IconButton>
-              <IconButton
-                onClick={() => router.push("/pages/profile")}
-                sx={{
-                  color: path === "/pages/profile" ? mainColor : "black",
-                  "&:hover": { color: mainColor },
-                }}
-              >
-                <AccountCircleOutlinedIcon aria-label="profile" />
-              </IconButton>
+                    <Typography
+                      sx={{
+                        fontSize: "14px",
+                        display: "flex",
+                        gap: "6px",
+                        alignItems: "center",
+                      }}
+                    >
+                      Войти
+                    </Typography>
+                  </Button>
+                )}
             </Box>
-          ) : (
-            <Button
-              onClick={() => router.push("/login")}
-              sx={{
-                backgroundColor: mainColor,
-                color: "black",
-                padding: "15px 20px",
-                fontSize: "14px",
-                borderRadius: "12px",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                fontWeight: "bold",
-                transition: "background-color 0.3s",
-                "&:hover": {
-                  backgroundColor: mainColor,
-                },
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: "14px",
-                  display: "flex",
-                  gap: "6px",
-                  alignItems: "center",
-                }}
-              >
-                Войти
-              </Typography>
-            </Button>
-          )}
+              </div>
+
+            {/* Bottom Navigation */}
+          </Container>
         </div>
-      </div>
-
-      {/* Bottom Navigation */}
-    
-    </Container>
-
-   </Headroom> 
-   <Box sx={{ display: { md: "none" } }}>
+      </Headroom>
+      <Box sx={{ display: { md: "none" },color:"black" }}>
         <Paper
           sx={{
             position: "fixed",
@@ -256,7 +258,8 @@ const Header = () => {
           </BottomNavigation>
         </Paper>
       </Box>
-</div> );
+    </div>
+  );
 };
 
 export default Header;
