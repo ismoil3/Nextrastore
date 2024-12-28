@@ -1,2 +1,2 @@
-export const apiUrl: string | undefined = process.env.NEXT_PUBLIC_API;
-export const imgUrl: string | undefined = process.env.NEXT_PUBLIC_API_img;
+export const apiUrl: string | undefined = "https://store-api.softclub.tj";
+export const imgUrl: string | undefined = "https://store-api.softclub.tj/images";
