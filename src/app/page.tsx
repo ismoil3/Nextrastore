@@ -151,9 +151,9 @@ const Home = () => {
           </div> */}
 
                 {/* Тасвир */}
-                <img
-                  // width={200}
-                  // height={200}
+                <Image
+                  width={200}
+                  height={200}
                   alt={el.productName}
                   // unoptimized
                   src={`${imgUrl}/${el.image}`}
