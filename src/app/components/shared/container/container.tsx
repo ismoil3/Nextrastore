@@ -6,7 +6,7 @@ export interface propsA {
 
 const Container:  FC<propsA> = ({children:children}) => {
   return (
-    <div className='max-w-[1220px] m-auto'>{children}</div>
+    <div className='max-w-[1220px] p-[3px] m-auto'>{children}</div>
   )
 }
 

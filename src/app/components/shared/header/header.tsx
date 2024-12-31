@@ -18,7 +18,6 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import { mainColor } from "@/theme/main";
-import Image from "next/image";
 import Container from "../container/container";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
@@ -43,14 +42,7 @@ const Header = () => {
             <div className="p-[10px] gap-[40px] md:flex-nowrap bg-transparent flex justify-around">
               {/* Logo */}
               <Box sx={{display:{md: "block",xs:"none"}}} onClick={() => router.push("/")}>
-                <Image
-                  priority
-                  width={200}
-                  height={200}
-                  src={"https://alifshop.tj/images/logo.png"}
-                  alt="NextraStore Online Shop Logo"
-                  className="m-auto min-w-[120px] cursor-pointer"
-                />
+              <p className="text-[25px]">Nextrastore</p>
               </Box>
 
               {/* Catalog Header */}

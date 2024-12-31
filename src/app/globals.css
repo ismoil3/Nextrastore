@@ -96,5 +96,8 @@ body {
 
 .header {
   background-image: url(https://static-basket-01.wbbasket.ru/vol2/site/i/v3/header/wb-logo_new-year_2024.webp);
+  background-color: #a63afc;
+  background-size: cover;
+  background-position: center;
 }
 

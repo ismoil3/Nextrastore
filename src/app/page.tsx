@@ -111,7 +111,7 @@ const Home = () => {
         <br />
 
         <Box>
-          <Grid container gap={1} sx={{ justifyContent: "space-around" }}>
+          <Grid container gap={1} sx={{ justifyContent: "space-between" }}>
             {products.map((el) => (
               <Grid
                 key={el.id}

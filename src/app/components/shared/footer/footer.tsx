@@ -118,7 +118,7 @@ const Footer = () => {
         </Typography>
       </Container>
     </Box>
-  );
+  );  
 };
 
 export default Footer;
