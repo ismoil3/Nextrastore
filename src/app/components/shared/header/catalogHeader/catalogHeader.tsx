@@ -149,7 +149,7 @@ const CatalogHeader: FC = () => {
                         sx={{
                           fontSize: "16px",
                           fontWeight: idx === el.id ? "bold" : "normal",
-                          color:"#000"
+                          color: idx === el.id ? "" : "#000",
                         }}
                       >
                         {el.categoryName}
@@ -185,7 +185,9 @@ const CatalogHeader: FC = () => {
               }}
               className="subList"
             >
-              <Typography variant="h6">Подкатегории</Typography>
+              <Typography sx={{ color: "#000" }} variant="h6">
+                Подкатегории
+              </Typography>
               <IconButton
                 sx={{ cursor: "pointer" }}
                 onClick={() => setIsDrawerOpen(false)}
