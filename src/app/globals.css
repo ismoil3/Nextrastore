@@ -8,10 +8,15 @@ body {
 }
 
 * {
-  color: #f0f0f0;
+
   font-family: "Merienda", serif;
   font-optical-sizing: auto;
 }
+
+p {
+  color: #f0f0f0;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
   height: 1px;
@@ -34,6 +39,7 @@ body {
 
 .subList {
   transition: all 0.3s;
+
   @starting-style {
     transform: translateX(-20%) scaleY(0);
     opacity: 0;
@@ -100,4 +106,3 @@ body {
   background-size: cover;
   background-position: center;
 }
-

@@ -1,22 +1,21 @@
 import { apiUrl } from "@/config/config";
 import { Products } from "@/types/home";
-import axios from "axios";
 import { create } from "zustand";
+import axiosRequest from "@/utils/axiosRequest"
 
-export const useHomeStore = create<Products>((set,get) => ({
+export const useHomeStore = create<Products>((set, get) => ({
     products: [],
     getProducts: async () => {
-        const {pageSize} = get()
-        console.log(pageSize,"salom");
-        
+        const { pageSize } = get()
         try {
-            const { data } = await axios.get(`${apiUrl}/Product/get-products?PageSize=${120}`)
-            set({ products: data.data.products })
+            const { data } = await axiosRequest.get(`${apiUrl}/Product/get-products?PageSize=${pageSize}`)
+            set({ products: [...data.data.products] })
         } catch (error) {
             console.error(error);
 
         }
     },
-    pageSize: 20,
-    setPageSize: () => set((state) => ({ pageSize: state.pageSize + 20 }))
+    pageSize: 10,
+    setPageSize: () => set((state) => ({ pageSize: state.pageSize + 10 })),
+    setProducts: (newProducts) => set(() => ({ products: newProducts }))
 }))

@@ -1,16 +1,11 @@
 "use client";
-import React, { useEffect, useRef } from "react";
-
+import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { Swiper as SwiperType } from "swiper";
-import "swiper/css";
-import "swiper/css/pagination";
 import { useHomeStore } from "./store/home/useHomeStore";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
@@ -19,37 +14,45 @@ import Image from "next/image";
 import { imgUrl } from "@/config/config";
 import { Button } from "@mui/material";
 import { mainColor } from "@/theme/main";
+
 const Home = () => {
   const progressCircle = useRef<null | SVGSVGElement>(null);
   const progressContent = useRef<null | HTMLSpanElement>(null);
+  const { products, getProducts,  setPageSize } = useHomeStore();
+  const [isLoading, setIsLoading] = useState(false);
 
+  // Autoplay progress handler
   const onAutoplayTimeLeft = (
     swiper: SwiperType,
     timeLeft: number,
     percentage: number
   ) => {
     if (progressCircle.current) {
-      progressCircle.current.style.setProperty(
-        "--progress",
-        String(1 - percentage)
-      );
+      progressCircle.current.style.setProperty("--progress", String(1 - percentage));
     }
     if (progressContent.current) {
       progressContent.current.textContent = `${Math.ceil(timeLeft / 1000)}s`;
     }
   };
 
-  const { products, getProducts } = useHomeStore();
-
+  // Fetch products on initial load
   useEffect(() => {
     getProducts();
   }, []);
 
+  // Handle "Load More" button click
+  const handleLoadMore = async () => {
+    setIsLoading(true);
+    setPageSize(); // Increase page size
+    await getProducts(); // Fetch more products
+    setIsLoading(false);
+  };
 
   return (
     <div>
       <Container>
-        <Box sx={{ display: { md: "block", xs: "none" } }}>
+        {/* Swiper Section */}
+        <Box sx={{ display: { md: "block", xs: "none" }, mt: "30px" }}>
           <Swiper
             spaceBetween={30}
             centeredSlides={true}
@@ -97,19 +100,12 @@ const Home = () => {
                 height: "full",
               }}
             ></SwiperSlide>
-
-            {/* Progress indicator */}
-            {/* <div className="autoplay-progress" slot="container-end">
-              <svg viewBox="0 0 48 48" ref={progressCircle}>
-                <circle cx="24" cy="24" r="20"></circle>
-              </svg>
-              <span ref={progressContent}></span>
-            </div> */}
           </Swiper>
         </Box>
         <br />
         <br />
 
+        {/* Products Grid */}
         <Box>
           <Grid container gap={1} sx={{ justifyContent: "space-between" }}>
             {products.map((el) => (
@@ -124,43 +120,19 @@ const Home = () => {
                 maxWidth={"250px"}
                 minWidth={"170px"}
                 sx={{
-                  // padding: "px",
                   borderRadius: "8px",
-                  // border: "1px solid #eaeaea",
-                  // boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                   backgroundColor: "#fff",
                   position: "relative",
                   mb: "20px",
                 }}
               >
-                {/* Бадҷи 'Лучший подарок' */}
-                {/* <div
-            style={{
-              position: "absolute",
-              top: "10px",
-              left: "10px",
-              backgroundColor: "#FFD700",
-              color: "#000",
-              fontSize: "12px",
-              padding: "4px 8px",
-              borderRadius: "4px",
-              fontWeight: "bold",
-            }}
-          >
-            Лучший подарок
-          </div> */}
-
-                {/* Тасвир */}
                 <Image
                   width={200}
                   height={200}
                   alt={el.productName}
-                  // unoptimized
                   src={`${imgUrl}/${el.image}`}
                   className="w-[100%] h-[180px] mb-[10px] rounded-lg"
                 />
-
-                {/* Номи маҳсулот */}
                 <h2
                   style={{
                     textOverflow: "ellipsis",
@@ -173,8 +145,6 @@ const Home = () => {
                 >
                   {el.productName}
                 </h2>
-
-                {/* Тавсифи маҳсулот */}
                 <p
                   style={{
                     textOverflow: "ellipsis",
@@ -186,8 +156,6 @@ const Home = () => {
                 >
                   {el.description}
                 </p>
-
-                {/* Нарх */}
                 <div className="flex items-center mb-2">
                   {el.hasDiscount ? (
                     <>
@@ -204,14 +172,10 @@ const Home = () => {
                     </span>
                   )}
                 </div>
-
-                {/* Рейтинг */}
                 <div className="flex items-center mb-2 text-sm text-gray-600">
                   <span className="mr-1">⭐ {26}</span>
                   <span>({5} оценок)</span>
                 </div>
-
-                {/* Тугма */}
                 <Button
                   fullWidth
                   variant="contained"
@@ -230,7 +194,28 @@ const Home = () => {
             ))}
           </Grid>
         </Box>
-      </Container>{" "}
+
+        {/* Load More Button */}
+        <Box sx={{ textAlign: "center", mt: 4, mb: 4 }}>
+          <Button
+            variant="contained"
+            onClick={handleLoadMore}
+            disabled={isLoading}
+            sx={{
+              backgroundColor: mainColor,
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: "#6a1b9a",
+              },
+              "&:disabled": {
+                backgroundColor: "#ccc",
+              },
+            }}
+          >
+            {isLoading ? "Loading..." : "Load More"}
+          </Button>
+        </Box>
+      </Container>
       <br />
       <br />
     </div>

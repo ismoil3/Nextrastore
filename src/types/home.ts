@@ -17,7 +17,8 @@ export type Products = {
     }[],
     getProducts: () => Promise<void>,
     pageSize: number,
-    setPageSize: ()=> void
+    setPageSize: ()=> void,
+    setProducts: (newProducts: Products["products"]) => void; 
 }
 
 

@@ -54,7 +54,7 @@ const CatalogHeader: FC = () => {
           },
         }}
       >
-        <MenuIcon sx={{ fontSize: "16px", fontWeight: "400" }} />
+        <MenuIcon sx={{ fontSize: "16px",color:"#f0f0f0", fontWeight: "400" }} />
         <Typography
           sx={{
             fontSize: "14px",
