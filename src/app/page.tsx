@@ -14,39 +14,53 @@ import Image from "next/image";
 import { imgUrl } from "@/config/config";
 import { Button } from "@mui/material";
 import { mainColor } from "@/theme/main";
-
+import { useCartStore } from "@/app/store/cart/cart";
+import { useRouter } from "next/navigation";
 const Home = () => {
+  const router = useRouter();
+  const { addProductToCart } = useCartStore();
   const progressCircle = useRef<null | SVGSVGElement>(null);
   const progressContent = useRef<null | HTMLSpanElement>(null);
-  const { products, getProducts,  setPageSize } = useHomeStore();
+  const { products, getProducts, setPageSize, setProducts } = useHomeStore();
   const [isLoading, setIsLoading] = useState(false);
-
-  // Autoplay progress handler
   const onAutoplayTimeLeft = (
     swiper: SwiperType,
     timeLeft: number,
     percentage: number
   ) => {
     if (progressCircle.current) {
-      progressCircle.current.style.setProperty("--progress", String(1 - percentage));
+      progressCircle.current.style.setProperty(
+        "--progress",
+        String(1 - percentage)
+      );
     }
     if (progressContent.current) {
       progressContent.current.textContent = `${Math.ceil(timeLeft / 1000)}s`;
     }
   };
 
-  // Fetch products on initial load
   useEffect(() => {
     getProducts();
   }, []);
 
-  // Handle "Load More" button click
   const handleLoadMore = async () => {
     setIsLoading(true);
-    setPageSize(); // Increase page size
-    await getProducts(); // Fetch more products
+    setPageSize();
+    await getProducts();
     setIsLoading(false);
   };
+
+  function handleAddToCart(id: string | null | number) {
+    addProductToCart(id);
+    setProducts(
+      products.map((product) => {
+        if (product.id === id) {
+          product.productInMyCart = !product.productInMyCart;
+        }
+        return product;
+      })
+    );
+  }
 
   return (
     <div>
@@ -125,6 +139,7 @@ const Home = () => {
                   position: "relative",
                   mb: "20px",
                 }}
+                onClick={() => router.push("/pages/product/" + el.id)}
               >
                 <Image
                   width={200}
@@ -183,12 +198,19 @@ const Home = () => {
                     backgroundColor: mainColor,
                     color: "#fff",
                     "&:hover": {
-                      backgroundColor: "#6a1b9a",
+                      backgroundColor: mainColor,
                     },
                     fontSize: { xs: "10px", sm: "12px", md: "16" },
+                    "&.Mui-disabled": {
+                      backgroundColor: mainColor,
+                      color: "white",
+                      cursor: "not-allowed",
+                    },
                   }}
+                  onClick={() => handleAddToCart(el.id)}
+                  disabled={el.productInMyCart}
                 >
-                  Добавить в корзину
+                  {el.productInMyCart ? "в корзинe" : "Добавить в корзину"}
                 </Button>
               </Grid>
             ))}

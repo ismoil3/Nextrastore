@@ -15,7 +15,7 @@ export const useHomeStore = create<Products>((set, get) => ({
 
         }
     },
-    pageSize: 10,
+    pageSize: 12,
     setPageSize: () => set((state) => ({ pageSize: state.pageSize + 10 })),
     setProducts: (newProducts) => set(() => ({ products: newProducts }))
 }))

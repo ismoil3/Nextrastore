@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import CatalogHeader from "./catalogHeader/catalogHeader";
 import {
+  Badge,
   BottomNavigation,
   BottomNavigationAction,
   Box,
@@ -22,15 +23,43 @@ import Container from "../container/container";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import Headroom from "react-headroom";
+import { jwtDecode } from "jwt-decode";
+import { useCartStore } from "@/app/store/cart/cart";
+interface UserToken {
+  sid: string;
+  name: string;
+  email: string;
+  sub: string;
+  "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": string;
+  exp: number;
+  iss: string;
+  aud: string;
+}
+
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { productsFromCart, getProductsFromCart } = useCartStore();
   const path = usePathname();
   const router = useRouter();
-
   useEffect(() => {
     if (typeof window !== "undefined") {
       const token = localStorage.getItem("access_token");
-      setIsLoggedIn(!!token);
+
+      if (token) {
+        try {
+          const decoded = jwtDecode<UserToken>(token);
+          if (decoded.sid) {
+            setIsLoggedIn(true);
+            getProductsFromCart();
+          }
+        } catch (error) {
+          console.log("Invalid token:", error);
+          setIsLoggedIn(false);
+        }
+      } else {
+        console.warn("No token found in localStorage");
+        setIsLoggedIn(false);
+      }
     }
   }, []);
 
@@ -41,8 +70,11 @@ const Header = () => {
           <Container>
             <div className="p-[10px] gap-[40px] md:flex-nowrap bg-transparent flex justify-around">
               {/* Logo */}
-              <Box sx={{display:{md: "block",xs:"none"}}} onClick={() => router.push("/")}>
-              <p className="text-[25px]">Nextrastore</p>
+              <Box
+                sx={{ display: { md: "block", xs: "none" } }}
+                onClick={() => router.push("/")}
+              >
+                <p className="text-[25px]">Nextrastore</p>
               </Box>
 
               {/* Catalog Header */}
@@ -106,24 +138,26 @@ const Header = () => {
               </Box>
 
               {/* Profile / Login Section */}
-              <Box sx={{display:{md: "flex",xs:"none"},gap:"20px"}} >
+              <Box sx={{ display: { md: "flex", xs: "none" }, gap: "20px" }}>
                 {isLoggedIn ? (
                   <Box
                     sx={{ display: "flex", alignItems: "center", gap: "10px" }}
                   >
-                    <IconButton
-                      onClick={() => router.push("/pages/cart")}
-                      sx={{
-                        color: path === "/pages/cart" ? mainColor : "black",
-                        "&:hover": { color: mainColor },
-                      }}
-                    >
-                      <ShoppingCartOutlinedIcon aria-label="cart" />
-                    </IconButton>
+                    <Badge color="success" badgeContent={productsFromCart.length}>
+                      <IconButton
+                        onClick={() => router.push("/pages/cart")}
+                        sx={{
+                          color: path === "/pages/cart" ? "#f9f9f9" : "white",
+                          "&:hover": { color: mainColor },
+                        }}
+                      >
+                        <ShoppingCartOutlinedIcon aria-label="cart" />
+                      </IconButton>
+                    </Badge>
                     <IconButton
                       onClick={() => router.push("/pages/profile")}
                       sx={{
-                        color: path === "/pages/profile" ? mainColor : "black",
+                        color: path === "/pages/profile" ? "#f9f9f9" : "white",
                         "&:hover": { color: mainColor },
                       }}
                     >
@@ -161,14 +195,14 @@ const Header = () => {
                     </Typography>
                   </Button>
                 )}
-            </Box>
-              </div>
+              </Box>
+            </div>
 
             {/* Bottom Navigation */}
           </Container>
         </div>
       </Headroom>
-      <Box sx={{ display: { md: "none" },color:"black" }}>
+      <Box sx={{ display: { md: "none" }, color: "black" }}>
         <Paper
           sx={{
             position: "fixed",
