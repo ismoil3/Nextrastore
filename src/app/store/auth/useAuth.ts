@@ -18,7 +18,7 @@ export const useAuth = create<Auth>((set, get) => ({
       window.location.href = "/";
     } catch (error:unknown) {
       console.log(error);
-      if (error.status == 400) {
+      if ((error as any).status == 400) {
         setError("Invalid UserName or Password");
       }
     } finally {
@@ -34,7 +34,7 @@ export const useAuth = create<Auth>((set, get) => ({
       window.location.href = "/login";
     } catch (error:unknown) {
       console.log(error);
-      if (error.status == 500) {
+      if ((error as any).status == 500) {
         setError("User Name already exists");
       }
     } finally {

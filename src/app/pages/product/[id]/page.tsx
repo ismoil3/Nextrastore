@@ -3,7 +3,7 @@
 import { apiUrl } from "@/config/config";
 import axiosRequest from "@/utils/axiosRequest";
 import { useParams } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import {
   Typography,
   Box,
@@ -12,7 +12,6 @@ import {
   Paper,
   Chip,
   Button,
-  useMediaQuery,
   ThemeProvider,
   createTheme,
   Modal,
@@ -31,12 +30,10 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Backdrop,
 } from "@mui/material";
 
 // Icons
 import {
-  ShoppingBag,
   Favorite,
   FavoriteBorder,
   Share,
@@ -44,8 +41,6 @@ import {
   Twitter,
   WhatsApp,
   ContentCopy,
-  Add,
-  Remove,
   Check,
   ChevronLeft,
   ChevronRight,
@@ -53,6 +48,7 @@ import {
   Category,
   StarBorder,
   NavigateNext,
+  ShoppingBag,
 } from "@mui/icons-material";
 
 // Interfaces
@@ -203,7 +199,6 @@ const ProductPage = () => {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
-  const [cartQuantity, setCartQuantity] = useState(1);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
@@ -212,7 +207,6 @@ const ProductPage = () => {
 
   const { id } = useParams<{ id: string }>();
   const theme = premiumTheme;
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const getById = async (id: string) => {
     setLoading(true);
@@ -228,7 +222,12 @@ const ProductPage = () => {
       setLoading(false);
     }
   };
-  const colorOptions = [{ name:product?.color? product?.color:"default", code: product?.color? product.color:"default"}];
+  const colorOptions = [
+    {
+      name: product?.color ? product?.color : "default",
+      code: product?.color ? product.color : "default",
+    },
+  ];
 
   useEffect(() => {
     if (id) {
@@ -279,14 +278,6 @@ const ProductPage = () => {
     setOpenSnackbar(true);
   };
 
-  const handleQuantityChange = (increment: boolean) => {
-    if (!product) return;
-    if (increment && cartQuantity < product.quantity) {
-      setCartQuantity((prev) => prev + 1);
-    } else if (!increment && cartQuantity > 1) {
-      setCartQuantity((prev) => prev - 1);
-    }
-  };
 
   const handleNextImage = () => {
     if (!product) return;
@@ -319,17 +310,41 @@ const ProductPage = () => {
     return Math.round((product.discountPrice / product.price) * 100);
   };
 
-
   if (loading) {
     return (
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <Paper elevation={0} sx={{ p: 4, borderRadius: 4, bgcolor: theme.palette.background.paper }}>
+        <Paper
+          elevation={0}
+          sx={{
+            p: 4,
+            borderRadius: 4,
+            bgcolor: theme.palette.background.paper,
+          }}
+        >
           <Grid container spacing={4}>
             <Grid item xs={12} md={6}>
-              <Skeleton variant="rounded" height={450} width="100%" sx={{ borderRadius: 4 }} />
-              <Box sx={{ display: 'flex', gap: 2, mt: 2, justifyContent: 'center' }}>
+              <Skeleton
+                variant="rounded"
+                height={450}
+                width="100%"
+                sx={{ borderRadius: 4 }}
+              />
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                  mt: 2,
+                  justifyContent: "center",
+                }}
+              >
                 {[1, 2, 3, 4].map((item) => (
-                  <Skeleton key={item} variant="rounded" width={60} height={60} sx={{ borderRadius: 2 }} />
+                  <Skeleton
+                    key={item}
+                    variant="rounded"
+                    width={60}
+                    height={60}
+                    sx={{ borderRadius: 2 }}
+                  />
                 ))}
               </Box>
             </Grid>
@@ -337,13 +352,28 @@ const ProductPage = () => {
               <Skeleton variant="text" height={60} width="80%" sx={{ mb: 1 }} />
               <Skeleton variant="text" height={30} width="50%" sx={{ mb: 2 }} />
               <Skeleton variant="text" height={40} width="40%" sx={{ mb: 2 }} />
-              <Skeleton variant="rounded" height={56} width="100%" sx={{ mb: 2, borderRadius: 2 }} />
-              <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
+              <Skeleton
+                variant="rounded"
+                height={56}
+                width="100%"
+                sx={{ mb: 2, borderRadius: 2 }}
+              />
+              <Box sx={{ display: "flex", gap: 2, mb: 3 }}>
                 <Skeleton variant="rounded" height={56} width="100%" />
                 <Skeleton variant="rounded" height={56} width="100%" />
               </Box>
-              <Skeleton variant="text" height={100} width="100%" sx={{ mb: 2 }} />
-              <Skeleton variant="rounded" height={200} width="100%" sx={{ mb: 2, borderRadius: 2 }} />
+              <Skeleton
+                variant="text"
+                height={100}
+                width="100%"
+                sx={{ mb: 2 }}
+              />
+              <Skeleton
+                variant="rounded"
+                height={200}
+                width="100%"
+                sx={{ mb: 2, borderRadius: 2 }}
+              />
             </Grid>
           </Grid>
         </Paper>
@@ -351,10 +381,9 @@ const ProductPage = () => {
     );
   }
 
-
   if (!product) {
     return (
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4, textAlign: 'center' }}>
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4, textAlign: "center" }}>
         <Typography variant="h5" color="error" gutterBottom>
           Product not found
         </Typography>
@@ -551,7 +580,7 @@ const ProductPage = () => {
                         position: "relative",
                         overflow: "hidden",
                         flexShrink: 0,
-                        marginY:2,
+                        marginY: 2,
                         opacity: index === currentImage ? 1 : 0.6,
                         transform:
                           index === currentImage ? "scale(1.05)" : "scale(1)",
@@ -770,7 +799,31 @@ const ProductPage = () => {
                   </Box>
                 </Box>
 
-               
+                {/* Add to Cart Button */}
+                <Box sx={{ mb: 3 }}>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    size="large"
+                    startIcon={<ShoppingBag />}
+                    onClick={handleAddToCart}
+                    sx={{
+                      py: 1.5,
+                      borderRadius: 3,
+                      fontWeight: 700,
+                      fontSize: "1rem",
+                      textTransform: "none",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        transform: "translateY(-2px)",
+                        boxShadow: "0 6px 20px rgba(0,0,0,0.15)",
+                      },
+                    }}
+                  >
+                    {product.productInMyCart ? "Update Cart" : "Add to Cart"}
+                  </Button>
+                </Box>
+
                 {/* Product Features */}
                 <Box sx={{ mb: 3 }}>
                   <Typography variant="h6" sx={{ fontWeight: 600, mb: 1.5 }}>

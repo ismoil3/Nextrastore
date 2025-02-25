@@ -37,7 +37,7 @@ export default function LoginPage() {
       userName: email,
       password: password,
     };
-    await logIn(loginUser);
+     logIn(loginUser);
   };
   
   return (
