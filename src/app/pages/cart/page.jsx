@@ -123,7 +123,7 @@ const Cart = () => {
               textFillColor: "transparent",
             }}
           >
-            Your Cart
+            Ваша Корзина
           </Typography>
 
           <Button
@@ -141,7 +141,7 @@ const Cart = () => {
               },
             }}
           >
-            Back to Shop
+            Вернуться в Магазин
           </Button>
         </Box>
       </motion.div>
@@ -176,10 +176,10 @@ const Cart = () => {
               sx={{ fontSize: 80, color: mainColor, opacity: 0.6, mb: 2 }}
             />
             <Typography variant="h5" fontWeight="bold" mb={2}>
-              Your cart is empty
+              Ваша корзина пуста
             </Typography>
             <Typography color="text.secondary" mb={4}>
-              Looks like you haven`t added any products yet
+              Похоже, вы еще не добавили товары
             </Typography>
             <Button
               component={Link}
@@ -194,7 +194,7 @@ const Cart = () => {
                 boxShadow: "0px 4px 20px rgba(93, 63, 211, 0.25)",
               }}
             >
-              Discover Products
+              Найти Товары
             </Button>
           </Paper>
         </motion.div>
@@ -240,7 +240,7 @@ const Cart = () => {
                         component="span"
                         sx={{ display: "flex", alignItems: "center" }}
                       >
-                        <ShoppingBag sx={{ mr: 1 }} /> Shopping Cart
+                        <ShoppingBag sx={{ mr: 1 }} /> Корзина
                       </Box>
                     </Badge>
                   </Typography>
@@ -259,12 +259,12 @@ const Cart = () => {
                       },
                     }}
                   >
-                    Clear All
+                    Очистить Все
                   </Button>
                 </Box>
 
                 {/* Cart Items */}
-                <Box sx={{ p: 2 }}>
+                <Box sx={{ p: 2, maxHeight: "460px", overflow: "auto" }}>
                   <AnimatePresence>
                     {productsFromCart?.productsInCart?.map((item) => (
                       <motion.div
@@ -275,111 +275,138 @@ const Cart = () => {
                       >
                         <Paper
                           sx={{
-                            p: 3,
-                            mb: 2,
-                            borderRadius: 4,
-                            background:
-                              "linear-gradient(140deg, #ffffff 0%, #fafafa 100%)",
-                            border: "1px solid #f0f0f0",
+                            height: "120px",
+                            display: "flex",
+                            alignItems: "center",
+                            p: 2,
+                            borderRadius: "12px",
+                            background: "rgba(255, 255, 255, 0.8)",
+                            backdropFilter: "blur(10px)",
+                            border: "1px solid rgba(255, 255, 255, 0.3)",
+                            boxShadow: "0px 4px 12px rgba(93, 63, 211, 0.1)",
                             transition: "all 0.3s ease",
                             "&:hover": {
-                              boxShadow: "0px 8px 20px rgba(0,0,0,0.05)",
                               transform: "translateY(-4px)",
+                              boxShadow: "0px 8px 24px rgba(93, 63, 211, 0.2)",
+                              borderColor: mainColor,
                             },
+                            mb: "20px",
                           }}
                         >
-                          <Grid container spacing={2} alignItems="center">
-                            {/* Product Image */}
-                            <Grid item xs={12} sm={3}>
-                              <Box
-                                sx={{
-                                  position: "relative",
-                                  width: "100%",
-                                  paddingTop: "100%",
-                                  borderRadius: 3,
-                                  overflow: "hidden",
-                                  boxShadow: "0px 4px 10px rgba(0,0,0,0.05)",
-                                }}
-                              >
-                                <Image
-                                  src={imgUrl + item.product.image}
-                                  fill
-                                  style={{ objectFit: "contain" }}
-                                  alt={item.product.productName}
-                                />
-                              </Box>
-                            </Grid>
+                          {/* Product Image */}
+                          <Box
+                            sx={{
+                              width: "80px",
+                              height: "80px",
+                              borderRadius: "8px",
+                              overflow: "hidden",
+                              flexShrink: 0,
+                              mr: 2,
+                              position: "relative",
+                              border: "1px solid rgba(93, 63, 211, 0.1)",
+                              "&:hover": {
+                                borderColor: mainColor,
+                              },
+                            }}
+                          >
+                            <Image
+                              src={imgUrl + item.product.image}
+                              fill
+                              style={{ objectFit: "cover" }}
+                              alt={item.product.productName}
+                            />
+                          </Box>
 
-                            {/* Product Info */}
-                            <Grid item xs={12} sm={5}>
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                }}
-                              >
-                                <Typography
-                                  variant="h6"
-                                  fontWeight="medium"
-                                  gutterBottom
-                                >
-                                  {item.product.productName}
-                                </Typography>
-                              </Box>
+                          {/* Product Info */}
+                          <Box
+                            sx={{
+                              flex: 1,
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "center",
+                              overflow: "hidden",
+                            }}
+                          >
+                            <Typography
+                              variant="subtitle1"
+                              fontWeight="bold"
+                              noWrap
+                              sx={{
+                                mb: 0.5,
+                                background: `linear-gradient(45deg, ${mainColor} 30%, ${mainColor} 90%)`,
+                                backgroundClip: "text",
+                                textFillColor: "transparent",
+                              }}
+                            >
+                              {item.product.productName}
+                            </Typography>
 
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  mb: 1,
-                                }}
-                              >
-                                <Box
-                                  sx={{
-                                    width: 16,
-                                    height: 16,
-                                    borderRadius: "50%",
-                                    backgroundColor: item.product.color,
-                                    mr: 1,
-                                  }}
-                                />
-                                <Typography
-                                  variant="body2"
-                                  color="text.secondary"
-                                  mr={2}
-                                >
-                                  {item.product.color}
-                                </Typography>
-                              </Box>
-
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                              }}
+                            >
                               <Chip
                                 size="small"
-                                label={item.product.brand || "Brand"}
+                                label={item.product.brand || "Бренд"}
                                 sx={{
-                                  mr: 1,
                                   backgroundColor: "rgba(93, 63, 211, 0.1)",
                                   color: mainColor,
                                   fontWeight: "medium",
-                                  height: 24,
                                 }}
                               />
+                              <Chip
+                                size="small"
+                                label={item.product.categoryName}
+                                sx={{
+                                  backgroundColor: item.product.color,
+                                  color: mainColor,
+                                  fontWeight: "medium",
+                                  px:"5px"
+                                }}
+                              />
+                            </Box>
+                          </Box>
 
-                              {item.product.categoryName && (
-                                <Chip
-                                  size="small"
-                                  label={item.product.categoryName}
-                                  sx={{
-                                    backgroundColor: "rgba(164, 104, 255, 0.1)",
-                                    color: "${mainColor}",
-                                    fontWeight: "medium",
-                                    height: 24,
-                                  }}
-                                />
-                              )}
-                            </Grid>
+                          {/* Price and Remove Button */}
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "flex-end",
+                              justifyContent: "center",
+                              ml: 2,
+                            }}
+                          >
+                            <Typography
+                              variant="subtitle1"
+                              fontWeight="bold"
+                              sx={{
+                                background: `linear-gradient(45deg, ${mainColor} 30%, ${mainColor} 90%)`,
+                                backgroundClip: "text",
+                                textFillColor: "transparent",
+                              }}
+                            >
+                              ${item.product.price}
+                            </Typography>
+
+                            <IconButton
+                              size="small"
+                              onClick={() => handleRemoveItem(item.id)}
+                              sx={{
+                                color: "#ff3d71",
+                                "&:hover": {
+                                  backgroundColor: "rgba(255, 61, 113, 0.1)",
+                                },
+                              }}
+                            >
+                              <DeleteIcon fontSize="small" />
+                            </IconButton>
 
                             {/* Quantity Controls */}
-                            <Grid item xs={6} sm={2}>
+                            <Grid sx={{ mr: "30px" }} item xs={6} sm={2}>
                               <Box
                                 sx={{
                                   display: "flex",
@@ -430,56 +457,7 @@ const Cart = () => {
                                 </Box>
                               </Box>
                             </Grid>
-
-                            {/* Price and Remove Button */}
-                            <Grid
-                              item
-                              xs={6}
-                              sm={2}
-                              sx={{ textAlign: "right" }}
-                            >
-                              <Typography
-                                variant="h6"
-                                fontWeight="bold"
-                                sx={{
-                                  background: `linear-gradient(45deg, ${mainColor} 30%, ${mainColor} 90%)`,
-                                  backgroundClip: "text",
-                                  textFillColor: "transparent",
-                                }}
-                              >
-                                ${item.product.price}
-                              </Typography>
-
-                              {item.product.originalPrice && (
-                                <Typography
-                                  variant="body2"
-                                  color="text.secondary"
-                                  sx={{ textDecoration: "line-through", mb: 1 }}
-                                >
-                                  ${item.product.originalPrice}
-                                </Typography>
-                              )}
-
-                              <Button
-                                size="small"
-                                variant="outlined"
-                                startIcon={<DeleteIcon />}
-                                onClick={() => handleRemoveItem(item.id)}
-                                sx={{
-                                  borderRadius: 10,
-                                  borderColor: "#ff3d71",
-                                  color: "#ff3d71",
-                                  mt: 1,
-                                  "&:hover": {
-                                    backgroundColor: "rgba(255, 61, 113, 0.1)",
-                                    borderColor: "#ff3d71",
-                                  },
-                                }}
-                              >
-                                Remove
-                              </Button>
-                            </Grid>
-                          </Grid>
+                          </Box>
                         </Paper>
                       </motion.div>
                     ))}
@@ -514,7 +492,7 @@ const Cart = () => {
                   }}
                 >
                   <Typography variant="h6" fontWeight="bold" color="white">
-                    Order Summary
+                    Итог Заказа
                   </Typography>
                 </Box>
 
@@ -528,7 +506,8 @@ const Cart = () => {
                     }}
                   >
                     <Typography variant="body1" color="text.secondary">
-                      Subtotal ({productsFromCart?.totalProducts} items)
+                      Промежуточный итог ({productsFromCart?.totalProducts}{" "}
+                      товаров)
                     </Typography>
                     <Typography
                       variant="body1"
@@ -547,7 +526,7 @@ const Cart = () => {
                     }}
                   >
                     <Typography variant="body1" color="text.secondary">
-                      Discount
+                      Скидка
                     </Typography>
                     <Typography
                       variant="body1"
@@ -572,7 +551,7 @@ const Cart = () => {
                     }}
                   >
                     <Typography variant="h6" fontWeight="bold">
-                      Total
+                      Итого
                     </Typography>
                     <Typography
                       variant="h6"
@@ -598,7 +577,7 @@ const Cart = () => {
                       boxShadow: "0px 4px 20px rgba(93, 63, 211, 0.25)",
                     }}
                   >
-                    Proceed to Checkout
+                    Перейти к Оплате
                   </Button>
 
                   <Box
@@ -615,8 +594,8 @@ const Cart = () => {
                       color="text.secondary"
                       align="center"
                     >
-                      By proceeding, you agree to our Terms of Service and
-                      Privacy Policy
+                      Продолжая, вы соглашаетесь с нашими Условиями обслуживания
+                      и Политикой конфиденциальности
                     </Typography>
                   </Box>
                 </Box>

@@ -83,11 +83,11 @@ const Header = () => {
             getProductsFromCart();
           }
         } catch (error) {
-          console.log("Invalid token:", error);
+          console.log("Недействительный токен:", error);
           setIsLoggedIn(false);
         }
       } else {
-        console.warn("No token found in localStorage");
+        console.warn("Токен не найден в localStorage");
         setIsLoggedIn(false);
       }
     }
@@ -98,19 +98,19 @@ const Header = () => {
   };
 
   const navigationLinks = [
-    { label: "Home", path: "/", icon: <HomeOutlinedIcon /> },
+    { label: "Главная", path: "/", icon: <HomeOutlinedIcon /> },
     {
-      label: "Catalog",
+      label: "Каталог",
       path: "/pages/catalog",
       icon: <CategoryOutlinedIcon />,
     },
     {
-      label: "Wishlist",
+      label: "Избранное",
       path: "/pages/wishlist",
       icon: <FavoriteBorderOutlinedIcon />,
     },
     {
-      label: "Notifications",
+      label: "Уведомления",
       path: "/pages/notifications",
       icon: <NotificationsOutlinedIcon />,
     },
@@ -192,7 +192,7 @@ const Header = () => {
               >
                 <TextField
                   variant="outlined"
-                  placeholder="Search products..."
+                  placeholder="Поиск товаров..."
                   fullWidth
                   onFocus={() => setSearchFocused(true)}
                   onBlur={() => setSearchFocused(false)}
@@ -279,7 +279,7 @@ const Header = () => {
                   <Box
                     sx={{ display: "flex", alignItems: "center", gap: "10px" }}
                   >
-                    <Tooltip title="Cart">
+                    <Tooltip title="Корзина">
                       <IconButton
                         onClick={() => router.push("/pages/cart")}
                         sx={{
@@ -311,7 +311,7 @@ const Header = () => {
                       </IconButton>
                     </Tooltip>
 
-                    <Tooltip title="Profile">
+                    <Tooltip title="Профиль">
                       <Box
                         onClick={() => router.push("/pages/profile")}
                         sx={{
@@ -372,7 +372,7 @@ const Header = () => {
                       boxShadow: "0px 4px 10px rgba(59, 130, 246, 0.25)",
                     }}
                   >
-                    Sign In
+                    Войти
                   </Button>
                 )}
               </Box>
@@ -412,7 +412,7 @@ const Header = () => {
             }}
           >
             <BottomNavigationAction
-              label="Home"
+              label="Главная"
               value="/"
               icon={
                 <HomeOutlinedIcon
@@ -428,7 +428,7 @@ const Header = () => {
             />
 
             <BottomNavigationAction
-              label="Catalog"
+              label="Каталог"
               value="/pages/catalog"
               icon={
                 <CategoryOutlinedIcon
@@ -444,7 +444,7 @@ const Header = () => {
             />
 
             <BottomNavigationAction
-              label="Search"
+              label="Поиск"
               onClick={() => toggleDrawer()}
               icon={
                 <SearchIcon
@@ -454,7 +454,7 @@ const Header = () => {
             />
 
             <BottomNavigationAction
-              label="Cart"
+              label="Корзина"
               value="/pages/cart"
               icon={
                 <Badge
@@ -482,7 +482,7 @@ const Header = () => {
             />
 
             <BottomNavigationAction
-              label="Profile"
+              label="Профиль"
               value="/pages/profile"
               icon={
                 isLoggedIn ? (
@@ -532,7 +532,7 @@ const Header = () => {
       >
         <TextField
           variant="outlined"
-          placeholder="Search products..."
+          placeholder="Поиск товаров..."
           fullWidth
           autoFocus
           sx={{
@@ -578,7 +578,7 @@ const Header = () => {
                     },
                   }}
                 >
-                  Search
+                  Поиск
                 </Button>
               </InputAdornment>
             ),

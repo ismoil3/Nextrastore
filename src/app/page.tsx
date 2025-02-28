@@ -28,7 +28,6 @@ import {
 } from "@mui/material";
 
 // Icons
-
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -64,29 +63,29 @@ const Home = () => {
   const promos = [
     {
       id: 1,
-      title: "Summer Collection 2025",
-      subtitle: "Discover fresh trends for the season",
+      title: "Летняя коллекция 2025",
+      subtitle: "Откройте для себя свежие тренды сезона",
       image:
         "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1488&q=80",
-      cta: "Shop Now",
+      cta: "Купить сейчас",
       color: "#ff6b6b",
     },
     {
       id: 2,
-      title: "Tech Essentials",
-      subtitle: "Upgrade your devices with the latest tech",
+      title: "Техника и гаджеты",
+      subtitle: "Обновите свои устройства с новейшими технологиями",
       image:
         "https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80",
-      cta: "Explore Tech",
+      cta: "Исследовать",
       color: "#4dabf7",
     },
     {
       id: 3,
-      title: "Special Deals",
-      subtitle: "Limited time offers on select products",
+      title: "Специальные предложения",
+      subtitle: "Ограниченные по времени предложения на избранные товары",
       image:
         "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-      cta: "View Deals",
+      cta: "Посмотреть предложения",
       color: "#51cf66",
     },
   ];
@@ -109,11 +108,11 @@ const Home = () => {
 
   // Tabs categories
   const categories = [
-    "Recommended",
-    "New Arrivals",
-    "Best Sellers",
-    "Special Offers",
-    "Trending",
+    "Рекомендуем",
+    "Новинки",
+    "Бестселлеры",
+    "Спецпредложения",
+    "Популярное",
   ];
 
   // Handle tab change
@@ -143,7 +142,7 @@ const Home = () => {
     );
     setNotification({
       open: true,
-      message: "Product added to cart",
+      message: "Товар добавлен в корзину",
       type: "success",
     });
   }
@@ -403,23 +402,23 @@ const Home = () => {
           {[
             {
               icon: <LocalShippingIcon />,
-              title: "Free Delivery",
-              desc: "For all orders over 5000₽",
+              title: "Бесплатная доставка",
+              desc: "Для заказов от 5000₽",
             },
             {
               icon: <StarIcon />,
-              title: "Quality Promise",
-              desc: "Verified quality products",
+              title: "Гарантия качества",
+              desc: "Проверенные качественные товары",
             },
             {
               icon: <ShoppingBagIcon />,
-              title: "Easy Returns",
-              desc: "30-day return policy",
+              title: "Легкий возврат",
+              desc: "30-дневная политика возврата",
             },
             {
               icon: <LocalOfferIcon />,
-              title: "Special Offers",
-              desc: "New deals every week",
+              title: "Специальные предложения",
+              desc: "Новые акции каждую неделю",
             },
           ].map((service, idx) => (
             <Box
@@ -492,7 +491,7 @@ const Home = () => {
               fontWeight: 500,
             }}
           >
-            View All
+            Посмотреть все
           </Button>
         </Box>
 
@@ -557,10 +556,10 @@ const Home = () => {
                               label={`${Math.round(
                                 (1 - product.discountPrice / product.price) *
                                   100
-                              )}% Off`}
+                              )}% Скидка`}
                               size="small"
                               sx={{
-                                bgcolor: "#ff6b6b",
+                                bgcolor: mainColor,
                                 color: "white",
                                 fontWeight: 600,
                                 fontSize: "0.7rem",
@@ -617,7 +616,7 @@ const Home = () => {
                             mb: 0.5,
                           }}
                         >
-                          {product.categoryName || "Category"}
+                          {product.categoryName || "Категория"}
                         </Typography>
 
                         <Typography
@@ -653,7 +652,7 @@ const Home = () => {
                                     variant="h6"
                                     sx={{
                                       fontWeight: 700,
-                                      color: "#e03131",
+                                      color: mainColor,
                                       fontSize: { xs: "1rem", sm: "1.1rem" },
                                     }}
                                   >
@@ -746,7 +745,7 @@ const Home = () => {
               loadingMore && <CircularProgress size={16} color="inherit" />
             }
           >
-            {loadingMore ? "Loading..." : "Load More Products"}
+            {loadingMore ? "Загрузка..." : "Загрузить больше товаров"}
           </Button>
         </Box>
       </Container>
@@ -766,7 +765,7 @@ const Home = () => {
             }}
           >
             <Typography variant="h6" sx={{ fontWeight: 600 }}>
-              Filters
+              Фильтры
             </Typography>
             <IconButton onClick={() => setFilterOpen(false)}>
               <CloseIcon />
@@ -777,7 +776,7 @@ const Home = () => {
 
           {/* Filter components would go here */}
           <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
-            Price Range
+            Диапазон цен
           </Typography>
         </Box>
         <Divider />

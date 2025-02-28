@@ -39,7 +39,7 @@ export default function LoginPage() {
   const handleLogIn = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!email || !password) {
-      setError("Please fill in all fields");
+      setError("Пожалуйста, заполните все поля");
       return;
     }
     setError("");
@@ -124,10 +124,10 @@ export default function LoginPage() {
               EXCLUSIVE
             </Typography>
             <Typography variant="h6" sx={{ mb: 4 }}>
-              Welcome back!
+              С возвращением!
             </Typography>
             <Typography variant="body1" sx={{ opacity: 0.9 }}>
-              Access your personalized experience and discover exclusive content tailored just for you.
+              Получите доступ к персонализированному опыту и эксклюзивному контенту, созданному специально для вас.
             </Typography>
           </Box>
 
@@ -160,16 +160,16 @@ export default function LoginPage() {
                 <LockOutlined />
               </Avatar>
               <Typography variant="h5" fontWeight="500">
-                Log in to Exclusive
+                Вход в EXCLUSIVE
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Enter your credentials to access your account
+                Введите свои данные для доступа к аккаунту
               </Typography>
             </Box>
 
             <form onSubmit={handleLogIn}>
               <TextField
-                label="Username"
+                label="Имя пользователя"
                 variant="outlined"
                 required
                 fullWidth
@@ -200,7 +200,7 @@ export default function LoginPage() {
               />
 
               <TextField
-                label="Password"
+                label="Пароль"
                 variant="outlined"
                 required
                 type={showPassword ? "text" : "password"}
@@ -256,7 +256,7 @@ export default function LoginPage() {
                   underline="hover"
                   sx={{ fontWeight: 500 }}
                 >
-                  Forgot Password?
+                  Забыли пароль?
                 </Link>
               </Box>
 
@@ -290,7 +290,7 @@ export default function LoginPage() {
                 type="submit"
                 disabled={loading}
               >
-                {loading ? "Logging in..." : "Sign In"}
+                {loading ? "Вход..." : "Войти"}
               </Button>
             </form>
 
@@ -301,7 +301,7 @@ export default function LoginPage() {
                   color="text.secondary"
                   sx={{ px: 1 }}
                 >
-                  Or continue with
+                  Или войдите через
                 </Typography>
               </Divider>
             </Box>
@@ -334,14 +334,14 @@ export default function LoginPage() {
 
             <Box sx={{ textAlign: "center" }}>
               <Typography variant="body2" color="text.secondary">
-                Don`t have an account?{" "}
+                Нет аккаунта?{" "}
                 <Link
                   href="/registration"
                   color={mainColor}
                   underline="hover"
                   sx={{ fontWeight: 500 }}
                 >
-                  Sign up
+                  Зарегистрируйтесь
                 </Link>
               </Typography>
             </Box>

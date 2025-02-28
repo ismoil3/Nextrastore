@@ -71,21 +71,21 @@ const CatalogHeader: FC = () => {
   // Featured sections for the catalog menu
   const featuredSections = [
     {
-      title: "New Arrivals",
+      title: "Новинки",
       icon: <NewReleasesOutlinedIcon sx={{ color: themeColors.warning }} />,
-      items: ["Just Added", "This Week's Launches", "Coming Soon"],
+      items: ["Только что добавлено", "Новые поступления", "Скоро в продаже"],
       color: themeColors.warning,
     },
     {
-      title: "Special Offers",
+      title: "Спецпредложения",
       icon: <LocalOfferOutlinedIcon sx={{ color: themeColors.accent }} />,
-      items: ["Clearance", "Bundle Deals", "Season Specials"],
+      items: ["Распродажа", "Комплекты со скидкой", "Сезонные акции"],
       color: themeColors.accent,
     },
     {
-      title: "Trending Now",
+      title: "Популярное",
       icon: <TrendingUpOutlinedIcon sx={{ color: themeColors.success }} />,
-      items: ["Most Viewed", "Best Sellers", "Featured Products"],
+      items: ["Самые просматриваемые", "Бестселлеры", "Рекомендуемые товары"],
       color: themeColors.success,
     },
   ];
@@ -128,7 +128,7 @@ const CatalogHeader: FC = () => {
             transition: "all 0.2s ease",
           }}
         >
-          Catalog
+          Каталог
         </Button>
 
         {/* Desktop Catalog Drawer */}
@@ -203,7 +203,7 @@ const CatalogHeader: FC = () => {
                     borderBottom: `1px solid ${themeColors.lightGray}`,
                   }}
                 >
-                  Categories
+                  Категории
                 </Typography>
 
                 <List
@@ -289,7 +289,7 @@ const CatalogHeader: FC = () => {
                     <Typography
                       sx={{ color: themeColors.darkGray, px: 2, py: 1 }}
                     >
-                      Loading categories...
+                      Загрузка категорий...
                     </Typography>
                   )}
                 </List>
@@ -314,7 +314,7 @@ const CatalogHeader: FC = () => {
                 >
                   {selectedCategoryData
                     ? selectedCategoryData.categoryName
-                    : "Select a Category"}
+                    : "Выберите категорию"}
                 </Typography>
 
                 <Box sx={{ minHeight: "200px" }}>
@@ -374,7 +374,7 @@ const CatalogHeader: FC = () => {
                             }}
                           >
                             <Typography sx={{ color: themeColors.darkGray }}>
-                              No subcategories available
+                              Нет подкатегорий
                             </Typography>
                           </Box>
                         )
@@ -390,7 +390,7 @@ const CatalogHeader: FC = () => {
                           }}
                         >
                           <Typography sx={{ color: themeColors.darkGray }}>
-                            Select a category to see subcategories
+                            Выберите категорию, чтобы увидеть подкатегории
                           </Typography>
                         </Box>
                       )}
@@ -420,7 +420,7 @@ const CatalogHeader: FC = () => {
                     borderBottom: `1px solid ${themeColors.lightGray}`,
                   }}
                 >
-                  Featured
+                  Рекомендуем
                 </Typography>
 
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -504,13 +504,13 @@ const CatalogHeader: FC = () => {
                   variant="subtitle1"
                   sx={{ fontWeight: 600, color: mainColor }}
                 >
-                  Exclusive Collections
+                  Эксклюзивные коллекции
                 </Typography>
                 <Typography
                   variant="body2"
                   sx={{ color: themeColors.darkGray }}
                 >
-                  Discover curated products selected by our experts
+                  Откройте для себя уникальные товары, отобранные нашими экспертами
                 </Typography>
               </Box>
               <Button
@@ -529,7 +529,7 @@ const CatalogHeader: FC = () => {
                   boxShadow: "none",
                 }}
               >
-                View Collections
+                Посмотреть коллекции
               </Button>
             </Box>
           </Box>
@@ -551,7 +551,7 @@ const CatalogHeader: FC = () => {
             },
           }}
         >
-          Catalog
+          Каталог
         </Button>
       </Box>
     </>

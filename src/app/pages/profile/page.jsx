@@ -96,7 +96,7 @@ const ProfileCard = ({ title, icon, value, delay = 0 }) => {
             color: "black",
           }}
         >
-          {value || "Not set"}
+          {value || "Не указано"}
         </Typography>
       </Box>
     </motion.div>
@@ -147,14 +147,14 @@ const Profile = () => {
     phoneNumber: "",
     dob: "0001-01-01",
   });
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, ] = useState(null);
   const [initialLoad, setInitialLoad] = useState(true);
 
   const getProfile = async () => {
     if (typeof window !== "undefined") {
       const token = localStorage.getItem("access_token");
       if (!token) {
-        console.log("No token found!");
+        console.log("Токен не найден!");
         return;
       }
 
@@ -163,7 +163,7 @@ const Profile = () => {
         setUserId(decoded?.sid);
 
         if (!decoded?.sid) {
-          console.log("User ID not found in token");
+          console.log("ID пользователя не найден в токене");
           return;
         }
 
@@ -184,7 +184,7 @@ const Profile = () => {
       } catch (error) {
         setLoading(false);
         setInitialLoad(false);
-        console.log("Error decoding token:", error);
+        console.log("Ошибка декодирования токена:", error);
       }
     }
   };
@@ -228,7 +228,7 @@ const Profile = () => {
     setSuccess("");
 
     if (!userId) {
-      setError("User ID not found. Please login again.");
+      setError("ID пользователя не найден. Пожалуйста, войдите снова.");
       return;
     }
 
@@ -259,7 +259,7 @@ const Profile = () => {
       );
 
       if (response.data.statusCode == "200") {
-        setSuccess("Profile updated successfully!");
+        setSuccess("Профиль успешно обновлен!");
         setOpenModal(false);
         // Refresh the user data
         getProfile();
@@ -267,14 +267,14 @@ const Profile = () => {
         setFile(null);
         setImagePreview(null);
       } else {
-        setError(response.data.message || "Failed to update profile");
+        setError(response.data.message || "Не удалось обновить профиль");
       }
 
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      setError("Error updating profile: " + (error.message || "Unknown error"));
-      console.log("Error updating profile:", error);
+      setError("Ошибка обновления профиля: " + (error.message || "Неизвестная ошибка"));
+      console.log("Ошибка обновления профиля:", error);
     }
   };
 
@@ -502,7 +502,7 @@ const Profile = () => {
                   >
                     {!user.image && user.userName?.charAt(0).toUpperCase()}
                   </Avatar>
-                  <Tooltip title="Edit Profile">
+                  <Tooltip title="Редактировать профиль">
                     <IconButton
                       size="small"
                       sx={{
@@ -574,7 +574,7 @@ const Profile = () => {
                   },
                 }}
               >
-                Edit Profile
+                Редактировать профиль
               </Button>
             </motion.div>
           </Box>
@@ -593,7 +593,7 @@ const Profile = () => {
                 sx={{ mb: 3, display: "flex", alignItems: "center" }}
               >
                 <PersonIcon sx={{ mr: 1, color: "primary.main" }} />
-                Personal Information
+                Личная информация
               </Typography>
             </motion.div>
 
@@ -609,37 +609,37 @@ const Profile = () => {
               }}
             >
               <ProfileCard
-                title="First Name"
+                title="Имя"
                 icon={<BadgeIcon />}
                 value={user.firstName}
                 delay={0.9}
               />
               <ProfileCard
-                title="Last Name"
+                title="Фамилия"
                 icon={<BadgeIcon />}
                 value={user.lastName}
                 delay={1.0}
               />
               <ProfileCard
-                title="Email"
+                title="Электронная почта"
                 icon={<EmailIcon />}
                 value={user.email}
                 delay={1.1}
               />
               <ProfileCard
-                title="Phone"
+                title="Телефон"
                 icon={<PhoneIcon />}
                 value={user.phoneNumber}
                 delay={1.2}
               />
               <ProfileCard
-                title="Username"
+                title="Имя пользователя"
                 icon={<PersonIcon />}
                 value={user.userName}
                 delay={1.3}
               />
               <ProfileCard
-                title="User ID"
+                title="ID пользователя"
                 icon={<FingerprintIcon />}
                 value={user.userId}
                 delay={1.4}
@@ -659,7 +659,7 @@ const Profile = () => {
                 sx={{ mb: 3, display: "flex", alignItems: "center" }}
               >
                 <KeyIcon sx={{ mr: 1, color: "primary.main" }} />
-                Roles & Permissions
+                Роли и разрешения
               </Typography>
             </motion.div>
 
@@ -714,7 +714,7 @@ const Profile = () => {
               }}
             >
               <Typography variant="h5" component="h2" fontWeight="bold">
-                Edit Profile
+                Редактировать профиль
               </Typography>
               <IconButton
                 onClick={() => {
@@ -820,7 +820,7 @@ const Profile = () => {
                     required
                     id="firstName"
                     name="firstName"
-                    label="First Name"
+                    label="Имя"
                     value={formData.firstName}
                     onChange={handleChange}
                     variant="outlined"
@@ -832,7 +832,7 @@ const Profile = () => {
                     required
                     id="lastName"
                     name="lastName"
-                    label="Last Name"
+                    label="Фамилия"
                     value={formData.lastName}
                     onChange={handleChange}
                     variant="outlined"
@@ -845,7 +845,7 @@ const Profile = () => {
                   required
                   id="email"
                   name="email"
-                  label="Email"
+                  label="Электронная почта"
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
@@ -858,7 +858,7 @@ const Profile = () => {
                   required
                   id="phoneNumber"
                   name="phoneNumber"
-                  label="Phone Number"
+                  label="Номер телефона"
                   value={formData.phoneNumber}
                   onChange={handleChange}
                   variant="outlined"
@@ -870,7 +870,7 @@ const Profile = () => {
                   required
                   id="dob"
                   name="dob"
-                  label="Date of Birth"
+                  label="Дата рождения"
                   type="date"
                   value={formData.dob}
                   onChange={handleChange}
@@ -905,7 +905,7 @@ const Profile = () => {
                     px: 3,
                   }}
                 >
-                  Cancel
+                  Отмена
                 </Button>
 
                 <Button
@@ -929,10 +929,10 @@ const Profile = () => {
                   {loading ? (
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                       <CircularProgress size={16} sx={{ mr: 1 }} />
-                      <span>Saving...</span>
+                      <span>Сохранение...</span>
                     </Box>
                   ) : (
-                    "Save Changes"
+                    "Сохранить изменения"
                   )}
                 </Button>
               </Box>
