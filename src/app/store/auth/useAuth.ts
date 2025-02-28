@@ -16,9 +16,9 @@ export const useAuth = create<Auth>((set, get) => ({
       const { data } = await axios.post(`${apiUrl}/Account/login`, objUser);
       localStorage.setItem("access_token", data.data);
       window.location.href = "/";
-    } catch (error:unknown) {
+    } catch (error: unknown) {
       console.log(error);
-      if ((error as any).status == 400) {
+      if (axios.isAxiosError(error) && error.response?.status === 400) {
         setError("Invalid UserName or Password");
       }
     } finally {
@@ -32,9 +32,9 @@ export const useAuth = create<Auth>((set, get) => ({
     try {
       await axios.post(`${apiUrl}/Account/register`, newUser);
       window.location.href = "/login";
-    } catch (error:unknown) {
+    } catch (error: unknown) {
       console.log(error);
-      if ((error as any).status == 500) {
+      if (axios.isAxiosError(error) && error.response?.status === 500) {
         setError("User Name already exists");
       }
     } finally {
