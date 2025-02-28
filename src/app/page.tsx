@@ -141,7 +141,11 @@ const Home = () => {
         return product;
       })
     );
-    setNotification({ open: true, message: "Product added to cart", type: "success" });
+    setNotification({
+      open: true,
+      message: "Product added to cart",
+      type: "success",
+    });
   }
 
   // Navigation to previous promo
@@ -682,8 +686,8 @@ const Home = () => {
 
                             <IconButton
                               onClick={(e) => {
-                                e.stopPropagation(),
-                                  handleAddToCart(product.id);
+                                e.stopPropagation();
+                                handleAddToCart(product.id);
                               }}
                               sx={{
                                 bgcolor: product.productInMyCart

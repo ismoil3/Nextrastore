@@ -33,10 +33,6 @@ import {
   Tooltip,
   Avatar,
   Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Divider,
   useMediaQuery,
   useTheme,
@@ -148,7 +144,7 @@ const Header = () => {
                     mr: 1
                   }}
                 >
-                  NEXTRASTORE
+                  NOVA SHOP
                 </Typography>
               </Box>
 
