@@ -34,8 +34,6 @@ import {
 
 // Icons
 import {
-  Favorite,
-  FavoriteBorder,
   Share,
   Facebook,
   Twitter,
@@ -50,6 +48,7 @@ import {
   NavigateNext,
   ShoppingBag,
 } from "@mui/icons-material";
+import { useCartStore } from "@/app/store/cart/cart";
 
 // Interfaces
 interface Image {
@@ -178,11 +177,6 @@ const premiumTheme = createTheme({
   },
 });
 
-// Size options
-const sizeOptions = ["XS", "S", "M", "L", "XL"];
-
-// Color options
-
 // Product features
 const productFeatures = [
   "Premium quality materials",
@@ -198,13 +192,12 @@ const ProductPage = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-
+  const { addProductToCart } = useCartStore();
   const { id } = useParams<{ id: string }>();
   const theme = premiumTheme;
 
@@ -264,20 +257,13 @@ const ProductPage = () => {
     if (!product) return;
     setSnackbarMessage(
       product.productInMyCart
-        ? "✓ Cart updated successfully"
-        : "✓ Added to your shopping bag"
+        ? " Cart updated successfully"
+        : " Added to your shopping bag"
     );
     setOpenSnackbar(true);
+    addProductToCart(product.id);
+    getById(id as string);
   };
-
-  const handleFavoriteToggle = () => {
-    setIsFavorite(!isFavorite);
-    setSnackbarMessage(
-      isFavorite ? "Removed from wishlist" : "Added to your wishlist"
-    );
-    setOpenSnackbar(true);
-  };
-
 
   const handleNextImage = () => {
     if (!product) return;
@@ -621,40 +607,6 @@ const ProductPage = () => {
                 }}
               >
                 <Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "flex-start",
-                      mb: 1,
-                    }}
-                  >
-                    <Chip
-                      label={product.brand}
-                      size="small"
-                      color="primary"
-                      variant="outlined"
-                      sx={{ mb: 1 }}
-                    />
-                    <Tooltip
-                      title={
-                        isFavorite ? "Remove from wishlist" : "Add to wishlist"
-                      }
-                    >
-                      <IconButton
-                        onClick={handleFavoriteToggle}
-                        color="secondary"
-                        sx={{
-                          bgcolor: "rgba(255,107,107,0.1)",
-                          "&:hover": {
-                            bgcolor: "rgba(255,107,107,0.2)",
-                          },
-                        }}
-                      >
-                        {isFavorite ? <Favorite /> : <FavoriteBorder />}
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
                   <Typography
                     variant="h3"
                     sx={{
@@ -747,24 +699,28 @@ const ProductPage = () => {
                     Size
                   </Typography>
                   <Box sx={{ display: "flex", gap: 1.5, flexWrap: "wrap" }}>
-                    {sizeOptions.map((size) => (
-                      <Chip
-                        key={size}
-                        label={size}
-                        onClick={() => handleSizeSelect(size)}
-                        variant={selectedSize === size ? "filled" : "outlined"}
-                        color="primary"
-                        sx={{
-                          minWidth: 60,
-                          fontWeight: 600,
-                          borderRadius: 1,
-                          transition: "all 0.2s ease",
-                          "&:hover": {
-                            transform: "scale(1.05)",
-                          },
-                        }}
-                      />
-                    ))}
+                    {Array.isArray(JSON.parse(product.size))
+                      ? JSON.parse(product.size).map((size: string) => (
+                          <Chip
+                            key={size}
+                            label={size}
+                            onClick={() => handleSizeSelect(size)}
+                            variant={
+                              selectedSize === size ? "filled" : "outlined"
+                            }
+                            color="primary"
+                            sx={{
+                              minWidth: 60,
+                              fontWeight: 600,
+                              borderRadius: 1,
+                              transition: "all 0.2s ease",
+                              "&:hover": {
+                                transform: "scale(1.05)",
+                              },
+                            }}
+                          />
+                        ))
+                      : ""}
                   </Box>
                 </Box>
 
@@ -807,6 +763,7 @@ const ProductPage = () => {
                     size="large"
                     startIcon={<ShoppingBag />}
                     onClick={handleAddToCart}
+                    disabled={product.productInMyCart}
                     sx={{
                       py: 1.5,
                       borderRadius: 3,

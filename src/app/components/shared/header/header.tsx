@@ -296,7 +296,7 @@ const Header = () => {
                         }}
                       >
                         <Badge
-                          badgeContent={productsFromCart.length}
+                          badgeContent={productsFromCart?.productsFromCart?.length}
                           color="error"
                           sx={{
                             "& .MuiBadge-badge": {
@@ -458,7 +458,7 @@ const Header = () => {
               value="/pages/cart"
               icon={
                 <Badge
-                  badgeContent={productsFromCart.length}
+                  badgeContent={productsFromCart?.productsFromCart?.length}
                   color="error"
                   sx={{
                     "& .MuiBadge-badge": {
