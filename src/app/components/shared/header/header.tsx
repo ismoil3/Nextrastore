@@ -99,14 +99,35 @@ const Header = () => {
 
   const navigationLinks = [
     { label: "Home", path: "/", icon: <HomeOutlinedIcon /> },
-    { label: "Catalog", path: "/pages/catalog", icon: <CategoryOutlinedIcon /> },
-    { label: "Wishlist", path: "/pages/wishlist", icon: <FavoriteBorderOutlinedIcon /> },
-    { label: "Notifications", path: "/pages/notifications", icon: <NotificationsOutlinedIcon /> },
+    {
+      label: "Catalog",
+      path: "/pages/catalog",
+      icon: <CategoryOutlinedIcon />,
+    },
+    {
+      label: "Wishlist",
+      path: "/pages/wishlist",
+      icon: <FavoriteBorderOutlinedIcon />,
+    },
+    {
+      label: "Notifications",
+      path: "/pages/notifications",
+      icon: <NotificationsOutlinedIcon />,
+    },
   ];
 
+  console.log(path);
   return (
-    <div className="z-50">
-      <Headroom className="relative z-50 shadow-sm">
+    <div
+      className={`z-[500] ${
+        path == "/login" || path == "/registration" ? "hidden" : ""
+      }`}
+    >
+      <Headroom
+        className={`relative z-[500] shadow-sm ${
+          path == "login" || path == "registration" ? "hidden" : ""
+        }`}
+      >
         <Box
           sx={{
             bgcolor: themeColors.background,
@@ -114,34 +135,37 @@ const Header = () => {
           }}
         >
           <Container>
-            <Box 
-              className="py-3 px-4" 
-              sx={{ 
-                display: "flex", 
-                alignItems: "center", 
+            <Box
+              className="py-3 px-4"
+              sx={{
+                display: "flex",
+                alignItems: "center",
                 justifyContent: "space-between",
-                gap: 2
+                gap: 2,
               }}
             >
               {/* Logo Area */}
-              <Box 
-                sx={{ 
-                  display: "flex", 
-                  alignItems: "center", 
-                  cursor: "pointer" 
-                }} 
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  cursor: "pointer",
+                }}
                 onClick={() => router.push("/")}
               >
-                <Typography 
-                  variant="h5" 
-                  component="div" 
-                  sx={{ 
-                    fontWeight: 700, 
-                    background: `linear-gradient(90deg, ${themeColors.primary} 0%, ${themeColors.accent} 100%)`, 
+                <Typography
+                  variant="h5"
+                  component="div"
+                  sx={{
+                    fontWeight: 700,
+                    background: `linear-gradient(90deg, ${themeColors.primary} 0%, ${themeColors.accent} 100%)`,
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     fontFamily: "'Poppins', sans-serif",
-                    mr: 1
+                    mr: 1,
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
                   }}
                 >
                   NOVA SHOP
@@ -151,13 +175,19 @@ const Header = () => {
               {/* Search Box - Animated */}
               <motion.div
                 initial={{ width: isMobile ? "100%" : "40%" }}
-                animate={{ 
-                  width: searchFocused ? (isMobile ? "100%" : "50%") : (isMobile ? "100%" : "40%")
+                animate={{
+                  width: searchFocused
+                    ? isMobile
+                      ? "100%"
+                      : "50%"
+                    : isMobile
+                    ? "100%"
+                    : "40%",
                 }}
                 transition={{ duration: 0.3 }}
-                style={{ 
+                style={{
                   position: "relative",
-                  display: isMobile ? "none" : "block"
+                  display: isMobile ? "none" : "block",
                 }}
               >
                 <TextField
@@ -185,7 +215,7 @@ const Header = () => {
                     },
                     "& .MuiInputBase-input": {
                       padding: "12px 14px",
-                    }
+                    },
                   }}
                   InputProps={{
                     startAdornment: (
@@ -198,22 +228,30 @@ const Header = () => {
               </motion.div>
 
               {/* Desktop Navigation */}
-              <Box 
-                sx={{ 
-                  display: { xs: "none", md: "flex" }, 
-                  alignItems: "center", 
-                  gap: 1 
+              <Box
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                  alignItems: "center",
+                  gap: 1,
                 }}
               >
                 {navigationLinks.slice(0, 1).map((link) => (
                   <Button
                     key={link.path}
-                    startIcon={React.cloneElement(link.icon, { 
-                      sx: { color: path === link.path ? themeColors.primary : themeColors.secondary } 
+                    startIcon={React.cloneElement(link.icon, {
+                      sx: {
+                        color:
+                          path === link.path
+                            ? themeColors.primary
+                            : themeColors.secondary,
+                      },
                     })}
                     onClick={() => router.push(link.path)}
                     sx={{
-                      color: path === link.path ? themeColors.primary : themeColors.secondary,
+                      color:
+                        path === link.path
+                          ? themeColors.primary
+                          : themeColors.secondary,
                       fontWeight: 500,
                       textTransform: "none",
                       borderRadius: "10px",
@@ -221,49 +259,58 @@ const Header = () => {
                       px: 2,
                       "&:hover": {
                         backgroundColor: themeColors.lightGray,
-                        color: themeColors.primary
-                      }
+                        color: themeColors.primary,
+                      },
                     }}
                   >
                     {link.label}
                   </Button>
                 ))}
-                <CatalogHeader/>
+                <CatalogHeader />
 
                 {/* Profile and Cart Section */}
-                <Divider orientation="vertical" flexItem sx={{ mx: 1.5, height: "28px", my: "auto" }} />
+                <Divider
+                  orientation="vertical"
+                  flexItem
+                  sx={{ mx: 1.5, height: "28px", my: "auto" }}
+                />
 
                 {isLoggedIn ? (
-                  <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <Box
+                    sx={{ display: "flex", alignItems: "center", gap: "10px" }}
+                  >
                     <Tooltip title="Cart">
                       <IconButton
                         onClick={() => router.push("/pages/cart")}
                         sx={{
                           color: themeColors.secondary,
-                          backgroundColor: path === "/pages/cart" ? themeColors.lightGray : "transparent",
-                          "&:hover": { 
+                          backgroundColor:
+                            path === "/pages/cart"
+                              ? themeColors.lightGray
+                              : "transparent",
+                          "&:hover": {
                             backgroundColor: themeColors.lightGray,
                           },
                           padding: 1.5,
-                          borderRadius: "12px"
+                          borderRadius: "12px",
                         }}
                       >
-                        <Badge 
-                          badgeContent={productsFromCart.length} 
+                        <Badge
+                          badgeContent={productsFromCart.length}
                           color="error"
                           sx={{
                             "& .MuiBadge-badge": {
                               backgroundColor: themeColors.accent,
                               color: "white",
-                              fontWeight: "bold"
-                            }
+                              fontWeight: "bold",
+                            },
                           }}
                         >
                           <ShoppingCartOutlinedIcon aria-label="cart" />
                         </Badge>
                       </IconButton>
                     </Tooltip>
-                    
+
                     <Tooltip title="Profile">
                       <Box
                         onClick={() => router.push("/pages/profile")}
@@ -272,31 +319,34 @@ const Header = () => {
                           alignItems: "center",
                           gap: 1,
                           cursor: "pointer",
-                          backgroundColor: path === "/pages/profile" ? themeColors.lightGray : "transparent",
+                          backgroundColor:
+                            path === "/pages/profile"
+                              ? themeColors.lightGray
+                              : "transparent",
                           borderRadius: "12px",
                           padding: "6px 12px",
                           transition: "all 0.2s",
                           "&:hover": {
                             backgroundColor: themeColors.lightGray,
-                          }
+                          },
                         }}
                       >
-                        <Avatar 
-                          sx={{ 
-                            width: 32, 
-                            height: 32, 
+                        <Avatar
+                          sx={{
+                            width: 32,
+                            height: 32,
                             bgcolor: themeColors.primary,
                             fontWeight: "bold",
-                            fontSize: "0.875rem"
+                            fontSize: "0.875rem",
                           }}
                         >
                           {userName.charAt(0).toUpperCase()}
                         </Avatar>
-                        <Typography 
-                          sx={{ 
-                            fontWeight: 500, 
+                        <Typography
+                          sx={{
+                            fontWeight: 500,
                             color: themeColors.text,
-                            display: { xs: "none", lg: "block" }
+                            display: { xs: "none", lg: "block" },
                           }}
                         >
                           {userName}
@@ -319,7 +369,7 @@ const Header = () => {
                         backgroundColor: themeColors.primary,
                         opacity: 0.9,
                       },
-                      boxShadow: "0px 4px 10px rgba(59, 130, 246, 0.25)"
+                      boxShadow: "0px 4px 10px rgba(59, 130, 246, 0.25)",
                     }}
                   >
                     Sign In
@@ -366,7 +416,13 @@ const Header = () => {
               value="/"
               icon={
                 <HomeOutlinedIcon
-                  sx={{ fontSize: "24px", color: path === "/" ? themeColors.primary : themeColors.secondary }}
+                  sx={{
+                    fontSize: "24px",
+                    color:
+                      path === "/"
+                        ? themeColors.primary
+                        : themeColors.secondary,
+                  }}
                 />
               }
             />
@@ -376,7 +432,13 @@ const Header = () => {
               value="/pages/catalog"
               icon={
                 <CategoryOutlinedIcon
-                  sx={{ fontSize: "24px", color: path === "/pages/catalog" ? themeColors.primary : themeColors.secondary }}
+                  sx={{
+                    fontSize: "24px",
+                    color:
+                      path === "/pages/catalog"
+                        ? themeColors.primary
+                        : themeColors.secondary,
+                  }}
                 />
               }
             />
@@ -395,19 +457,25 @@ const Header = () => {
               label="Cart"
               value="/pages/cart"
               icon={
-                <Badge 
-                  badgeContent={productsFromCart.length} 
+                <Badge
+                  badgeContent={productsFromCart.length}
                   color="error"
                   sx={{
                     "& .MuiBadge-badge": {
                       backgroundColor: themeColors.accent,
                       color: "white",
-                      fontWeight: "bold"
-                    }
+                      fontWeight: "bold",
+                    },
                   }}
                 >
                   <ShoppingCartOutlinedIcon
-                    sx={{ fontSize: "24px", color: path === "/pages/cart" ? themeColors.primary : themeColors.secondary }}
+                    sx={{
+                      fontSize: "24px",
+                      color:
+                        path === "/pages/cart"
+                          ? themeColors.primary
+                          : themeColors.secondary,
+                    }}
                   />
                 </Badge>
               }
@@ -418,19 +486,28 @@ const Header = () => {
               value="/pages/profile"
               icon={
                 isLoggedIn ? (
-                  <Avatar 
-                    sx={{ 
-                      width: 30, 
-                      height: 30, 
-                      bgcolor: path === "/pages/profile" ? themeColors.primary : themeColors.secondary,
-                      fontSize: "0.75rem"
+                  <Avatar
+                    sx={{
+                      width: 30,
+                      height: 30,
+                      bgcolor:
+                        path === "/pages/profile"
+                          ? themeColors.primary
+                          : themeColors.secondary,
+                      fontSize: "0.75rem",
                     }}
                   >
                     {userName.charAt(0).toUpperCase()}
                   </Avatar>
                 ) : (
                   <AccountCircleOutlinedIcon
-                    sx={{ fontSize: "24px", color: path === "/pages/profile" ? themeColors.primary : themeColors.secondary }}
+                    sx={{
+                      fontSize: "24px",
+                      color:
+                        path === "/pages/profile"
+                          ? themeColors.primary
+                          : themeColors.secondary,
+                    }}
                   />
                 )
               }
@@ -445,11 +522,11 @@ const Header = () => {
         open={drawerOpen}
         onClose={toggleDrawer}
         sx={{
-          '& .MuiDrawer-paper': {
+          "& .MuiDrawer-paper": {
             pt: 2,
             pb: 4,
             px: 2,
-            borderRadius: '0 0 16px 16px',
+            borderRadius: "0 0 16px 16px",
           },
         }}
       >
@@ -477,7 +554,7 @@ const Header = () => {
             },
             "& .MuiInputBase-input": {
               padding: "12px 14px",
-            }
+            },
           }}
           InputProps={{
             startAdornment: (
@@ -487,7 +564,7 @@ const Header = () => {
             ),
             endAdornment: (
               <InputAdornment position="end">
-                <Button 
+                <Button
                   onClick={toggleDrawer}
                   variant="contained"
                   sx={{

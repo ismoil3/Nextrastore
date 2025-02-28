@@ -6,14 +6,18 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import { mainColor } from "@/theme/main";
 import Container from "../container/container";
+import { usePathname } from "next/navigation";
 
 const Footer = () => {
+    const path = usePathname();
+  
   return (
     <Box
       sx={{
         backgroundColor: mainColor,
         color: "white",
         padding: "20px 0",
+        display:path=="/login"|| path=="/registration"?"none":"block",
       }}
     >
       <Container>
