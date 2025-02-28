@@ -278,7 +278,6 @@ const ProductPage = () => {
     setOpenSnackbar(true);
   };
 
-
   const handleNextImage = () => {
     if (!product) return;
     setCurrentImage((prev) =>

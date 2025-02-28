@@ -9,6 +9,7 @@ export type Products = {
         "discountPrice": number,
         "quantity": number,
         "productInMyCart": boolean,
+        "categoryName": string
         "description": string,
         "productInfoFromCart": {
             "id": number | null,
@@ -17,8 +18,8 @@ export type Products = {
     }[],
     getProducts: () => Promise<void>,
     pageSize: number,
-    setPageSize: ()=> void,
-    setProducts: (newProducts: Products["products"]) => void; 
+    setPageSize: () => void,
+    setProducts: (newProducts: Products["products"]) => void;
 }
 
 

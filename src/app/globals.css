@@ -28,13 +28,13 @@ p {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #a63afc;
+  background-color: #3b82f6;
   border-radius: 5px;
   border: 2px solid #f0f0f0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #a63afc;
+  background-color: #3b82f6;
 }
 
 .subList {
@@ -102,7 +102,7 @@ p {
 
 .header {
   background-image: url(https://static-basket-01.wbbasket.ru/vol2/site/i/v3/header/wb-logo_new-year_2024.webp);
-  background-color: #a63afc;
+  background-color: #3b82f6;
   background-size: cover;
   background-position: center;
 }
