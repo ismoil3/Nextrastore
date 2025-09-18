@@ -1,0 +1,41 @@
+export type Products = {
+  products: {
+    id: number;
+    productName: string;
+    image: string;
+    color: string;
+    price: number;
+    hasDiscount: boolean;
+    discountPrice: number;
+    quantity: number;
+    productInMyCart: boolean;
+    categoryName: string;
+    description: string;
+    productInfoFromCart: {
+      id: number | null;
+      quantity: number | null;
+    } | null;
+  }[];
+  getProducts: () => Promise<void>;
+  pageSize: number;
+  setPageSize: () => void;
+  setProducts: (newProducts: Products["products"]) => void;
+};
+
+export type Product = {
+  id: number;
+  productName: string;
+  image: string;
+  color: string;
+  price: number;
+  hasDiscount: boolean;
+  discountPrice: number;
+  quantity: number;
+  productInMyCart: boolean;
+  categoryName: string;
+  description: string;
+  productInfoFromCart: {
+    id: number | null;
+    quantity: number | null;
+  } | null;
+};
