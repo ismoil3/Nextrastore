@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
       "alifshop.tj",
       "store-api.softclub.tj",
       "37.27.29.18",
+      "shop-api.softclub.tj",
     ],
   },
 };
