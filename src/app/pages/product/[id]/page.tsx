@@ -24,7 +24,6 @@ import {
   Breadcrumbs,
   Link as MuiLink,
   Tooltip,
-
 } from "@mui/material";
 
 // Icons
@@ -172,15 +171,6 @@ const premiumTheme = createTheme({
   },
 });
 
-// Product features
-// const productFeatures = [
-//   "Premium quality materials",
-//   "Ethically sourced",
-//   "Sustainably manufactured",
-//   "Durable construction",
-//   "Easy care instructions",
-// ];
-
 const ProductPage = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -210,7 +200,7 @@ const ProductPage = () => {
   };
   const colorOptions = [
     {
-      name: product?.color ? product?.color : "default",
+      name: product?.color ? product?.color : "по умолчанию",
       code: product?.color ? product.color : "default",
     },
   ];
@@ -234,7 +224,7 @@ const ProductPage = () => {
     try {
       const productUrl = `${window.location.origin}/product/${product.id}`;
       await navigator.clipboard.writeText(productUrl);
-      setSnackbarMessage("✓ Link copied to clipboard");
+      setSnackbarMessage("✓ Ссылка скопирована в буфер обмена");
       setOpenSnackbar(true);
       handleShareClose();
     } catch (error) {
@@ -250,8 +240,8 @@ const ProductPage = () => {
     if (!product) return;
     setSnackbarMessage(
       product.productInMyCart
-        ? " Cart updated successfully"
-        : " Added to your shopping bag"
+        ? "✓ Корзина успешно обновлена"
+        : "✓ Добавлено в корзину"
     );
     await addProductToCart(product.id);
     await getById(id as string);
@@ -356,10 +346,10 @@ const ProductPage = () => {
     return (
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4, textAlign: "center" }}>
         <Typography variant="h5" color="error" gutterBottom>
-          Product not found
+          Товар не найден
         </Typography>
         <Button variant="contained" color="primary" href="/">
-          Back to Homepage
+          Вернуться на главную
         </Button>
       </Container>
     );
@@ -376,11 +366,11 @@ const ProductPage = () => {
           <Breadcrumbs separator={<NavigateNext fontSize="small" />}>
             <MuiLink href="/" underline="hover" color="inherit">
               <Home fontSize="small" sx={{ mr: 0.5 }} />
-              Home
+              Главная
             </MuiLink>
             <MuiLink href="/collections" underline="hover" color="inherit">
               <Category fontSize="small" sx={{ mr: 0.5 }} />
-              Collections
+              Коллекции
             </MuiLink>
             <Typography color="text.primary">{product.productName}</Typography>
           </Breadcrumbs>
@@ -393,7 +383,7 @@ const ProductPage = () => {
               <Box sx={{ position: "relative" }}>
                 {product.hasDiscount && (
                   <Chip
-                    label={`${discountPercentage}% OFF`}
+                    label={`${discountPercentage}% СКИДКА`}
                     sx={{
                       position: "absolute",
                       top: 16,
@@ -570,7 +560,7 @@ const ProductPage = () => {
                     >
                       <img
                         src={`${apiUrl}/images/${item.images}`}
-                        alt={`Thumbnail ${index + 1}`}
+                        alt={`Миниатюра ${index + 1}`}
                         style={{
                           width: "100%",
                           height: "100%",
@@ -611,7 +601,7 @@ const ProductPage = () => {
                       onClick={handleShareClick}
                       sx={{ color: "text.secondary" }}
                     >
-                      Share
+                      Поделиться
                     </Button>
                   </Box>
                 </Box>
@@ -646,12 +636,12 @@ const ProductPage = () => {
                         opacity: 0.8,
                       }}
                     >
-                      ${product.price.toFixed(2)}
+                      ₽{product.price.toFixed(2)}
                     </Typography>
                   )}
                   {product.hasDiscount && (
                     <Chip
-                      label={`Save $${product.discountPrice.toFixed(2)}`}
+                      label={`Экономия  ₽${product.discountPrice.toFixed(2)}`}
                       size="small"
                       sx={{
                         ml: 2,
@@ -665,41 +655,10 @@ const ProductPage = () => {
 
                 <Divider sx={{ my: 3 }} />
 
-                {/* Size Selector */}
-                {/* <Box sx={{ mb: 3 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 600, mb: 1.5 }}>
-                    Size
-                  </Typography>
-                  <Box sx={{ display: "flex", gap: 1.5, flexWrap: "wrap" }}>
-                    {Array.isArray(JSON.parse(product.size))
-                      ? JSON.parse(product.size).map((size: string) => (
-                          <Chip
-                            key={size}
-                            label={size}
-                            onClick={() => handleSizeSelect(size)}
-                            variant={
-                              selectedSize === size ? "filled" : "outlined"
-                            }
-                            color="primary"
-                            sx={{
-                              minWidth: 60,
-                              fontWeight: 600,
-                              borderRadius: 1,
-                              transition: "all 0.2s ease",
-                              "&:hover": {
-                                transform: "scale(1.05)",
-                              },
-                            }}
-                          />
-                        ))
-                      : ""}
-                  </Box>
-                </Box> */}
-
                 {/* Color Selector */}
                 <Box sx={{ mb: 3 }}>
                   <Typography variant="h6" sx={{ fontWeight: 600, mb: 1.5 }}>
-                    Color
+                    Цвет
                   </Typography>
                   <Box sx={{ display: "flex", gap: 1.5, flexWrap: "wrap" }}>
                     {colorOptions.map((color) => (
@@ -743,27 +702,28 @@ const ProductPage = () => {
                       fontSize: "1rem",
                       textTransform: "none",
                       transition: "all 0.3s ease",
+                      backgroundColor: mainColor,
                       "&:hover": {
+                        backgroundColor: mainColor,
                         transform: "translateY(-2px)",
                         boxShadow: "0 6px 20px rgba(0,0,0,0.15)",
                       },
                     }}
                   >
-                    {product.productInMyCart ? "Update Cart" : "Add to Cart"}
+                    {product.productInMyCart
+                      ? "Обновить корзину"
+                      : "Добавить в корзину"}
                   </Button>
                 </Box>
 
                 {/* Description */}
                 <Box sx={{ mb: 3 }}>
                   <Typography variant="h6" sx={{ fontWeight: 600, mb: 1.5 }}>
-                    Description
+                    Описание
                   </Typography>
-                    <Typography
-                      variant="body1"
-                      sx={{ color: "text.secondary" }}
-                    >
-                      {product.description}
-                    </Typography>
+                  <Typography variant="body1" sx={{ color: "text.secondary" }}>
+                    {product.description}
+                  </Typography>
                 </Box>
               </Box>
             </Grid>
@@ -792,7 +752,7 @@ const ProductPage = () => {
               }}
             >
               <Typography variant="h6" sx={{ mb: 2 }}>
-                Share this product
+                Поделиться товаром
               </Typography>
               <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
                 <IconButton
@@ -850,7 +810,7 @@ const ProductPage = () => {
             elevation={3}
             sx={{
               p: 2,
-              bgcolor: "success.main",
+              bgcolor: mainColor,
               color: "white",
               borderRadius: 2,
               display: "flex",
