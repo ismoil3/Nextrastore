@@ -1,2 +1,2 @@
-export const apiUrl: string = "https://shop-api.softclub.tj";
-export const imgUrl: string = "https://shop-api.softclub.tj/images/";
+export const apiUrl: string = "https://api.sarezmobile.com";
+export const imgUrl: string = "https://api.sarezmobile.com/images/";
