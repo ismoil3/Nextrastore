@@ -1,0 +1,22 @@
+# services:
+#   frontend:
+#     build: .
+#     ports:
+#       - "3000:3000"
+#     volumes:
+#       - .:/app
+#       - /app/node_modules
+#     command: ["npm", "run", "dev", "--", "--host"]
+
+services:
+  frontend:
+    image: tajievolimjon/sarez_web
+    container_name: sarez_web
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3000"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped

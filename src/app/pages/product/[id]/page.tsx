@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import {
   Typography,
   Box,
-  Container,
   Grid,
   Paper,
   Chip,
@@ -24,6 +23,11 @@ import {
   Breadcrumbs,
   Link as MuiLink,
   Tooltip,
+  Stack,
+  Card,
+  Badge,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 
 // Icons
@@ -40,9 +44,14 @@ import {
   Category,
   NavigateNext,
   ShoppingBag,
+  Favorite,
+  FavoriteBorder,
+  ZoomIn,
 } from "@mui/icons-material";
 import { useCartStore } from "@/app/store/cart/cart";
 import { mainColor } from "@/theme/main";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import Container from "@/app/components/shared/container/container";
 
 // Interfaces
 interface Image {
@@ -66,95 +75,98 @@ interface Product {
   productInMyCart: boolean;
 }
 
-// Create a premium custom theme
-const premiumTheme = createTheme({
+// Modern theme with glass morphism and gradients
+const modernTheme = createTheme({
   palette: {
     primary: {
-      main: "#2a2a2a",
-      light: "#555555",
+      main: "#000000",
+      light: "#333333",
       dark: "#000000",
       contrastText: "#ffffff",
     },
     secondary: {
-      main: "#ff6b6b",
-      light: "#ff9e9e",
-      dark: "#c73a3a",
+      main: "#667eea",
+      light: "#a3bffa",
+      dark: "#5a67d8",
       contrastText: "#ffffff",
     },
     background: {
-      default: "#f8f9fa",
+      default: "#ffffff",
       paper: "#ffffff",
     },
     text: {
-      primary: "#2a2a2a",
-      secondary: "#6c757d",
+      primary: "#1a202c",
+      secondary: "#718096",
     },
   },
   typography: {
-    fontFamily: "'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif",
+    fontFamily: "'Inter', 'SF Pro Display', -apple-system, sans-serif",
     h1: {
       fontWeight: 800,
-      fontSize: "2.5rem",
-      letterSpacing: "-0.01562em",
+      fontSize: "2.75rem",
+      letterSpacing: "-0.02em",
+      lineHeight: 1.1,
     },
     h2: {
       fontWeight: 700,
-      fontSize: "2.25rem",
-      letterSpacing: "-0.00833em",
+      fontSize: "2rem",
+      letterSpacing: "-0.01em",
     },
     h3: {
       fontWeight: 700,
-      fontSize: "2rem",
+      fontSize: "1.75rem",
       letterSpacing: "0em",
     },
     h4: {
-      fontWeight: 700,
+      fontWeight: 600,
       fontSize: "1.5rem",
       letterSpacing: "0.00735em",
-      lineHeight: 1.2,
     },
     h5: {
       fontWeight: 600,
       fontSize: "1.25rem",
-      letterSpacing: "0em",
     },
     h6: {
       fontWeight: 600,
-      fontSize: "1.1rem",
-      letterSpacing: "0.0075em",
+      fontSize: "1.125rem",
     },
     button: {
       textTransform: "none",
       fontWeight: 600,
+      fontSize: "0.95rem",
     },
   },
   shape: {
-    borderRadius: 12,
+    borderRadius: 16,
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 100,
-          padding: "10px 24px",
+          borderRadius: 12,
+          padding: "12px 28px",
           fontWeight: 600,
-          textTransform: "none",
-          transition: "all 0.3s ease",
+          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+          "&:hover": {
+            transform: "translateY(-2px)",
+          },
         },
         containedPrimary: {
-          boxShadow: "0 4px 14px 0 rgba(0,0,0,0.1)",
+          background: "linear-gradient(135deg, #000000 0%, #333333 100%)",
+          boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
           "&:hover": {
-            boxShadow: "0 6px 20px rgba(0,0,0,0.15)",
-            transform: "translateY(-2px)",
+            boxShadow: "0 12px 35px rgba(0,0,0,0.2)",
+            background: "linear-gradient(135deg, #333333 0%, #000000 100%)",
           },
         },
       },
     },
-    MuiChip: {
+    MuiCard: {
       styleOverrides: {
         root: {
-          fontWeight: 600,
-          borderRadius: 100,
+          boxShadow: "0 10px 40px -10px rgba(0,0,0,0.05)",
+          border: "1px solid rgba(0,0,0,0.03)",
+          backdropFilter: "blur(10px)",
         },
       },
     },
@@ -162,9 +174,19 @@ const premiumTheme = createTheme({
       styleOverrides: {
         root: {
           boxShadow: "0 10px 40px -10px rgba(0,0,0,0.05)",
+          border: "1px solid rgba(0,0,0,0.03)",
         },
         rounded: {
-          borderRadius: 16,
+          borderRadius: 20,
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          fontWeight: 600,
+          borderRadius: 8,
+          backdropFilter: "blur(10px)",
         },
       },
     },
@@ -180,9 +202,13 @@ const ProductPage = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [zoomImage, setZoomImage] = useState(false);
   const { addProductToCart } = useCartStore();
   const { id } = useParams<{ id: string }>();
-  const theme = premiumTheme;
+  const theme = modernTheme;
+  const muiTheme = useTheme();
+
+  const isMobile = useMediaQuery(muiTheme.breakpoints.down("sm"));
 
   const getById = async (id: string) => {
     setLoading(true);
@@ -198,6 +224,7 @@ const ProductPage = () => {
       setLoading(false);
     }
   };
+
   const colorOptions = [
     {
       name: product?.color ? product?.color : "по умолчанию",
@@ -224,7 +251,7 @@ const ProductPage = () => {
     try {
       const productUrl = `${window.location.origin}/product/${product.id}`;
       await navigator.clipboard.writeText(productUrl);
-      setSnackbarMessage("✓ Ссылка скопирована в буфер обмена");
+      setSnackbarMessage("✓ Ссылка скопирована");
       setOpenSnackbar(true);
       handleShareClose();
     } catch (error) {
@@ -239,9 +266,7 @@ const ProductPage = () => {
   const handleAddToCart = async () => {
     if (!product) return;
     setSnackbarMessage(
-      product.productInMyCart
-        ? "✓ Корзина успешно обновлена"
-        : "✓ Добавлено в корзину"
+      product.productInMyCart ? "✓ Корзина обновлена" : "✓ Добавлено в корзину"
     );
     await addProductToCart(product.id);
     await getById(id as string);
@@ -268,76 +293,43 @@ const ProductPage = () => {
 
   const calculateDiscountPercentage = () => {
     if (!product || !product.hasDiscount) return 0;
-    return Math.round((product.discountPrice / product.price) * 100);
+    return Math.round(
+      ((product.price - product.discountPrice) / product.price) * 100
+    );
   };
+
+  const arrDesc = JSON.parse(product?.description || "[]");
+  const mainDesc = arrDesc[0]?.description || arrDesc[0]?.value;
+  const characteristics = arrDesc.slice(1);
 
   if (loading) {
     return (
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <Paper
-          elevation={0}
-          sx={{
-            p: 4,
-            borderRadius: 4,
-            bgcolor: theme.palette.background.paper,
-          }}
-        >
-          <Grid container spacing={4}>
-            <Grid item xs={12} md={6}>
-              <Skeleton
-                variant="rounded"
-                height={450}
-                width="100%"
-                sx={{ borderRadius: 4 }}
-              />
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: 2,
-                  mt: 2,
-                  justifyContent: "center",
-                }}
-              >
-                {[1, 2, 3, 4].map((item) => (
-                  <Skeleton
-                    key={item}
-                    variant="rounded"
-                    width={60}
-                    height={60}
-                    sx={{ borderRadius: 2 }}
-                  />
-                ))}
-              </Box>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Skeleton variant="text" height={60} width="80%" sx={{ mb: 1 }} />
-              <Skeleton variant="text" height={30} width="50%" sx={{ mb: 2 }} />
-              <Skeleton variant="text" height={40} width="40%" sx={{ mb: 2 }} />
-              <Skeleton
-                variant="rounded"
-                height={56}
-                width="100%"
-                sx={{ mb: 2, borderRadius: 2 }}
-              />
-              <Box sx={{ display: "flex", gap: 2, mb: 3 }}>
-                <Skeleton variant="rounded" height={56} width="100%" />
-                <Skeleton variant="rounded" height={56} width="100%" />
-              </Box>
-              <Skeleton
-                variant="text"
-                height={100}
-                width="100%"
-                sx={{ mb: 2 }}
-              />
-              <Skeleton
-                variant="rounded"
-                height={200}
-                width="100%"
-                sx={{ mb: 2, borderRadius: 2 }}
-              />
-            </Grid>
+      <Container >
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={6}>
+            <Skeleton
+              variant="rounded"
+              height={600}
+              width="100%"
+              sx={{ borderRadius: 4 }}
+            />
           </Grid>
-        </Paper>
+          <Grid item xs={12} md={6}>
+            <Skeleton variant="text" height={80} width="80%" sx={{ mb: 2 }} />
+            <Skeleton variant="text" height={40} width="60%" sx={{ mb: 3 }} />
+            <Skeleton
+              variant="rounded"
+              height={120}
+              sx={{ mb: 3, borderRadius: 3 }}
+            />
+            <Skeleton
+              variant="rounded"
+              height={56}
+              sx={{ mb: 2, borderRadius: 3 }}
+            />
+            <Skeleton variant="rounded" height={56} sx={{ borderRadius: 3 }} />
+          </Grid>
+        </Grid>
       </Container>
     );
   }
@@ -348,7 +340,7 @@ const ProductPage = () => {
         <Typography variant="h5" color="error" gutterBottom>
           Товар не найден
         </Typography>
-        <Button variant="contained" color="primary" href="/">
+        <Button variant="contained" color="primary" href="/" sx={{ mt: 2 }}>
           Вернуться на главную
         </Button>
       </Container>
@@ -360,60 +352,71 @@ const ProductPage = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container maxWidth="lg" sx={{ mt: { xs: 2, md: 4 }, mb: 6 }}>
+      <Container maxWidth="xl" sx={{ mt: { xs: 2, md: 4 }, mb: 8 }}>
         {/* Breadcrumbs */}
-        <Box sx={{ mb: 3 }}>
+        <Box sx={{ mb: 4 }}>
           <Breadcrumbs separator={<NavigateNext fontSize="small" />}>
-            <MuiLink href="/" underline="hover" color="inherit">
-              <Home fontSize="small" sx={{ mr: 0.5 }} />
+            <MuiLink
+              href="/"
+              underline="hover"
+              color="inherit"
+              sx={{ display: "flex", alignItems: "center" }}
+            >
+              <Home sx={{ mr: 0.5 }} fontSize="small" />
               Главная
             </MuiLink>
-            <MuiLink href="/collections" underline="hover" color="inherit">
-              <Category fontSize="small" sx={{ mr: 0.5 }} />
+            <MuiLink
+              href="/collections"
+              underline="hover"
+              color="inherit"
+              sx={{ display: "flex", alignItems: "center" }}
+            >
+              <Category sx={{ mr: 0.5 }} fontSize="small" />
               Коллекции
             </MuiLink>
-            <Typography color="text.primary">{product.productName}</Typography>
+            <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+              {product.productName}
+            </Typography>
           </Breadcrumbs>
         </Box>
 
-        <Paper elevation={0} sx={{ p: { xs: 2, md: 4 }, borderRadius: 3 }}>
-          <Grid container spacing={{ xs: 2, md: 6 }}>
-            {/* Product Images */}
-            <Grid item xs={12} md={6}>
-              <Box sx={{ position: "relative" }}>
-                {product.hasDiscount && (
-                  <Chip
-                    label={`${discountPercentage}% СКИДКА`}
-                    sx={{
-                      position: "absolute",
-                      top: 16,
-                      left: 16,
-                      zIndex: 10,
-                      fontWeight: "bold",
-                      fontSize: "0.875rem",
-                      py: 1,
-                      px: 1.5,
-                      background: mainColor,
-                      color: "white",
-                      transform: "rotate(-2deg)",
-                      boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-                    }}
-                  />
-                )}
+        <Grid container spacing={6}>
+          {/* Product Images */}
+          <Grid item xs={12} lg={7}>
+            <Card sx={{ p: 3, borderRadius: 4, position: "relative" }}>
+              {product.hasDiscount && (
+                <Chip
+                  label={`-${discountPercentage}%`}
+                  sx={{
+                    position: "absolute",
+                    top: 24,
+                    left: 24,
+                    zIndex: 10,
+                    fontWeight: "bold",
+                    fontSize: "0.875rem",
+                    py: 1,
+                    px: 2,
+                    background:
+                      "linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%)",
+                    color: "white",
+                    boxShadow: "0 4px 12px rgba(255,107,107,0.3)",
+                  }}
+                />
+              )}
+
+              <Box sx={{ position: "relative", mb: 3 }}>
                 <Box
                   sx={{
                     position: "relative",
                     width: "100%",
-                    minHeight: { xs: "300px", sm: "400px", md: "550px" },
                     borderRadius: 3,
                     overflow: "hidden",
-                    bgcolor: "#f8f8f8",
-                    cursor: "zoom-in",
-                    transition: "transform 0.3s ease",
-                    "&:hover": {
-                      transform: "scale(1.02)",
-                    },
+                    bgcolor: "#f8fafc",
+                    cursor: zoomImage ? "zoom-out" : "zoom-in",
+                    transition: "all 0.3s ease",
+                    transform: zoomImage ? "scale(1.05)" : "scale(1)",
                   }}
+                  onClick={() => setZoomImage(!zoomImage)}
                 >
                   {!imageLoaded && (
                     <Box
@@ -442,7 +445,8 @@ const ProductPage = () => {
                       alt={`${product.productName}`}
                       sx={{
                         width: "100%",
-                        height: "100%",
+                        height: "auto",
+                        maxHeight: zoomImage ? "80vh" : "600px",
                         objectFit: "contain",
                         transition: "all 0.5s ease",
                         display: imageLoaded ? "block" : "none",
@@ -450,6 +454,8 @@ const ProductPage = () => {
                       onLoad={() => setImageLoaded(true)}
                     />
                   </Fade>
+
+                  {/* Image Navigation */}
                   <Box
                     sx={{
                       position: "absolute",
@@ -460,9 +466,9 @@ const ProductPage = () => {
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      padding: 2,
+                      padding: 3,
                       opacity: 0,
-                      transition: "opacity 0.2s ease",
+                      transition: "opacity 0.3s ease",
                       "&:hover": {
                         opacity: 1,
                       },
@@ -474,11 +480,11 @@ const ProductPage = () => {
                         handlePrevImage();
                       }}
                       sx={{
-                        bgcolor: "rgba(255, 255, 255, 0.9)",
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                        bgcolor: "rgba(255, 255, 255, 0.95)",
+                        boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
                         "&:hover": {
                           bgcolor: "white",
-                          transform: "scale(1.1) translateX(-4px)",
+                          transform: "scale(1.1)",
                         },
                       }}
                     >
@@ -490,194 +496,180 @@ const ProductPage = () => {
                         handleNextImage();
                       }}
                       sx={{
-                        bgcolor: "rgba(255, 255, 255, 0.9)",
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                        bgcolor: "rgba(255, 255, 255, 0.95)",
+                        boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
                         "&:hover": {
                           bgcolor: "white",
-                          transform: "scale(1.1) translateX(4px)",
+                          transform: "scale(1.1)",
                         },
                       }}
                     >
                       <ChevronRight />
                     </IconButton>
                   </Box>
+
+                  {/* Zoom Indicator */}
+                  <Tooltip title={zoomImage ? "Уменьшить" : "Увеличить"}>
+                    <IconButton
+                      sx={{
+                        position: "absolute",
+                        bottom: 16,
+                        right: 16,
+                        bgcolor: "rgba(0, 0, 0, 0.7)",
+                        color: "white",
+                        "&:hover": {
+                          bgcolor: "black",
+                        },
+                      }}
+                    >
+                      <ZoomIn />
+                    </IconButton>
+                  </Tooltip>
+
+                  {/* Image Counter */}
                   <Chip
                     label={`${currentImage + 1} / ${product.images.length}`}
                     sx={{
                       position: "absolute",
                       bottom: 16,
-                      right: 16,
-                      bgcolor: "rgba(0, 0, 0, 0.6)",
+                      left: 16,
+                      bgcolor: "rgba(0, 0, 0, 0.7)",
                       color: "white",
                       fontWeight: "medium",
                       backdropFilter: "blur(4px)",
-                      boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
                     }}
                     size="small"
                   />
                 </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    mt: 2,
-                    overflowX: "auto",
-                    pb: 1,
-                    gap: 1.5,
-                    scrollbarWidth: "none",
-                    "&::-webkit-scrollbar": {
-                      display: "none",
-                    },
-                  }}
-                >
-                  {product.images.map((item, index) => (
-                    <Box
-                      key={item.id}
-                      onClick={() => setCurrentImage(index)}
-                      sx={{
-                        width: 80,
-                        height: 80,
-                        borderRadius: 2,
-                        cursor: "pointer",
-                        position: "relative",
-                        overflow: "hidden",
-                        flexShrink: 0,
-                        marginY: 2,
-                        opacity: index === currentImage ? 1 : 0.6,
-                        transform:
-                          index === currentImage ? "scale(1.05)" : "scale(1)",
-                        transition: "all 0.3s ease",
-                        outline:
-                          index === currentImage
-                            ? `2px solid ${theme.palette.primary.main}`
-                            : "none",
-                        outlineOffset: 2,
-                        "&:hover": {
-                          opacity: 1,
-                          transform: "scale(1.05)",
-                        },
-                      }}
-                    >
-                      <img
-                        src={`${apiUrl}/images/${item.images}`}
-                        alt={`Миниатюра ${index + 1}`}
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
-                        }}
-                      />
-                    </Box>
-                  ))}
-                </Box>
               </Box>
-            </Grid>
 
-            {/* Product Details */}
-            <Grid item xs={12} md={6}>
+              {/* Thumbnail Gallery */}
               <Box
                 sx={{
-                  height: "100%",
                   display: "flex",
-                  flexDirection: "column",
+                  gap: 2,
+                  overflowX: "auto",
+                  pb: 1,
+                  scrollbarWidth: "none",
+                  "&::-webkit-scrollbar": {
+                    display: "none",
+                  },
                 }}
               >
-                <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                  <Typography
-                    variant="h3"
+                {product.images.map((item, index) => (
+                  <Box
+                    key={item.id}
+                    onClick={() => setCurrentImage(index)}
                     sx={{
-                      fontWeight: 700,
-                      lineHeight: 1.2,
-                      mb: 1,
+                      width: 80,
+                      height: 80,
+                      borderRadius: 2,
+                      cursor: "pointer",
+                      position: "relative",
+                      overflow: "hidden",
+                      flexShrink: 0,
+                      border:
+                        index === currentImage
+                          ? `2px solid ${theme.palette.primary.main}`
+                          : "2px solid transparent",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        transform: "scale(1.05)",
+                      },
                     }}
                   >
-                    {product.productName}
-                  </Typography>
-                  <Box sx={{ ml: "auto" }}>
-                    <Button
-                      variant="text"
-                      size="small"
-                      startIcon={<Share fontSize="small" />}
-                      onClick={handleShareClick}
-                      sx={{ color: "text.secondary" }}
-                    >
-                      Поделиться
-                    </Button>
+                    <img
+                      src={`${apiUrl}/images/${item.images}`}
+                      alt={`Миниатюра ${index + 1}`}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
                   </Box>
-                </Box>
+                ))}
+              </Box>
+            </Card>
+          </Grid>
 
-                {/* Pricing */}
+          {/* Product Details */}
+          <Grid item xs={12} lg={5}>
+            <Box sx={{ position: "sticky", top: 24 }}>
+              <Card sx={{ p: 4, borderRadius: 4, mb: 3 }}>
+                {/* Header with Actions */}
                 <Box
                   sx={{
                     display: "flex",
-                    alignItems: "baseline",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
                     mb: 3,
                   }}
                 >
-                  <Typography
-                    variant="h4"
-                    sx={{
-                      fontWeight: "bold",
-                      color: product.hasDiscount ? mainColor : "text.primary",
-                    }}
-                  >
-                    $
-                    {product.hasDiscount
-                      ? (product.price - product.discountPrice).toFixed(2)
-                      : product.price.toFixed(2)}
-                  </Typography>
-                  {product.hasDiscount && (
+                  <Box>
                     <Typography
-                      variant="h6"
+                      variant="h1"
                       sx={{
-                        textDecoration: "line-through",
-                        color: "text.secondary",
-                        ml: 2,
-                        opacity: 0.8,
+                        fontWeight: 800,
+                        lineHeight: 1.1,
+                        mb: 2,
+                        background:
+                          "linear-gradient(135deg, #1a202c 0%, #2d3748 100%)",
+                        backgroundClip: "text",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
                       }}
                     >
-                      ₽{product.price.toFixed(2)}
+                      {product.productName}
                     </Typography>
-                  )}
-                  {product.hasDiscount && (
-                    <Chip
-                      label={`Экономия  ₽${product.discountPrice.toFixed(2)}`}
-                      size="small"
+                  </Box>
+
+                  {/* Action Buttons */}
+                  <Box sx={{ display: "flex", gap: 1 }}>
+                    <IconButton
+                      onClick={handleShareClick}
                       sx={{
-                        ml: 2,
-                        fontWeight: "bold",
-                        color: "white",
-                        background: mainColor,
+                        bgcolor: "grey.50",
+                        "&:hover": {
+                          bgcolor: "grey.100",
+                        },
                       }}
-                    />
-                  )}
+                    >
+                      <Share />
+                    </IconButton>
+                  </Box>
                 </Box>
 
                 <Divider sx={{ my: 3 }} />
 
                 {/* Color Selector */}
-                <Box sx={{ mb: 3 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 600, mb: 1.5 }}>
+                <Box sx={{ mb: 4 }}>
+                  <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
                     Цвет
                   </Typography>
-                  <Box sx={{ display: "flex", gap: 1.5, flexWrap: "wrap" }}>
+                  <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
                     {colorOptions.map((color) => (
                       <Tooltip key={color.name} title={color.name} arrow>
                         <Box
                           onClick={() => handleColorSelect(color.code)}
                           sx={{
-                            width: 40,
-                            height: 40,
-                            borderRadius: "50%",
+                            width: 48,
+                            height: 48,
+                            borderRadius: "12px",
                             bgcolor: color.code,
                             cursor: "pointer",
                             border:
                               selectedColor === color.code
                                 ? `3px solid ${theme.palette.primary.main}`
-                                : "3px solid transparent",
-                            transition: "all 0.2s ease",
+                                : "2px solid rgba(0,0,0,0.1)",
+                            transition: "all 0.3s ease",
+                            boxShadow:
+                              selectedColor === color.code
+                                ? "0 4px 12px rgba(0,0,0,0.15)"
+                                : "none",
                             "&:hover": {
-                              transform: "scale(1.1)",
+                              transform: "scale(1.05)",
+                              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                             },
                           }}
                         />
@@ -687,49 +679,112 @@ const ProductPage = () => {
                 </Box>
 
                 {/* Add to Cart Button */}
-                <Box sx={{ mb: 3 }}>
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    size="large"
-                    startIcon={<ShoppingBag />}
-                    onClick={handleAddToCart}
-                    disabled={product.productInMyCart}
-                    sx={{
-                      py: 1.5,
-                      borderRadius: 3,
-                      fontWeight: 700,
-                      fontSize: "1rem",
-                      textTransform: "none",
-                      transition: "all 0.3s ease",
-                      backgroundColor: mainColor,
-                      "&:hover": {
-                        backgroundColor: mainColor,
-                        transform: "translateY(-2px)",
-                        boxShadow: "0 6px 20px rgba(0,0,0,0.15)",
-                      },
-                    }}
-                  >
-                    {product.productInMyCart
-                      ? "Обновить корзину"
-                      : "Добавить в корзину"}
-                  </Button>
-                </Box>
-
-                {/* Description */}
-                <Box sx={{ mb: 3 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 600, mb: 1.5 }}>
-                    Описание
-                  </Typography>
-                  <Typography variant="body1" sx={{ color: "text.secondary" }}>
-                    {product.description}
-                  </Typography>
-                </Box>
-              </Box>
-            </Grid>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  size="large"
+                  startIcon={<ShoppingBag />}
+                  onClick={handleAddToCart}
+                  sx={{
+                    py: 1.75,
+                    borderRadius: 3,
+                    fontWeight: 700,
+                    fontSize: "1.1rem",
+                    mb: 2,
+                  }}
+                >
+                  {product.productInMyCart
+                    ? "Обновить корзину"
+                    : "Добавить в корзину"}
+                </Button>
+              </Card>
+            </Box>
           </Grid>
-        </Paper>
+        </Grid>
+        {/* Description Card */}
+        <Card
+          sx={{
+            p: { xs: 2, sm: 3, md: 4 },
+            borderRadius: { xs: 2, sm: 3, md: 4 },
+            mt: { xs: 3, sm: 4 },
+          }}
+        >
+          <Stack direction="row" alignItems="center" spacing={1.5} mb={3}>
+            <InfoOutlinedIcon
+              color="primary"
+              fontSize={isMobile ? "small" : "medium"}
+            />
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: 600, fontSize: { xs: "1rem", sm: "1.125rem" } }}
+            >
+              Описание и характеристики
+            </Typography>
+          </Stack>
 
+          {mainDesc && (
+            <Typography
+              variant="body1"
+              sx={{
+                mb: 3,
+                color: "text.secondary",
+                lineHeight: 1.7,
+                fontSize: { xs: 14, sm: 16 },
+              }}
+            >
+              {mainDesc}
+            </Typography>
+          )}
+
+          <Divider sx={{ mb: 3 }} />
+
+          {/* Characteristics */}
+          <Stack spacing={1.5}>
+            {characteristics.map((item, idx) => (
+              <Box
+                key={idx}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  px: { xs: 2, sm: 3 },
+                  py: { xs: 1.5, sm: 2 },
+                  borderRadius: { xs: 2, sm: 3 },
+                  bgcolor: idx % 2 === 0 ? "transparent" : "grey.50",
+                  border: "1px solid",
+                  borderColor: idx % 2 === 0 ? "transparent" : "transparent",
+                  transition: "all 0.2s ease",
+                  "&:hover": {
+                    bgcolor: "primary.50",
+                    transform: { xs: "none", sm: "translateX(4px)" },
+                  },
+                  flexDirection: { xs: "column", sm: "row" },
+                  alignItems: { xs: "flex-start", sm: "center" },
+                  gap: { xs: 1, sm: 0 },
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    color: "text.primary",
+                    fontWeight: 500,
+                    fontSize: { xs: "0.875rem", sm: "1rem" },
+                  }}
+                >
+                  {item.name}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  color="text.secondary"
+                  fontWeight={600}
+                  sx={{ fontSize: { xs: "0.875rem", sm: "1rem" } }}
+                >
+                  {item.value}
+                </Typography>
+              </Box>
+            ))}
+          </Stack>
+        </Card>
         {/* Share Modal */}
         <Modal
           open={isShareModalOpen}
@@ -737,65 +792,61 @@ const ProductPage = () => {
           closeAfterTransition
         >
           <Fade in={isShareModalOpen}>
-            <Box
+            <Card
               sx={{
                 position: "absolute",
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                bgcolor: "background.paper",
-                borderRadius: 3,
-                boxShadow: 24,
+                borderRadius: 4,
                 p: 4,
                 width: { xs: "90%", sm: 400 },
                 textAlign: "center",
+                border: "none",
               }}
             >
-              <Typography variant="h6" sx={{ mb: 2 }}>
+              <Typography variant="h6" sx={{ mb: 3, fontWeight: 600 }}>
                 Поделиться товаром
               </Typography>
               <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-                <IconButton
-                  onClick={() =>
-                    window.open(
-                      `https://www.facebook.com/sharer/sharer.php?u=${productUrl}`,
-                      "_blank"
-                    )
-                  }
-                  sx={{ bgcolor: "#1877F2", color: "white" }}
-                >
-                  <Facebook />
-                </IconButton>
-                <IconButton
-                  onClick={() =>
-                    window.open(
-                      `https://twitter.com/intent/tweet?url=${productUrl}`,
-                      "_blank"
-                    )
-                  }
-                  sx={{ bgcolor: "#1DA1F2", color: "white" }}
-                >
-                  <Twitter />
-                </IconButton>
-                <IconButton
-                  onClick={() =>
-                    window.open(
-                      `https://api.whatsapp.com/send?text=${productUrl}`,
-                      "_blank"
-                    )
-                  }
-                  sx={{ bgcolor: "#25D366", color: "white" }}
-                >
-                  <WhatsApp />
-                </IconButton>
-                <IconButton
-                  onClick={handleCopyLink}
-                  sx={{ bgcolor: "grey.800", color: "white" }}
-                >
-                  <ContentCopy />
-                </IconButton>
+                {[
+                  { icon: <Facebook />, color: "#1877F2", label: "Facebook" },
+                  { icon: <Twitter />, color: "#1DA1F2", label: "Twitter" },
+                  { icon: <WhatsApp />, color: "#25D366", label: "WhatsApp" },
+                  { icon: <ContentCopy />, color: "#6B7280", label: "Copy" },
+                ].map((social) => (
+                  <Tooltip key={social.label} title={social.label} arrow>
+                    <IconButton
+                      onClick={
+                        social.label === "Copy"
+                          ? handleCopyLink
+                          : () =>
+                              window.open(
+                                social.label === "Facebook"
+                                  ? `https://www.facebook.com/sharer/sharer.php?u=${productUrl}`
+                                  : social.label === "Twitter"
+                                  ? `https://twitter.com/intent/tweet?url=${productUrl}`
+                                  : `https://api.whatsapp.com/send?text=${productUrl}`,
+                                "_blank"
+                              )
+                      }
+                      sx={{
+                        bgcolor: social.color,
+                        color: "white",
+                        width: 56,
+                        height: 56,
+                        "&:hover": {
+                          bgcolor: social.color,
+                          transform: "scale(1.1)",
+                        },
+                      }}
+                    >
+                      {social.icon}
+                    </IconButton>
+                  </Tooltip>
+                ))}
               </Box>
-            </Box>
+            </Card>
           </Fade>
         </Modal>
 
@@ -806,21 +857,23 @@ const ProductPage = () => {
           onClose={handleSnackbarClose}
           anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         >
-          <Paper
-            elevation={3}
+          <Card
             sx={{
-              p: 2,
-              bgcolor: mainColor,
+              p: 3,
+              bgcolor: "success.main",
               color: "white",
-              borderRadius: 2,
+              borderRadius: 3,
               display: "flex",
               alignItems: "center",
-              gap: 1,
+              gap: 2,
+              boxShadow: "0 8px 25px rgba(76,175,80,0.3)",
             }}
           >
             <Check fontSize="small" />
-            <Typography variant="body1">{snackbarMessage}</Typography>
-          </Paper>
+            <Typography variant="body1" fontWeight={600}>
+              {snackbarMessage}
+            </Typography>
+          </Card>
         </Snackbar>
       </Container>
     </ThemeProvider>

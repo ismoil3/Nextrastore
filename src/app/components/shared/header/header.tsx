@@ -179,23 +179,7 @@ const Header = () => {
                 }}
                 onClick={() => router.push("/")}
               >
-                <Typography
-                  variant="h5"
-                  component="div"
-                  sx={{
-                    fontWeight: 700,
-                    background: `linear-gradient(90deg, ${mainColor} 0%, ${themeColors.accent} 100%)`,
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    fontFamily: "'Poppins', sans-serif",
-                    mr: 1,
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  SAREZ MOBILE
-                </Typography>
+               <img className="w-[130px] " src="/logo.png" alt="" />
               </Box>
 
               {/* Search Box - Animated */}

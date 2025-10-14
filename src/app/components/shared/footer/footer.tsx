@@ -8,14 +8,7 @@ import { mainColor } from "@/theme/main";
 import Container from "../container/container";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-const themeColors = {
-  primary: "#62B75A", // Bright blue
-  secondary: "#1e293b", // Dark slate
-  accent: "#f59e0b", // Amber
-  background: "#ffffff",
-  text: "#0f172a",
-  lightGray: "#f1f5f9",
-};
+
 const Footer = () => {
   const path = usePathname();
 
@@ -39,23 +32,11 @@ const Footer = () => {
           }}
         >
           {/* Logo or Title */}
-          <Typography
-            variant="h5"
-            component="div"
-            sx={{
-              fontWeight: 700,
-              background: `linear-gradient(150deg, #1e293b 0%, ${themeColors.accent} 100%)`,
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              fontFamily: "'Poppins', sans-serif",
-              mr: 1,
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            SAREZ MOBILE
-          </Typography>
+          <img
+            className="w-[150px] invert brightness-0 saturate-0 contrast-[200%]"
+            src="/logo.png"
+            alt="logo"
+          />
 
           {/* Navigation Links */}
           <Box
