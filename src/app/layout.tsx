@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     "Nokia",
     "Google Pixel",
   ],
-  authors: [{ name: "BestPrice Team", url: "https://bestprice.tj" }],
+  authors: [{ name: "BestPrice Team", url: "https://www.sarezmobile.com" }],
   publisher: "BestPrice",
   creator: "BestPrice Developers",
   generator: "Next.js",
@@ -46,18 +46,18 @@ export const metadata: Metadata = {
   category: "ecommerce",
   classification: "Smartphones, Mobile Phones, Electronics",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/mini-logo.png",
     shortcut: "/favicon-16x16.png",
     apple: "/apple-touch-icon.png",
   },
 
-  metadataBase: new URL("https://bestprice.tj"),
+  metadataBase: new URL("https://www.sarezmobile.com"),
   openGraph: {
     title:
       "BestPrice — Купить смартфоны iPhone, Samsung, Xiaomi, Oppo и другие бренды",
     description:
       "BestPrice — интернет-магазин смартфонов в Таджикистане. iPhone, Samsung, Xiaomi, Oppo, Realme, Huawei и другие бренды по низким ценам.",
-    url: "https://bestprice.tj",
+    url: "https://www.sarezmobile.com",
     siteName: "BestPrice",
     images: [
       {
@@ -94,9 +94,9 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://bestprice.tj",
+    canonical: "https://www.sarezmobile.com",
     languages: {
-      "ru-RU": "https://bestprice.tj",
+      "ru-RU": "https://www.sarezmobile.com",
     },
   },
   appleWebApp: {
@@ -115,7 +115,7 @@ export const metadata: Metadata = {
       package: "tj.bestprice.app",
     },
     web: {
-      url: "https://bestprice.tj",
+      url: "https://www.sarezmobile.com",
       should_fallback: true,
     },
   },

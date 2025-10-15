@@ -4,7 +4,6 @@ import {
   Box,
   Container,
   Button,
-
   Snackbar,
   Alert,
   CircularProgress,
@@ -13,15 +12,12 @@ import HeroCarousel from "./components/ui/home/hero-carousel";
 import ServicesSection from "./components/ui/home/services-section";
 import ProductsGrid from "./components/ui/home/products-grid";
 
-
 // Optimized components
 // Store hooks (assuming these exist)
 import { useHomeStore } from "./store/home/useHomeStore";
 import { useCartStore } from "@/app/store/cart/cart";
 import { imgUrl } from "@/config/config";
 import { mainColor } from "@/theme/main";
-
-
 
 const Home = () => {
   // State management
@@ -43,35 +39,35 @@ const Home = () => {
     () => [
       {
         id: 1,
-        title: "Летняя коллекция 2025",
-        subtitle: "Откройте для себя свежие тренды сезона",
+        title: "Новые ноутбуки 2025",
+        subtitle: "Самые мощные и стильные ноутбуки для работы и игр",
         image:
-          "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1488&q=80",
+          "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1600&q=80",
         cta: "Купить сейчас",
         color: "#ff6b6b",
       },
       {
         id: 2,
-        title: "Техника и гаджеты",
-        subtitle: "Обновите свои устройства с новейшими технологиями",
+        title: "Смартфоны нового поколения",
+        subtitle: "Обновите свои устройства на новейшие модели",
         image:
-          "https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80",
-        cta: "Исследовать",
+          "https://images.unsplash.com/photo-1593642634367-d91a135587b5?auto=format&fit=crop&w=1600&q=80",
+        cta: "Посмотреть",
         color: "#4dabf7",
       },
+
       {
-        id: 3,
-        title: "Специальные предложения",
-        subtitle: "Ограниченные по времени предложения на избранные товары",
-        image:
-          "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-        cta: "Посмотреть предложения",
-        color: "#51cf66",
+        id: 4,
+        title: "Игровые устройства",
+        subtitle: "Игровые ноутбуки, аксессуары и периферия",
+        image: "/gamer-work-space-concept-top-260nw-2553721483.jpg",
+        cta: "Купить сейчас",
+        color: "#f783ac",
       },
     ],
+
     []
   );
-
 
   const handleLoadMore = async () => {
     setLoadingMore(true);
@@ -114,9 +110,8 @@ const Home = () => {
     setNotification((prev) => ({ ...prev, open: false }));
   }, []);
 
-
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     const fetchProducts = async () => {
       await getProducts();
       setIsLoading(false);
@@ -129,7 +124,7 @@ const Home = () => {
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [getProducts,promos.length]);
+  }, [getProducts, promos.length]);
 
   return (
     <Box
@@ -197,8 +192,6 @@ const Home = () => {
           </Button>
         </Box>
       </Container>
-
-
 
       {/* Notification Snackbar */}
       <Snackbar
