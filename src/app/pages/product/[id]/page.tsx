@@ -8,7 +8,6 @@ import {
   Typography,
   Box,
   Grid,
-  Paper,
   Chip,
   Button,
   ThemeProvider,
@@ -20,12 +19,9 @@ import {
   Skeleton,
   Fade,
   CircularProgress,
-  Breadcrumbs,
-  Link as MuiLink,
   Tooltip,
   Stack,
   Card,
-  Badge,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -40,12 +36,7 @@ import {
   Check,
   ChevronLeft,
   ChevronRight,
-  Home,
-  Category,
-  NavigateNext,
   ShoppingBag,
-  Favorite,
-  FavoriteBorder,
   ZoomIn,
 } from "@mui/icons-material";
 import { useCartStore } from "@/app/store/cart/cart";
@@ -276,8 +267,6 @@ const ProductPage = () => {
   const muiTheme = useTheme();
 
   const isMobile = useMediaQuery(muiTheme.breakpoints.down("sm"));
-  const isTablet = useMediaQuery(muiTheme.breakpoints.down("md"));
-  const isDesktop = useMediaQuery(muiTheme.breakpoints.up("lg"));
 
   // Admin contact information
   const adminNumber = "+992 91 890 9050";
@@ -1210,52 +1199,54 @@ const ProductPage = () => {
 
             {/* Characteristics */}
             <Stack spacing={1.5}>
-              {characteristics.map((item, idx) => (
-                <Box
-                  key={idx}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    px: { xs: 2, sm: 3 },
-                    py: { xs: 1.5, sm: 2 },
-                    borderRadius: { xs: 2, sm: 3 },
-                    bgcolor: idx % 2 === 0 ? "transparent" : "grey.50",
-                    border: "1px solid",
-                    borderColor: idx % 2 === 0 ? "transparent" : "transparent",
-                    transition: "all 0.2s ease",
-                    "&:hover": {
-                      bgcolor: "primary.50",
-                      transform: { xs: "none", sm: "translateX(4px)" },
-                    },
-                    flexDirection: { xs: "column", sm: "row" },
-                    alignItems: { xs: "flex-start", sm: "center" },
-                    gap: { xs: 1, sm: 0 },
-                  }}
-                >
-                  <Typography
-                    variant="body1"
+              {characteristics.map(
+                (item: { name: string; value: string }, idx: number) => (
+                  <Box
+                    key={idx}
                     sx={{
-                      color: "text.primary",
-                      fontWeight: 500,
-                      fontSize: { xs: "0.875rem", sm: "1rem" },
+                      display: "flex",
+                      justifyContent: "space-between",
+                      px: { xs: 2, sm: 3 },
+                      py: { xs: 1.5, sm: 2 },
+                      borderRadius: { xs: 2, sm: 3 },
+                      bgcolor: idx % 2 === 0 ? "transparent" : "grey.50",
+                      border: "1px solid",
+                      borderColor:
+                        idx % 2 === 0 ? "transparent" : "transparent",
+                      transition: "all 0.2s ease",
+                      "&:hover": {
+                        bgcolor: "primary.50",
+                        transform: { xs: "none", sm: "translateX(4px)" },
+                      },
+                      flexDirection: { xs: "column", sm: "row" },
+                      alignItems: { xs: "flex-start", sm: "center" },
+                      gap: { xs: 1, sm: 0 },
                     }}
                   >
-                    {item.name}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    color="text.secondary"
-                    fontWeight={600}
-                    sx={{
-                      fontSize: { xs: "0.875rem", sm: "1rem" },
-                      textAlign: { xs: "left", sm: "right" },
-                    }}
-                  >
-                    {item.value}
-                  </Typography>
-                </Box>
-              ))}
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        color: "text.primary",
+                        fontWeight: 500,
+                        fontSize: { xs: "0.875rem", sm: "1rem" },
+                      }}
+                    >
+                      {item.name}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      color="text.secondary"
+                      fontWeight={600}
+                      sx={{
+                        fontSize: { xs: "0.875rem", sm: "1rem" },
+                        textAlign: { xs: "left", sm: "right" },
+                      }}
+                    >
+                      {item.value}
+                    </Typography>
+                  </Box>
+                )
+              )}
             </Stack>
           </Card>
 

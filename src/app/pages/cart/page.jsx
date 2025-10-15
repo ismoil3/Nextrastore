@@ -20,7 +20,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
   Snackbar,
   Alert,
 } from "@mui/material";
@@ -46,8 +45,7 @@ const Cart = () => {
   } = useCartStore();
 
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState({});
-  const [userId, setUserId] = useState("");
+
   const [checkoutDialog, setCheckoutDialog] = useState(false);
   const [userInfo, setUserInfo] = useState({
     name: "",
@@ -74,7 +72,6 @@ const Cart = () => {
 
       try {
         const decoded = jwtDecode(token);
-        setUserId(decoded?.sid);
 
         if (!decoded?.sid) {
           console.log("ID пользователя не найден в токене");
@@ -87,8 +84,6 @@ const Cart = () => {
         );
 
         if (data.data) {
-          setUser(data.data);
-          // Auto-fill user info from profile
           setUserInfo({
             name:
               data.userName || data.data.fullName || data.data.userName || "",
@@ -238,14 +233,7 @@ const Cart = () => {
     setNotification((prev) => ({ ...prev, open: false }));
   };
 
-  // Calculate total price
-  const calculateTotal = () => {
-    return (
-      productsFromCart?.productsInCart?.reduce((sum, item) => {
-        return sum + item.product.price * item.quantity;
-      }, 0) || 0
-    );
-  };
+
 
   // Check if user info is complete
   const isUserInfoComplete = userInfo.name && userInfo.phone;
@@ -767,7 +755,7 @@ const Cart = () => {
           <Box
             sx={{ mt: 2, p: 2, backgroundColor: "grey.50", borderRadius: 1 }}
           >
-           
+
             <Typography variant="body2" color="text.secondary">
               После подтверждения заказ будет отправлен в Telegram и мы свяжемся
               с вами для уточнения деталей
