@@ -34,7 +34,7 @@ const ProductsGrid = memo(
       <AnimatePresence>
         <Grid container spacing={2}>
           {products.map((product, index) => (
-            <Grid item xs={6} sm={4} md={3} key={product.id}>
+            <Grid item xs={12} sm={6} md={3} key={product.id}>
               <ProductCard
                 product={product}
                 index={index}

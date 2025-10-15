@@ -14,16 +14,12 @@ import {
   Drawer,
   useMediaQuery,
   useTheme,
-  InputAdornment,
-  TextField,
   Chip,
   Button,
   Badge,
-  Slider,
   Fab,
   AppBar,
   Toolbar,
-  alpha,
   Collapse,
 } from "@mui/material";
 import {
@@ -52,7 +48,6 @@ const ProductsPage = () => {
     categories,
     subCategories,
     getSubCategories,
-    price,
   } = useProductsStore();
 
   const searchParams = useSearchParams();
@@ -81,9 +76,9 @@ const ProductsPage = () => {
 
   // Toggle section expansion
   const toggleSection = (section: keyof typeof expandedSections) => {
-    setExpandedSections(prev => ({
+    setExpandedSections((prev) => ({
       ...prev,
-      [section]: !prev[section]
+      [section]: !prev[section],
     }));
   };
 
@@ -97,19 +92,6 @@ const ProductsPage = () => {
     if (maxPrice) count++;
     setActiveFiltersCount(count);
   }, [category, subCategory, brand, minPrice, maxPrice]);
-
-  // Локалӣ state барои debounce
-  const [localMinPrice, setLocalMinPrice] = useState(minPrice);
-  const [localMaxPrice, setLocalMaxPrice] = useState(maxPrice);
-  const [priceRange, setPriceRange] = useState<number[]>([Number(minPrice) || price.min, Number(maxPrice) || price.max]);
-  const priceChange = useRef<NodeJS.Timeout | null>(null);
-
-  // Синхронизатсия бо URL
-  useEffect(() => {
-    setLocalMinPrice(minPrice);
-    setLocalMaxPrice(maxPrice);
-    setPriceRange([Number(minPrice) || price.min, Number(maxPrice) || price.max]);
-  }, [minPrice, maxPrice, price.min, price.max]);
 
   // ✅ helper
   const updateQueryParam = (key: string, value: string) => {
@@ -189,41 +171,6 @@ const ProductsPage = () => {
     maxPrice,
   ]);
 
-  // ✅ Handlers for price with debounce
-  const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setLocalMinPrice(value);
-
-    if (priceChange.current) clearTimeout(priceChange.current);
-    priceChange.current = setTimeout(() => {
-      updateQueryParam("minPrice", value);
-    }, 500);
-  };
-
-  const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setLocalMaxPrice(value);
-
-    if (priceChange.current) clearTimeout(priceChange.current);
-    priceChange.current = setTimeout(() => {
-      updateQueryParam("maxPrice", value);
-    }, 500);
-  };
-
-  // Handle price range slider
-  const handlePriceRangeChange = (event: Event, newValue: number | number[]) => {
-    setPriceRange(newValue as number[]);
-  };
-
-  const handlePriceRangeCommit = (
-    event: React.SyntheticEvent | Event,
-    newValue: number | number[]
-  ) => {
-    const values = newValue as number[];
-    updateQueryParam("minPrice", String(values[0]));
-    updateQueryParam("maxPrice", String(values[1]));
-  };
-
   // Clear all filters
   const clearAllFilters = () => {
     router.push(pathname);
@@ -240,14 +187,17 @@ const ProductsPage = () => {
           mb: 2,
         }}
       >
-        <Typography variant="h6" sx={{ color: "text.primary", fontWeight: 700, fontSize: "1.25rem" }}>
+        <Typography
+          variant="h6"
+          sx={{ color: "text.primary", fontWeight: 700, fontSize: "1.25rem" }}
+        >
           Фильтры
         </Typography>
         {activeFiltersCount > 0 && (
           <Button
             onClick={clearAllFilters}
             size="small"
-            sx={{ color: "text.secondary", textTransform: 'none' }}
+            sx={{ color: "text.secondary", textTransform: "none" }}
           >
             Очистить все
           </Button>
@@ -259,22 +209,27 @@ const ProductsPage = () => {
       <Box sx={{ mb: 3 }}>
         <Box
           sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            cursor: 'pointer',
-            mb: 1
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            cursor: "pointer",
+            mb: 1,
           }}
-          onClick={() => toggleSection('brands')}
+          onClick={() => toggleSection("brands")}
         >
-          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "text.primary" }}>
+          <Typography
+            variant="subtitle1"
+            sx={{ fontWeight: 600, color: "text.primary" }}
+          >
             Бренды
           </Typography>
           <ExpandMoreIcon
             sx={{
-              transform: expandedSections.brands ? 'rotate(0deg)' : 'rotate(-90deg)',
-              transition: 'transform 0.3s',
-              color: 'text.secondary'
+              transform: expandedSections.brands
+                ? "rotate(0deg)"
+                : "rotate(-90deg)",
+              transition: "transform 0.3s",
+              color: "text.secondary",
             }}
           />
         </Box>
@@ -291,8 +246,11 @@ const ProductsPage = () => {
                   p: 1.5,
                   bgcolor:
                     brand === String(b.id) ? `${mainColor}08` : "transparent",
-                  "&:hover": { bgcolor: brand === String(b.id) ? `${mainColor}08` : "grey.50" },
-                  transition: 'background-color 0.2s',
+                  "&:hover": {
+                    bgcolor:
+                      brand === String(b.id) ? `${mainColor}08` : "grey.50",
+                  },
+                  transition: "background-color 0.2s",
                 }}
                 onClick={() => {
                   updateQueryParam(
@@ -314,8 +272,9 @@ const ProductsPage = () => {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      bgcolor: brand === String(b.id) ? mainColor : "transparent",
-                      transition: 'all 0.2s',
+                      bgcolor:
+                        brand === String(b.id) ? mainColor : "transparent",
+                      transition: "all 0.2s",
                     }}
                   >
                     {brand === String(b.id) && (
@@ -329,7 +288,9 @@ const ProductsPage = () => {
                       />
                     )}
                   </Box>
-                  <Typography variant="body2" sx={{ color: "text.primary" }}>{b.brandName}</Typography>
+                  <Typography variant="body2" sx={{ color: "text.primary" }}>
+                    {b.brandName}
+                  </Typography>
                 </Box>
               </Box>
             ))}
@@ -341,22 +302,27 @@ const ProductsPage = () => {
       <Box sx={{ mb: 3 }}>
         <Box
           sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            cursor: 'pointer',
-            mb: 1
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            cursor: "pointer",
+            mb: 1,
           }}
-          onClick={() => toggleSection('categories')}
+          onClick={() => toggleSection("categories")}
         >
-          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "text.primary" }}>
+          <Typography
+            variant="subtitle1"
+            sx={{ fontWeight: 600, color: "text.primary" }}
+          >
             Категории
           </Typography>
           <ExpandMoreIcon
             sx={{
-              transform: expandedSections.categories ? 'rotate(0deg)' : 'rotate(-90deg)',
-              transition: 'transform 0.3s',
-              color: 'text.secondary'
+              transform: expandedSections.categories
+                ? "rotate(0deg)"
+                : "rotate(-90deg)",
+              transition: "transform 0.3s",
+              color: "text.secondary",
             }}
           />
         </Box>
@@ -372,9 +338,14 @@ const ProductsPage = () => {
                   borderRadius: 1.5,
                   p: 1.5,
                   bgcolor:
-                    category === String(c.id) ? `${mainColor}08` : "transparent",
-                  "&:hover": { bgcolor: category === String(c.id) ? `${mainColor}08` : "grey.50" },
-                  transition: 'background-color 0.2s',
+                    category === String(c.id)
+                      ? `${mainColor}08`
+                      : "transparent",
+                  "&:hover": {
+                    bgcolor:
+                      category === String(c.id) ? `${mainColor}08` : "grey.50",
+                  },
+                  transition: "background-color 0.2s",
                 }}
                 onClick={() => {
                   updateQueryParam(
@@ -396,8 +367,9 @@ const ProductsPage = () => {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      bgcolor: category === String(c.id) ? mainColor : "transparent",
-                      transition: 'all 0.2s',
+                      bgcolor:
+                        category === String(c.id) ? mainColor : "transparent",
+                      transition: "all 0.2s",
                     }}
                   >
                     {category === String(c.id) && (
@@ -411,7 +383,9 @@ const ProductsPage = () => {
                       />
                     )}
                   </Box>
-                  <Typography variant="body2" sx={{ color: "text.primary" }}>{c.categoryName}</Typography>
+                  <Typography variant="body2" sx={{ color: "text.primary" }}>
+                    {c.categoryName}
+                  </Typography>
                 </Box>
               </Box>
             ))}
@@ -423,22 +397,27 @@ const ProductsPage = () => {
       <Box sx={{ mb: 3 }}>
         <Box
           sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            cursor: 'pointer',
-            mb: 1
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            cursor: "pointer",
+            mb: 1,
           }}
-          onClick={() => toggleSection('subcategories')}
+          onClick={() => toggleSection("subcategories")}
         >
-          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "text.primary" }}>
+          <Typography
+            variant="subtitle1"
+            sx={{ fontWeight: 600, color: "text.primary" }}
+          >
             Подкатегории
           </Typography>
           <ExpandMoreIcon
             sx={{
-              transform: expandedSections.subcategories ? 'rotate(0deg)' : 'rotate(-90deg)',
-              transition: 'transform 0.3s',
-              color: 'text.secondary'
+              transform: expandedSections.subcategories
+                ? "rotate(0deg)"
+                : "rotate(-90deg)",
+              transition: "transform 0.3s",
+              color: "text.secondary",
             }}
           />
         </Box>
@@ -457,8 +436,13 @@ const ProductsPage = () => {
                     subCategory === String(sc.id)
                       ? `${mainColor}08`
                       : "transparent",
-                  "&:hover": { bgcolor: subCategory === String(sc.id) ? `${mainColor}08` : "grey.50" },
-                  transition: 'background-color 0.2s',
+                  "&:hover": {
+                    bgcolor:
+                      subCategory === String(sc.id)
+                        ? `${mainColor}08`
+                        : "grey.50",
+                  },
+                  transition: "background-color 0.2s",
                 }}
                 onClick={() => {
                   updateQueryParam(
@@ -481,8 +465,10 @@ const ProductsPage = () => {
                       alignItems: "center",
                       justifyContent: "center",
                       bgcolor:
-                        subCategory === String(sc.id) ? mainColor : "transparent",
-                      transition: 'all 0.2s',
+                        subCategory === String(sc.id)
+                          ? mainColor
+                          : "transparent",
+                      transition: "all 0.2s",
                     }}
                   >
                     {subCategory === String(sc.id) && (
@@ -496,102 +482,20 @@ const ProductsPage = () => {
                       />
                     )}
                   </Box>
-                  <Typography variant="body2" sx={{ color: "text.primary" }}>{sc.subCategoryName}</Typography>
+                  <Typography variant="body2" sx={{ color: "text.primary" }}>
+                    {sc.subCategoryName}
+                  </Typography>
                 </Box>
               </Box>
             ))}
           </Box>
         </Collapse>
       </Box>
-
-      {/* Цена */}
-      <Box sx={{ mb: 2 }}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            cursor: 'pointer',
-            mb: 1
-          }}
-          onClick={() => toggleSection('price')}
-        >
-          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "text.primary" }}>
-            Цена, ₽
-          </Typography>
-          <ExpandMoreIcon
-            sx={{
-              transform: expandedSections.price ? 'rotate(0deg)' : 'rotate(-90deg)',
-              transition: 'transform 0.3s',
-              color: 'text.secondary'
-            }}
-          />
-        </Box>
-
-        <Collapse in={expandedSections.price}>
-          <Box sx={{ px: 1, mb: 2 }}>
-            <Slider
-              value={priceRange}
-              onChange={handlePriceRangeChange}
-              onChangeCommitted={handlePriceRangeCommit}
-              valueLabelDisplay="auto"
-              min={price.min}
-              max={price.max}
-              sx={{
-                color: mainColor,
-                height: 6,
-                '& .MuiSlider-thumb': {
-                  width: 18,
-                  height: 18,
-                  backgroundColor: '#fff',
-                  border: `2px solid ${mainColor}`,
-                  '&:focus, &:hover, &.Mui-active': {
-                    boxShadow: `0px 0px 0px 8px ${alpha(mainColor, 0.16)}`,
-                  },
-                },
-                '& .MuiSlider-valueLabel': {
-                  backgroundColor: mainColor,
-                },
-              }}
-            />
-          </Box>
-
-          <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
-            <TextField
-              type="number"
-              placeholder="Мин"
-              value={localMinPrice}
-              onChange={handleMinPriceChange}
-              size="small"
-              InputProps={{
-                startAdornment: <InputAdornment position="start">₽</InputAdornment>,
-                sx: { borderRadius: 2 }
-              }}
-              sx={{ flex: 1 }}
-            />
-            <TextField
-              type="number"
-              placeholder="Макс"
-              value={localMaxPrice}
-              onChange={handleMaxPriceChange}
-              size="small"
-              InputProps={{
-                startAdornment: <InputAdornment position="start">₽</InputAdornment>,
-                sx: { borderRadius: 2 }
-              }}
-              sx={{ flex: 1 }}
-            />
-          </Box>
-          <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
-            Диапазон: {price.min} – {price.max} ₽
-          </Typography>
-        </Collapse>
-      </Box>
     </>
   );
 
   return (
-    <Box sx={{ bgcolor: 'grey.50', minHeight: '100vh' }}>
+    <Box sx={{ bgcolor: "grey.50", minHeight: "100vh" }}>
       <Container>
         {/* App Bar for mobile */}
         {isMobile && (
@@ -600,7 +504,7 @@ const ProductsPage = () => {
             color="inherit"
             elevation={0}
             sx={{
-              bgcolor: 'background.paper',
+              bgcolor: "background.paper",
               borderBottom: `1px solid ${theme.palette.divider}`,
               top: 0,
               zIndex: 1100,
@@ -614,7 +518,7 @@ const ProductsPage = () => {
                 <IconButton
                   onClick={() => setFilterOpen(true)}
                   sx={{
-                    color: 'text.primary',
+                    color: "text.primary",
                   }}
                 >
                   <TuneIcon />
@@ -638,7 +542,7 @@ const ProductsPage = () => {
                 position: "sticky",
                 top: "30px",
                 border: `1px solid ${theme.palette.divider}`,
-                bgcolor: 'background.paper'
+                bgcolor: "background.paper",
               }}
             >
               <FilterContent />
@@ -655,11 +559,18 @@ const ProductsPage = () => {
                 width: "100%",
                 maxWidth: 400,
                 p: 3,
-                bgcolor: 'background.paper'
+                bgcolor: "background.paper",
               },
             }}
           >
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 3,
+              }}
+            >
               <Typography variant="h6" sx={{ fontWeight: 700 }}>
                 Фильтры
               </Typography>
@@ -667,10 +578,16 @@ const ProductsPage = () => {
                 <CloseIcon />
               </IconButton>
             </Box>
-            <Box sx={{ overflow: 'auto', flex: 1 }}>
+            <Box sx={{ overflow: "auto", flex: 1 }}>
               <FilterContent />
             </Box>
-            <Box sx={{ pt: 2, mt: 2, borderTop: `1px solid ${theme.palette.divider}` }}>
+            <Box
+              sx={{
+                pt: 2,
+                mt: 2,
+                borderTop: `1px solid ${theme.palette.divider}`,
+              }}
+            >
               <Button
                 fullWidth
                 variant="contained"
@@ -680,10 +597,10 @@ const ProductsPage = () => {
                   borderRadius: 2,
                   py: 1.5,
                   fontWeight: 600,
-                  '&:hover': {
+                  "&:hover": {
                     bgcolor: mainColor,
-                    opacity: 0.9
-                  }
+                    opacity: 0.9,
+                  },
                 }}
               >
                 Показать результаты
@@ -695,15 +612,29 @@ const ProductsPage = () => {
           <Box flex={1}>
             {/* Page title for desktop */}
             {!isMobile && (
-              <Typography variant="h4" sx={{ fontWeight: 700, mb: 3, color: "text.primary" }}>
+              <Typography
+                variant="h4"
+                sx={{ fontWeight: 700, mb: 3, color: "text.primary" }}
+              >
                 Каталог товаров
               </Typography>
             )}
 
             {/* Active filters chips */}
             {(category || subCategory || brand || minPrice || maxPrice) && (
-              <Box sx={{ mb: 3, display: "flex", flexWrap: "wrap", gap: 1, alignItems: 'center' }}>
-                <Typography variant="body2" sx={{ color: 'text.secondary', mr: 1 }}>
+              <Box
+                sx={{
+                  mb: 3,
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 1,
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  variant="body2"
+                  sx={{ color: "text.secondary", mr: 1 }}
+                >
                   Активные фильтры:
                 </Typography>
                 {category && (
@@ -718,12 +649,12 @@ const ProductsPage = () => {
                       bgcolor: `${mainColor}08`,
                       color: mainColor,
                       fontWeight: 500,
-                      '& .MuiChip-deleteIcon': {
+                      "& .MuiChip-deleteIcon": {
                         color: `${mainColor}80`,
-                        '&:hover': {
-                          color: mainColor
-                        }
-                      }
+                        "&:hover": {
+                          color: mainColor,
+                        },
+                      },
                     }}
                   />
                 )}
@@ -739,12 +670,12 @@ const ProductsPage = () => {
                       bgcolor: `${mainColor}08`,
                       color: mainColor,
                       fontWeight: 500,
-                      '& .MuiChip-deleteIcon': {
+                      "& .MuiChip-deleteIcon": {
                         color: `${mainColor}80`,
-                        '&:hover': {
-                          color: mainColor
-                        }
-                      }
+                        "&:hover": {
+                          color: mainColor,
+                        },
+                      },
                     }}
                   />
                 )}
@@ -760,12 +691,12 @@ const ProductsPage = () => {
                       bgcolor: `${mainColor}08`,
                       color: mainColor,
                       fontWeight: 500,
-                      '& .MuiChip-deleteIcon': {
+                      "& .MuiChip-deleteIcon": {
                         color: `${mainColor}80`,
-                        '&:hover': {
-                          color: mainColor
-                        }
-                      }
+                        "&:hover": {
+                          color: mainColor,
+                        },
+                      },
                     }}
                   />
                 )}
@@ -778,12 +709,12 @@ const ProductsPage = () => {
                       bgcolor: `${mainColor}08`,
                       color: mainColor,
                       fontWeight: 500,
-                      '& .MuiChip-deleteIcon': {
+                      "& .MuiChip-deleteIcon": {
                         color: `${mainColor}80`,
-                        '&:hover': {
-                          color: mainColor
-                        }
-                      }
+                        "&:hover": {
+                          color: mainColor,
+                        },
+                      },
                     }}
                   />
                 )}
@@ -796,12 +727,12 @@ const ProductsPage = () => {
                       bgcolor: `${mainColor}08`,
                       color: mainColor,
                       fontWeight: 500,
-                      '& .MuiChip-deleteIcon': {
+                      "& .MuiChip-deleteIcon": {
                         color: `${mainColor}80`,
-                        '&:hover': {
-                          color: mainColor
-                        }
-                      }
+                        "&:hover": {
+                          color: mainColor,
+                        },
+                      },
                     }}
                   />
                 )}
@@ -812,7 +743,7 @@ const ProductsPage = () => {
                   sx={{
                     color: "text.secondary",
                     ml: "auto",
-                    textTransform: 'none'
+                    textTransform: "none",
                   }}
                 >
                   Очистить все
@@ -821,9 +752,21 @@ const ProductsPage = () => {
             )}
 
             {products.length === 0 && !isLoadingProducts ? (
-              <Box sx={{ textAlign: "center", py: 8, bgcolor: 'background.paper', borderRadius: 3 }}>
+              <Box
+                sx={{
+                  textAlign: "center",
+                  py: 8,
+                  bgcolor: "background.paper",
+                  borderRadius: 3,
+                }}
+              >
                 <SearchIcon
-                  sx={{ fontSize: 64, color: "text.secondary", mb: 2, opacity: 0.5 }}
+                  sx={{
+                    fontSize: 64,
+                    color: "text.secondary",
+                    mb: 2,
+                    opacity: 0.5,
+                  }}
                 />
                 <Typography variant="h6" color="text.secondary" gutterBottom>
                   Продукты не найдены
@@ -876,14 +819,14 @@ const ProductsPage = () => {
           aria-label="filter"
           onClick={() => setFilterOpen(true)}
           sx={{
-            position: 'fixed',
+            position: "fixed",
             bottom: 74,
             right: 24,
             bgcolor: mainColor,
-            '&:hover': {
+            "&:hover": {
               bgcolor: mainColor,
-              opacity: 0.9
-            }
+              opacity: 0.9,
+            },
           }}
         >
           <Badge badgeContent={activeFiltersCount} color="error">

@@ -125,7 +125,7 @@ const Header = () => {
   };
 
   const navigationLinks = [
-    { label: "Главная", path: "/", icon: <HomeOutlinedIcon /> },
+    { label: "Товары", path: "/pages/product", icon: <CategoryOutlinedIcon /> },
     {
       label: "Каталог",
       path: "/pages/catalog",
@@ -447,14 +447,14 @@ const Header = () => {
             />
 
             <BottomNavigationAction
-              label="Каталог"
-              value="/pages/catalog"
+              label="Товары"
+              value="/pages/product"
               icon={
                 <CategoryOutlinedIcon
                   sx={{
                     fontSize: "24px",
                     color:
-                      path === "/pages/catalog"
+                      path === "/pages/product"
                         ? mainColor
                         : themeColors.secondary,
                   }}

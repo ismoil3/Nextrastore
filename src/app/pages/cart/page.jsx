@@ -16,7 +16,13 @@ import {
   Badge,
   CircularProgress,
   Chip,
-  Divider,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import {
   Delete as DeleteIcon,
@@ -26,6 +32,8 @@ import {
   ShoppingBag,
 } from "@mui/icons-material";
 import { mainColor } from "@/theme/main";
+import { jwtDecode } from "jwt-decode";
+import axiosRequest from "@/utils/axiosRequest";
 
 const Cart = () => {
   const {
@@ -38,6 +46,68 @@ const Cart = () => {
   } = useCartStore();
 
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState({});
+  const [userId, setUserId] = useState("");
+  const [checkoutDialog, setCheckoutDialog] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    phone: "",
+    address: "",
+  });
+  const [notification, setNotification] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+
+  // Telegram bot configuration
+  const TELEGRAM_BOT_TOKEN = "8201434964:AAHlNtR9CZCi0jbKIf_Ds1L7b-NTMUdYR8A";
+  const TELEGRAM_CHAT_ID = "-1003146801591";
+
+  const getProfile = async () => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("access_token");
+      if (!token) {
+        console.log("Токен не найден!");
+        return;
+      }
+
+      try {
+        const decoded = jwtDecode(token);
+        setUserId(decoded?.sid);
+
+        if (!decoded?.sid) {
+          console.log("ID пользователя не найден в токене");
+          return;
+        }
+
+        setLoading(true);
+        const { data } = await axiosRequest.get(
+          `UserProfile/get-user-profile-by-id?id=${decoded.sid}`
+        );
+
+        if (data.data) {
+          setUser(data.data);
+          // Auto-fill user info from profile
+          setUserInfo({
+            name:
+              data.userName || data.data.fullName || data.data.userName || "",
+            phone: data.data.phone || data.data.phoneNumber || "",
+            address: data.data.address || data.data.deliveryAddress || "",
+          });
+        }
+
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log("Ошибка декодирования токена:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -69,9 +139,116 @@ const Cart = () => {
     await clearCart();
   };
 
-  const getTotalWithDelivery = () => {
-    return (productsFromCart?.totalPrice || 0).toFixed(2);
+  // Function to send order to Telegram
+  const sendOrderToTelegram = async () => {
+    // Validate required user info
+    if (!userInfo.name || !userInfo.phone) {
+      setNotification({
+        open: true,
+        message: "Пожалуйста, заполните имя и телефон в вашем профиле",
+        severity: "error",
+      });
+      return;
+    }
+
+    try {
+      const orderDetails = generateOrderMessage();
+
+      const response = await fetch(
+        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text: orderDetails,
+            parse_mode: "HTML",
+          }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.ok) {
+        setNotification({
+          open: true,
+          message:
+            "Заказ успешно отправлен! Мы свяжемся с вами в ближайшее время.",
+          severity: "success",
+        });
+        setCheckoutDialog(false);
+        await clearCart();
+      } else {
+        throw new Error("Failed to send message");
+      }
+    } catch (error) {
+      console.error("Error sending to Telegram:", error);
+      setNotification({
+        open: true,
+        message: "Ошибка при отправке заказа. Пожалуйста, попробуйте еще раз.",
+        severity: "error",
+      });
+    }
   };
+
+  // Generate formatted order message for Telegram
+  const generateOrderMessage = () => {
+    let message = `🛍️ <b>НОВЫЙ ЗАКАЗ</b>\n\n`;
+    message += `👤 <b>Клиент:</b> ${userInfo.name}\n`;
+    message += `📞 <b>Телефон:</b> ${userInfo.phone}\n`;
+
+    if (userInfo.address) {
+      message += `🏠 <b>Адрес:</b> ${userInfo.address}\n`;
+    }
+
+    message += `\n📦 <b>Товары:</b>\n`;
+
+    productsFromCart?.productsInCart?.forEach((item, index) => {
+      message += `\n${index + 1}. ${item.product.productName}\n`;
+      message += `   • Бренд: ${item.product.brand || "Не указан"}\n`;
+      message += `   • Количество: ${item.quantity}\n`;
+    });
+
+    message += `\n⏰ <b>Время заказа:</b> ${new Date().toLocaleString()}`;
+
+    return message;
+  };
+
+  const handleCheckout = () => {
+    // Check if we have required user info
+    if (!userInfo.name || !userInfo.phone) {
+      setNotification({
+        open: true,
+        message:
+          "Пожалуйста, обновите ваш профиль с именем и телефоном перед оформлением заказа",
+        severity: "warning",
+      });
+      return;
+    }
+    setCheckoutDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setCheckoutDialog(false);
+  };
+
+  const handleCloseNotification = () => {
+    setNotification((prev) => ({ ...prev, open: false }));
+  };
+
+  // Calculate total price
+  const calculateTotal = () => {
+    return (
+      productsFromCart?.productsInCart?.reduce((sum, item) => {
+        return sum + item.product.price * item.quantity;
+      }, 0) || 0
+    );
+  };
+
+  // Check if user info is complete
+  const isUserInfoComplete = userInfo.name && userInfo.phone;
 
   // Framer Motion variants
   const containerVariants = {
@@ -350,27 +527,18 @@ const Cart = () => {
                             >
                               <Chip
                                 size="small"
-                                label={item.product.brand || "Бренд"}
-                                sx={{
-                                  backgroundColor: "rgba(93, 63, 211, 0.1)",
-                                  color: mainColor,
-                                  fontWeight: "medium",
-                                }}
-                              />
-                              <Chip
-                                size="small"
                                 label={item.product.categoryName}
                                 sx={{
                                   backgroundColor: item.product.color,
                                   color: mainColor,
                                   fontWeight: "medium",
-                                  px:"5px"
+                                  px: "5px",
                                 }}
                               />
                             </Box>
                           </Box>
 
-                          {/* Price and Remove Button */}
+                          {/*  Remove Button */}
                           <Box
                             sx={{
                               display: "flex",
@@ -380,31 +548,6 @@ const Cart = () => {
                               ml: 2,
                             }}
                           >
-                            <Typography
-                              variant="subtitle1"
-                              fontWeight="bold"
-                              sx={{
-                                background: `linear-gradient(45deg, ${mainColor} 30%, ${mainColor} 90%)`,
-                                backgroundClip: "text",
-                                textFillColor: "transparent",
-                              }}
-                            >
-                              ${item.product.price}
-                            </Typography>
-
-                            <IconButton
-                              size="small"
-                              onClick={() => handleRemoveItem(item.id)}
-                              sx={{
-                                color: "#ff3d71",
-                                "&:hover": {
-                                  backgroundColor: "rgba(255, 61, 113, 0.1)",
-                                },
-                              }}
-                            >
-                              <DeleteIcon fontSize="small" />
-                            </IconButton>
-
                             {/* Quantity Controls */}
                             <Grid sx={{ mr: "30px" }} item xs={6} sm={2}>
                               <Box
@@ -457,6 +600,18 @@ const Cart = () => {
                                 </Box>
                               </Box>
                             </Grid>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleRemoveItem(item.id)}
+                              sx={{
+                                color: "#ff3d71",
+                                "&:hover": {
+                                  backgroundColor: "rgba(255, 61, 113, 0.1)",
+                                },
+                              }}
+                            >
+                              <DeleteIcon fontSize="small" />
+                            </IconButton>
                           </Box>
                         </Paper>
                       </motion.div>
@@ -470,140 +625,184 @@ const Cart = () => {
           {/* Order Summary */}
           <Grid item xs={12} md={4}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
             >
               <Paper
                 sx={{
+                  p: 3,
                   borderRadius: "24px",
-                  overflow: "hidden",
-                  position: { md: "sticky" },
-                  top: { md: 20 },
                   background: "white",
                   boxShadow: "0px 10px 30px rgba(93, 63, 211, 0.1)",
+                  position: "sticky",
+                  top: 20,
                 }}
               >
-                {/* Summary Header */}
+                <Typography variant="h6" fontWeight="bold" mb={3}>
+                  Итог заказа
+                </Typography>
+
+                {/* User Info Preview */}
                 <Box
                   sx={{
-                    p: 3,
-                    background: `linear-gradient(45deg, ${mainColor} 30%, ${mainColor} 90%)`,
+                    mb: 2,
+                    p: 2,
+                    backgroundColor: "grey.50",
+                    borderRadius: 1,
                   }}
                 >
-                  <Typography variant="h6" fontWeight="bold" color="white">
-                    Итог Заказа
+                  <Typography variant="subtitle2" fontWeight="bold" mb={1}>
+                    Данные для оформить:
                   </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: userInfo.name ? "text.primary" : "error.main",
+                    }}
+                  >
+                    <strong>Имя:</strong> {userInfo.name || "Не указано"}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: userInfo.phone ? "text.primary" : "error.main",
+                    }}
+                  >
+                    <strong>Телефон:</strong> {userInfo.phone || "Не указан"}
+                  </Typography>
+
+                  {!isUserInfoComplete && (
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      sx={{ mt: 1 }}
+                      component={Link}
+                      href="/profile" // Adjust this route to your profile page
+                    >
+                      Обновить профиль
+                    </Button>
+                  )}
                 </Box>
 
-                {/* Summary Content */}
-                <Box sx={{ p: 3 }}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      mb: 2,
-                    }}
-                  >
-                    <Typography variant="body1" color="text.secondary">
-                      Промежуточный итог ({productsFromCart?.totalProducts}{" "}
-                      товаров)
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      color="black"
-                      fontWeight="medium"
-                    >
-                      ${productsFromCart?.totalPrice}
-                    </Typography>
-                  </Box>
+                <Button
+                  variant="contained"
+                  size="large"
+                  fullWidth
+                  onClick={handleCheckout}
+                  disabled={!isUserInfoComplete}
+                  sx={{
+                    borderRadius: "50px",
+                    py: 1.5,
+                    background: `linear-gradient(45deg, ${mainColor} 30%, ${mainColor} 90%)`,
+                    boxShadow: "0px 4px 20px rgba(93, 63, 211, 0.25)",
+                    "&:hover": {
+                      transform: "translateY(-2px)",
+                      boxShadow: "0px 6px 25px rgba(93, 63, 211, 0.35)",
+                    },
+                    "&:disabled": {
+                      background: "grey.400",
+                      transform: "none",
+                      boxShadow: "none",
+                    },
+                  }}
+                >
+                  {isUserInfoComplete ? "Оформить заказ" : "Заполните профиль"}
+                </Button>
 
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      mb: 2,
-                    }}
+                {!isUserInfoComplete && (
+                  <Typography
+                    variant="body2"
+                    color="error"
+                    sx={{ mt: 1, textAlign: "center", color: "text.primary" }}
                   >
-                    <Typography variant="body1" color="text.secondary">
-                      Скидка
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      color="#00a870"
-                      fontWeight="medium"
-                    >
-                      -$
-                      {(
-                        productsFromCart?.totalDiscountPrice -
-                        productsFromCart?.totalPrice
-                      ).toFixed(2)}
-                    </Typography>
-                  </Box>
-
-                  <Divider sx={{ my: 2 }} />
-
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      mb: 3,
-                    }}
-                  >
-                    <Typography variant="h6" fontWeight="bold">
-                      Итого
-                    </Typography>
-                    <Typography
-                      variant="h6"
-                      fontWeight="bold"
-                      sx={{
-                        background: `linear-gradient(45deg, ${mainColor} 30%, ${mainColor} 90%)`,
-                        backgroundClip: "text",
-                        textFillColor: "transparent",
-                      }}
-                    >
-                      ${getTotalWithDelivery()}
-                    </Typography>
-                  </Box>
-
-                  <Button
-                    variant="contained"
-                    size="large"
-                    fullWidth
-                    sx={{
-                      borderRadius: "50px",
-                      py: 1.5,
-                      background: `linear-gradient(45deg, ${mainColor} 30%, ${mainColor} 90%)`,
-                      boxShadow: "0px 4px 20px rgba(93, 63, 211, 0.25)",
-                    }}
-                  >
-                    Перейти к Оплате
-                  </Button>
-
-                  <Box
-                    sx={{
-                      mt: 3,
-                      p: 2,
-                      borderRadius: 3,
-                      backgroundColor: "#f8f6ff",
-                      border: "1px dashed #d1c4ff",
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      align="center"
-                    >
-                      Продолжая, вы соглашаетесь с нашими Условиями обслуживания
-                      и Политикой конфиденциальности
-                    </Typography>
-                  </Box>
-                </Box>
+                    Заполните имя и телефон в профиле для оформления заказа
+                  </Typography>
+                )}
               </Paper>
             </motion.div>
           </Grid>
         </Grid>
       )}
+
+      {/* Checkout Confirmation Dialog */}
+      <Dialog
+        open={checkoutDialog}
+        onClose={handleCloseDialog}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>
+          <Typography variant="h6" fontWeight="bold">
+            Подтверждение заказа
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <Typography sx={{ color: "text.primary" }} variant="body1" mb={2}>
+            Вы уверены, что хотите оформить заказ?
+          </Typography>
+
+          <Box sx={{ mb: 2 }}>
+            <Typography
+              sx={{ color: "text.primary" }}
+              variant="subtitle2"
+              fontWeight="bold"
+              mb={1}
+            >
+              Данные для оформить:
+            </Typography>
+            <Typography sx={{ color: "text.primary" }} variant="body2">
+              <strong>Имя:</strong> {userInfo.name}
+            </Typography>
+            <Typography sx={{ color: "text.primary" }} variant="body2">
+              <strong>Телефон:</strong> {userInfo.phone}
+            </Typography>
+            {userInfo.address && (
+              <Typography sx={{ color: "text.primary" }} variant="body2">
+                <strong>Адрес:</strong> {userInfo.address}
+              </Typography>
+            )}
+          </Box>
+
+          <Box
+            sx={{ mt: 2, p: 2, backgroundColor: "grey.50", borderRadius: 1 }}
+          >
+           
+            <Typography variant="body2" color="text.secondary">
+              После подтверждения заказ будет отправлен в Telegram и мы свяжемся
+              с вами для уточнения деталей
+            </Typography>
+          </Box>
+        </DialogContent>
+        <DialogActions sx={{ p: 3 }}>
+          <Button onClick={handleCloseDialog}>Отмена</Button>
+          <Button
+            variant="contained"
+            onClick={sendOrderToTelegram}
+            sx={{
+              background: `linear-gradient(45deg, ${mainColor} 30%, ${mainColor} 90%)`,
+            }}
+          >
+            Подтвердить заказ
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Notification Snackbar */}
+      <Snackbar
+        open={notification.open}
+        autoHideDuration={6000}
+        onClose={handleCloseNotification}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert
+          onClose={handleCloseNotification}
+          severity={notification.severity}
+          sx={{ width: "100%" }}
+        >
+          {notification.message}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

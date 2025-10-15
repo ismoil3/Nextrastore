@@ -3,16 +3,12 @@ import { useEffect, useState, useCallback, useMemo } from "react";
 import {
   Box,
   Container,
-  Typography,
   Button,
-  Drawer,
-  Divider,
+
   Snackbar,
   Alert,
   CircularProgress,
-  IconButton,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import HeroCarousel from "./components/ui/home/hero-carousel";
 import ServicesSection from "./components/ui/home/services-section";
 import ProductsGrid from "./components/ui/home/products-grid";
@@ -31,7 +27,6 @@ const Home = () => {
   // State management
   const [isLoading, setIsLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [filterOpen, setFilterOpen] = useState(false);
   const [notification, setNotification] = useState({
     open: false,
     message: "",
@@ -166,7 +161,6 @@ const Home = () => {
         {/* Services Section */}
         <ServicesSection mainColor={mainColor} />
 
-
         {/* Products Grid */}
         <ProductsGrid
           products={products}
@@ -199,41 +193,12 @@ const Home = () => {
               loadingMore && <CircularProgress size={16} color="inherit" />
             }
           >
-            {loadingMore ? "Загрузка..." : "Загрузить больше товаров"}
+            {loadingMore ? "Загрузка..." : "Показать ещё"}
           </Button>
         </Box>
       </Container>
 
-      {/* Filter Drawer */}
-      <Drawer
-        anchor="right"
-        open={filterOpen}
-        onClose={() => setFilterOpen(false)}
-      >
-        <Box sx={{ width: 280, p: 3 }}>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              mb: 3,
-            }}
-          >
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>
-              Фильтры
-            </Typography>
-            <IconButton onClick={() => setFilterOpen(false)}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
 
-          <Divider sx={{ mb: 3 }} />
-
-          <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
-            Диапазон цен
-          </Typography>
-        </Box>
-      </Drawer>
 
       {/* Notification Snackbar */}
       <Snackbar

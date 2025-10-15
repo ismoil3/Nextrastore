@@ -13,10 +13,10 @@ import {
   Divider,
   Avatar,
 } from "@mui/material";
-import { 
-  Visibility, 
-  VisibilityOff, 
-  LockOutlined, 
+import {
+  Visibility,
+  VisibilityOff,
+  LockOutlined,
   EmailOutlined,
   Google as GoogleIcon,
   Facebook as FacebookIcon,
@@ -121,7 +121,7 @@ export default function LoginPage() {
             }}
           >
             <Typography variant="h3" fontWeight="bold" sx={{ mb: 2 }}>
-              EXCLUSIVE
+              SAREZ
             </Typography>
             <Typography variant="h6" sx={{ mb: 4 }}>
               С возвращением!
