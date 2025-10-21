@@ -41,7 +41,7 @@ export default function NotFound() {
         variant="body1"
         sx={{ color: "text.secondary", maxWidth: 400 }}
       >
-        It looks like you've followed an incorrect link or the page has been
+        It looks like you&apos;ve followed an incorrect link or the page has been
         removed.
       </Typography>
 

@@ -15,7 +15,7 @@ const ServicesSection = memo(({ mainColor }: ServicesSectionProps) => {
     {
       icon: <LocalShippingIcon />,
       title: "Free delivery",
-      desc: "For orders from 5000₽",
+      desc: "",
     },
     {
       icon: <StarIcon />,

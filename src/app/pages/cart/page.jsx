@@ -341,7 +341,7 @@ const Cart = () => {
               Your cart is empty
             </Typography>
             <Typography color="text.secondary" mb={4}>
-              It looks like you haven't added any products yet
+              It looks like you haven&apos;t added any products yet
             </Typography>
             <Button
               component={Link}
