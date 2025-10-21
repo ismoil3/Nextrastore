@@ -5,31 +5,31 @@ import { useProductsStore } from "@/app/store/product/product";
 import { imgUrl } from "@/config/config";
 import { mainColor } from "@/theme/main";
 import {
-  Box,
-  CircularProgress,
-  Divider,
-  Paper,
-  Typography,
-  IconButton,
-  Drawer,
-  useMediaQuery,
-  useTheme,
-  Chip,
-  Button,
-  Badge,
-  Fab,
-  AppBar,
-  Toolbar,
-  Collapse,
-} from "@mui/material";
-import {
-  FilterList as FilterIcon,
-  Close as CloseIcon,
-  Search as SearchIcon,
   Clear as ClearIcon,
+  Close as CloseIcon,
   ExpandMore as ExpandMoreIcon,
+  FilterList as FilterIcon,
+  Search as SearchIcon,
   Tune as TuneIcon,
 } from "@mui/icons-material";
+import {
+  AppBar,
+  Badge,
+  Box,
+  Button,
+  Chip,
+  CircularProgress,
+  Collapse,
+  Divider,
+  Drawer,
+  Fab,
+  IconButton,
+  Paper,
+  Toolbar,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -191,7 +191,7 @@ const ProductsPage = () => {
           variant="h6"
           sx={{ color: "text.primary", fontWeight: 700, fontSize: "1.25rem" }}
         >
-          Фильтры
+          Filters
         </Typography>
         {activeFiltersCount > 0 && (
           <Button
@@ -199,13 +199,13 @@ const ProductsPage = () => {
             size="small"
             sx={{ color: "text.secondary", textTransform: "none" }}
           >
-            Очистить все
+            Clear all
           </Button>
         )}
       </Box>
       <Divider sx={{ mb: 3 }} />
 
-      {/* Бренды */}
+      {/* Brands */}
       <Box sx={{ mb: 3 }}>
         <Box
           sx={{
@@ -221,7 +221,7 @@ const ProductsPage = () => {
             variant="subtitle1"
             sx={{ fontWeight: 600, color: "text.primary" }}
           >
-            Бренды
+            Brands
           </Typography>
           <ExpandMoreIcon
             sx={{
@@ -298,7 +298,7 @@ const ProductsPage = () => {
         </Collapse>
       </Box>
 
-      {/* Категории */}
+      {/* Categories */}
       <Box sx={{ mb: 3 }}>
         <Box
           sx={{
@@ -314,7 +314,7 @@ const ProductsPage = () => {
             variant="subtitle1"
             sx={{ fontWeight: 600, color: "text.primary" }}
           >
-            Категории
+            Categories
           </Typography>
           <ExpandMoreIcon
             sx={{
@@ -393,7 +393,7 @@ const ProductsPage = () => {
         </Collapse>
       </Box>
 
-      {/* Подкатегории */}
+      {/* Subcategories */}
       <Box sx={{ mb: 3 }}>
         <Box
           sx={{
@@ -409,7 +409,7 @@ const ProductsPage = () => {
             variant="subtitle1"
             sx={{ fontWeight: 600, color: "text.primary" }}
           >
-            Подкатегории
+            Subcategories
           </Typography>
           <ExpandMoreIcon
             sx={{
@@ -512,7 +512,7 @@ const ProductsPage = () => {
           >
             <Toolbar sx={{ px: { xs: 2, sm: 3 } }}>
               <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 700 }}>
-                Каталог
+                Catalog
               </Typography>
               <Badge badgeContent={activeFiltersCount} color="primary">
                 <IconButton
@@ -572,7 +572,7 @@ const ProductsPage = () => {
               }}
             >
               <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                Фильтры
+                Filters
               </Typography>
               <IconButton onClick={() => setFilterOpen(false)} size="large">
                 <CloseIcon />
@@ -603,7 +603,7 @@ const ProductsPage = () => {
                   },
                 }}
               >
-                Показать результаты
+                Show results
               </Button>
             </Box>
           </Drawer>
@@ -616,7 +616,7 @@ const ProductsPage = () => {
                 variant="h4"
                 sx={{ fontWeight: 700, mb: 3, color: "text.primary" }}
               >
-                Каталог товаров
+                Catalog products
               </Typography>
             )}
 
@@ -635,11 +635,11 @@ const ProductsPage = () => {
                   variant="body2"
                   sx={{ color: "text.secondary", mr: 1 }}
                 >
-                  Активные фильтры:
+                  Active filters:
                 </Typography>
                 {category && (
                   <Chip
-                    label={`Категория: ${
+                    label={`Category: ${
                       categories.find((c) => String(c.id) === category)
                         ?.categoryName || category
                     }`}
@@ -660,7 +660,7 @@ const ProductsPage = () => {
                 )}
                 {subCategory && (
                   <Chip
-                    label={`Подкатегория: ${
+                    label={`Subcategory: ${
                       subCategories.find((sc) => String(sc.id) === subCategory)
                         ?.subCategoryName || subCategory
                     }`}
@@ -681,7 +681,7 @@ const ProductsPage = () => {
                 )}
                 {brand && (
                   <Chip
-                    label={`Бренд: ${
+                    label={`Brand: ${
                       brands.find((b) => String(b.id) === brand)?.brandName ||
                       brand
                     }`}
@@ -702,7 +702,7 @@ const ProductsPage = () => {
                 )}
                 {minPrice && (
                   <Chip
-                    label={`От: ${minPrice} ₽`}
+                    label={`From: ${minPrice} ₽`}
                     onDelete={() => updateQueryParam("minPrice", "")}
                     size="small"
                     sx={{
@@ -720,7 +720,7 @@ const ProductsPage = () => {
                 )}
                 {maxPrice && (
                   <Chip
-                    label={`До: ${maxPrice} ₽`}
+                    label={`To: ${maxPrice} ₽`}
                     onDelete={() => updateQueryParam("maxPrice", "")}
                     size="small"
                     sx={{
@@ -746,7 +746,7 @@ const ProductsPage = () => {
                     textTransform: "none",
                   }}
                 >
-                  Очистить все
+                  Clear all
                 </Button>
               </Box>
             )}
@@ -769,10 +769,10 @@ const ProductsPage = () => {
                   }}
                 />
                 <Typography variant="h6" color="text.secondary" gutterBottom>
-                  Продукты не найдены
+                  Products not found
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Попробуйте изменить параметры фильтрации
+                  Try changing filter parameters
                 </Typography>
               </Box>
             ) : (
@@ -805,7 +805,7 @@ const ProductsPage = () => {
                   color: "text.secondary",
                 }}
               >
-                Вы просмотрели все товары
+                You have viewed all products
               </Typography>
             )}
           </Box>

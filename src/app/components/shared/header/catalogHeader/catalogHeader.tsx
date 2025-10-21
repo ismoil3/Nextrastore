@@ -72,21 +72,21 @@ const CatalogHeader: FC = () => {
   // Featured sections for the catalog menu
   const featuredSections = [
     {
-      title: "Новинки",
+      title: "New arrivals",
       icon: <NewReleasesOutlinedIcon sx={{ color: themeColors.warning }} />,
-      items: ["Только что добавлено", "Новые поступления", "Скоро в продаже"],
+      items: ["Just added", "New arrivals", "Coming soon"],
       color: themeColors.warning,
     },
     {
-      title: "Спецпредложения",
+      title: "Special offers",
       icon: <LocalOfferOutlinedIcon sx={{ color: themeColors.accent }} />,
-      items: ["Распродажа", "Комплекты со скидкой", "Сезонные акции"],
+      items: ["Sale", "Discounted bundles", "Seasonal promotions"],
       color: themeColors.accent,
     },
     {
-      title: "Популярное",
+      title: "Popular",
       icon: <TrendingUpOutlinedIcon sx={{ color: themeColors.success }} />,
-      items: ["Самые просматриваемые", "Бестселлеры", "Рекомендуемые товары"],
+      items: ["Most viewed", "Bestsellers", "Recommended products"],
       color: themeColors.success,
     },
   ];
@@ -143,7 +143,7 @@ const CatalogHeader: FC = () => {
             transition: "all 0.2s ease",
           }}
         >
-          Каталог
+          Catalog
         </Button>
 
         {/* Desktop Catalog Drawer */}
@@ -218,7 +218,7 @@ const CatalogHeader: FC = () => {
                     borderBottom: `1px solid ${themeColors.lightGray}`,
                   }}
                 >
-                  Категории
+                  Categories
                 </Typography>
 
                 <List
@@ -307,7 +307,7 @@ const CatalogHeader: FC = () => {
                     <Typography
                       sx={{ color: themeColors.darkGray, px: 2, py: 1 }}
                     >
-                      Загрузка категорий...
+                      Loading categories...
                     </Typography>
                   )}
                 </List>
@@ -332,7 +332,7 @@ const CatalogHeader: FC = () => {
                 >
                   {selectedCategoryData
                     ? selectedCategoryData.categoryName
-                    : "Выберите категорию"}
+                    : "Select category"}
                 </Typography>
 
                 <Box sx={{ minHeight: "200px" }}>
@@ -395,7 +395,7 @@ const CatalogHeader: FC = () => {
                             }}
                           >
                             <Typography sx={{ color: themeColors.darkGray }}>
-                              Нет подкатегорий
+                              No subcategories
                             </Typography>
                           </Box>
                         )
@@ -411,7 +411,7 @@ const CatalogHeader: FC = () => {
                           }}
                         >
                           <Typography sx={{ color: themeColors.darkGray }}>
-                            Выберите категорию, чтобы увидеть подкатегории
+                            Select a category to see subcategories
                           </Typography>
                         </Box>
                       )}
@@ -441,7 +441,7 @@ const CatalogHeader: FC = () => {
                     borderBottom: `1px solid ${themeColors.lightGray}`,
                   }}
                 >
-                  Рекомендуем
+                  Recommended
                 </Typography>
 
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -526,7 +526,7 @@ const CatalogHeader: FC = () => {
             },
           }}
         >
-          Каталог
+          Catalog
         </Button>
       </Box>
     </>

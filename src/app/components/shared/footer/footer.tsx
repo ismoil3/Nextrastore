@@ -1,13 +1,12 @@
 "use client";
-import React from "react";
-import { Box, Typography, IconButton } from "@mui/material";
+import { mainColor } from "@/theme/main";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import { mainColor } from "@/theme/main";
-import Container from "../container/container";
-import { usePathname } from "next/navigation";
+import { Box, IconButton, Typography } from "@mui/material";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import Container from "../container/container";
 
 const Footer = () => {
   const path = usePathname();
@@ -55,7 +54,7 @@ const Footer = () => {
               }}
               onClick={() => window.scrollTo(0, 0)}
             >
-              Главная
+              Home
             </Typography>
             <Typography
               variant="body2"
@@ -65,7 +64,7 @@ const Footer = () => {
               }}
               onClick={() => window.open("/pages/catalog", "_self")}
             >
-              Каталог
+              Catalog
             </Typography>
             <Typography
               variant="body2"
@@ -75,7 +74,7 @@ const Footer = () => {
               }}
               onClick={() => window.open("/about", "_self")}
             >
-              О нас
+              About Us
             </Typography>
             <Typography
               variant="body2"
@@ -85,7 +84,7 @@ const Footer = () => {
               }}
               onClick={() => window.open("/contact", "_self")}
             >
-              Контакты
+              Contact
             </Typography>
           </Box>
 
@@ -131,7 +130,7 @@ const Footer = () => {
           <Link href={"https://softclub.tj"} target="_blank">
             SOFTCLUB.TJ
           </Link>
-          . Все права защищены.
+          . All rights reserved.
         </Typography>
       </Container>
     </Box>

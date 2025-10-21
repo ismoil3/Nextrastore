@@ -1,23 +1,23 @@
 "use client";
-import { useEffect, useState, useCallback, useMemo } from "react";
 import {
-  Box,
-  Container,
-  Button,
-  Snackbar,
   Alert,
+  Box,
+  Button,
   CircularProgress,
+  Container,
+  Snackbar,
 } from "@mui/material";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import HeroCarousel from "./components/ui/home/hero-carousel";
-import ServicesSection from "./components/ui/home/services-section";
 import ProductsGrid from "./components/ui/home/products-grid";
+import ServicesSection from "./components/ui/home/services-section";
 
 // Optimized components
 // Store hooks (assuming these exist)
-import { useHomeStore } from "./store/home/useHomeStore";
 import { useCartStore } from "@/app/store/cart/cart";
 import { imgUrl } from "@/config/config";
 import { mainColor } from "@/theme/main";
+import { useHomeStore } from "./store/home/useHomeStore";
 
 const Home = () => {
   // State management
@@ -39,29 +39,29 @@ const Home = () => {
     () => [
       {
         id: 1,
-        title: "Новые ноутбуки 2025",
-        subtitle: "Самые мощные и стильные ноутбуки для работы и игр",
+        title: "New laptops 2025",
+        subtitle: "The most powerful and stylish laptops for work and gaming",
         image:
           "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1600&q=80",
-        cta: "Купить сейчас",
+        cta: "Buy now",
         color: "#ff6b6b",
       },
       {
         id: 2,
-        title: "Смартфоны нового поколения",
-        subtitle: "Обновите свои устройства на новейшие модели",
+        title: "Next generation smartphones",
+        subtitle: "Update your devices to the latest models",
         image:
           "https://images.unsplash.com/photo-1593642634367-d91a135587b5?auto=format&fit=crop&w=1600&q=80",
-        cta: "Посмотреть",
+        cta: "View",
         color: "#4dabf7",
       },
 
       {
         id: 4,
-        title: "Игровые устройства",
-        subtitle: "Игровые ноутбуки, аксессуары и периферия",
+        title: "Gaming devices",
+        subtitle: "Gaming laptops, accessories and peripherals",
         image: "/gamer-work-space-concept-top-260nw-2553721483.jpg",
-        cta: "Купить сейчас",
+        cta: "Buy now",
         color: "#f783ac",
       },
     ],
@@ -87,7 +87,7 @@ const Home = () => {
     );
     setNotification({
       open: true,
-      message: "Товар добавлен в корзину",
+      message: "Product added to cart",
       type: "success",
     });
   }
@@ -188,7 +188,7 @@ const Home = () => {
               loadingMore && <CircularProgress size={16} color="inherit" />
             }
           >
-            {loadingMore ? "Загрузка..." : "Показать ещё"}
+            {loadingMore ? "Loading..." : "Show more"}
           </Button>
         </Box>
       </Container>

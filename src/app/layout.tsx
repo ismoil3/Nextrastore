@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
-import Header from "./components/shared/header/header";
-import Footer from "./components/shared/footer/footer";
 import { Suspense } from "react";
+import Footer from "./components/shared/footer/footer";
+import Header from "./components/shared/header/header";
+import "./globals.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -17,16 +17,16 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Купить смартфоны: iPhone, Samsung, Xiaomi, Oppo Таджикистан",
+  title: "Buy smartphones: iPhone, Samsung, Xiaomi, Oppo Tajikistan",
   description:
-    "Интернет-магазин BestPrice — смартфоны iPhone, Samsung, Xiaomi, Oppo, Tecno, Infinix и другие по выгодным ценам с доставкой по Таджикистану. Гарантия и сервис.!",
+    "BestPrice online store — smartphones iPhone, Samsung, Xiaomi, Oppo, Tecno, Infinix and others at competitive prices with delivery to Tajikistan. Warranty and service.!",
   keywords: [
-    "смартфоны Таджикистан",
-    "купить iPhone Душанбе",
-    "Samsung Galaxy Таджикистан",
-    "Xiaomi Redmi онлайн",
-    "телефоны Душанбе",
-    "онлайн магазин телефонов Таджикистан",
+    "smartphones Tajikistan",
+    "buy iPhone Dushanbe",
+    "Samsung Galaxy Tajikistan",
+    "Xiaomi Redmi online",
+    "phones Dushanbe",
+    "online phone store Tajikistan",
     "Oppo",
     "Realme",
     "Tecno",
@@ -54,9 +54,9 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.sarezmobile.com"),
   openGraph: {
     title:
-      "BestPrice — Купить смартфоны iPhone, Samsung, Xiaomi, Oppo и другие бренды",
+      "BestPrice — Buy smartphones iPhone, Samsung, Xiaomi, Oppo and other brands",
     description:
-      "BestPrice — интернет-магазин смартфонов в Таджикистане. iPhone, Samsung, Xiaomi, Oppo, Realme, Huawei и другие бренды по низким ценам.",
+      "BestPrice — online smartphone store in Tajikistan. iPhone, Samsung, Xiaomi, Oppo, Realme, Huawei and other brands at low prices.",
     url: "https://www.sarezmobile.com",
     siteName: "BestPrice",
     images: [
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "BestPrice — смартфоны в Таджикистане",
+        alt: "BestPrice — smartphones in Tajikistan",
       },
     ],
     locale: "ru_RU",
@@ -73,9 +73,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "BestPrice — смартфоны в Таджикистане",
+    title: "BestPrice — smartphones in Tajikistan",
     description:
-      "Купить смартфоны Apple iPhone, Samsung Galaxy, Xiaomi, Oppo и другие бренды онлайн. Доставка по Таджикистану.",
+      "Buy smartphones Apple iPhone, Samsung Galaxy, Xiaomi, Oppo and other brands online. Delivery to Tajikistan.",
     images: ["/og-image.jpg"],
     creator: "@bestprice",
     site: "@bestprice",
@@ -131,7 +131,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Suspense fallback={<p>loading</p>}><Header/></Suspense>
+        <Suspense fallback={<p>loading</p>}>
+          <Header />
+        </Suspense>
         {children}
         <Footer />
       </body>

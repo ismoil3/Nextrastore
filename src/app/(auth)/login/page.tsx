@@ -1,5 +1,5 @@
 "use client";
-import * as React from "react";
+import type * as React from "react";
 import { useState } from "react";
 import {
   Box,
@@ -20,7 +20,7 @@ import {
   EmailOutlined,
   Google as GoogleIcon,
   Facebook as FacebookIcon,
-  GitHub as GitHubIcon
+  GitHub as GitHubIcon,
 } from "@mui/icons-material";
 import { useAuth } from "@/app/store/auth/useAuth";
 import { mainColor } from "@/theme/main";
@@ -39,7 +39,7 @@ export default function LoginPage() {
   const handleLogIn = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!email || !password) {
-      setError("Пожалуйста, заполните все поля");
+      setError("Please fill in all fields");
       return;
     }
     setError("");
@@ -124,10 +124,11 @@ export default function LoginPage() {
               SAREZ
             </Typography>
             <Typography variant="h6" sx={{ mb: 4 }}>
-              С возвращением!
+              Welcome Back!
             </Typography>
             <Typography variant="body1" sx={{ opacity: 0.9 }}>
-              Получите доступ к персонализированному опыту и эксклюзивному контенту, созданному специально для вас.
+              Get access to a personalized experience and exclusive content
+              created especially for you.
             </Typography>
           </Box>
 
@@ -160,16 +161,16 @@ export default function LoginPage() {
                 <LockOutlined />
               </Avatar>
               <Typography variant="h5" fontWeight="500">
-                Вход в EXCLUSIVE
+                Sign In to EXCLUSIVE
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Введите свои данные для доступа к аккаунту
+                Enter your credentials to access your account
               </Typography>
             </Box>
 
             <form onSubmit={handleLogIn}>
               <TextField
-                label="Имя пользователя"
+                label="Username"
                 variant="outlined"
                 required
                 fullWidth
@@ -200,7 +201,7 @@ export default function LoginPage() {
               />
 
               <TextField
-                label="Пароль"
+                label="Password"
                 variant="outlined"
                 required
                 type={showPassword ? "text" : "password"}
@@ -256,7 +257,7 @@ export default function LoginPage() {
                   underline="hover"
                   sx={{ fontWeight: 500 }}
                 >
-                  Забыли пароль?
+                  Forgot password?
                 </Link>
               </Box>
 
@@ -290,7 +291,7 @@ export default function LoginPage() {
                 type="submit"
                 disabled={loading}
               >
-                {loading ? "Вход..." : "Войти"}
+                {loading ? "Signing in..." : "Sign In"}
               </Button>
             </form>
 
@@ -301,7 +302,7 @@ export default function LoginPage() {
                   color="text.secondary"
                   sx={{ px: 1 }}
                 >
-                  Или войдите через
+                  Or sign in with
                 </Typography>
               </Divider>
             </Box>
@@ -334,14 +335,14 @@ export default function LoginPage() {
 
             <Box sx={{ textAlign: "center" }}>
               <Typography variant="body2" color="text.secondary">
-                Нет аккаунта?{" "}
+                Don&apos;t have an account?{" "}
                 <Link
                   href="/registration"
                   color={mainColor}
                   underline="hover"
                   sx={{ fontWeight: 500 }}
                 >
-                  Зарегистрируйтесь
+                  Sign Up
                 </Link>
               </Typography>
             </Box>

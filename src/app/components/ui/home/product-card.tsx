@@ -1,13 +1,13 @@
 "use client";
-import type React from "react";
-import { memo } from "react";
+import { Product } from "@/types/home";
+import AddIcon from "@mui/icons-material/Add";
+import StarIcon from "@mui/icons-material/Star";
+import { Box, IconButton, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Box, Typography, IconButton } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import StarIcon from "@mui/icons-material/Star";
-import { Product } from "@/types/home";
+import type React from "react";
+import { memo } from "react";
 
 interface ProductCardProps {
   product: Product;
@@ -70,7 +70,7 @@ const ProductCard = memo(
             }}
           >
             <Image
-              src={`${imgUrl}/${product.image}`}
+              src={`${imgUrl}${product.image}`}
               alt={product.productName}
               fill
               style={{
@@ -123,7 +123,7 @@ const ProductCard = memo(
                 mb: 0.5,
               }}
             >
-              {product.categoryName || "Категория"}
+              {product.categoryName || "Category"}
             </Typography>
 
             <Typography
@@ -171,13 +171,11 @@ const ProductCard = memo(
                   }}
                 >
                   {product.productInMyCart ? (
-                    <>
-                      В корзине
-                    </>
+                    <>In Cart</>
                   ) : (
                     <>
                       <AddIcon fontSize="small" />
-                      Добавить в корзину
+                      Add to Cart
                     </>
                   )}
                 </IconButton>

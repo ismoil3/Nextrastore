@@ -1,43 +1,43 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
-import { motion, AnimatePresence } from "framer-motion";
 import { imgUrl } from "@/config/config";
 import axiosRequest from "@/utils/axiosRequest";
+import { AnimatePresence, motion } from "framer-motion";
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
 
 // MUI imports
 import {
+  Avatar,
+  Backdrop,
   Box,
   Button,
-  Container,
-  TextField,
-  Typography,
-  IconButton,
-  Avatar,
-  Divider,
-  Modal,
-  Backdrop,
   CircularProgress,
+  Container,
+  Divider,
   Fade,
-  Tooltip,
+  IconButton,
+  Modal,
   Stack,
-  useTheme,
+  TextField,
+  Tooltip,
+  Typography,
   useMediaQuery,
+  useTheme,
 } from "@mui/material";
 
 // MUI Icons
+import { mainColor } from "@/theme/main";
 import {
+  ArrowBack as ArrowBackIcon,
+  Badge as BadgeIcon,
+  PhotoCamera as CameraIcon,
   Edit as EditIcon,
   Email as EmailIcon,
-  Phone as PhoneIcon,
-  Badge as BadgeIcon,
-  ArrowBack as ArrowBackIcon,
   Fingerprint as FingerprintIcon,
-  Person as PersonIcon,
   Key as KeyIcon,
-  PhotoCamera as CameraIcon,
+  Person as PersonIcon,
+  Phone as PhoneIcon,
 } from "@mui/icons-material";
-import { mainColor } from "@/theme/main";
 
 const ProfileCard = ({ title, icon, value, delay = 0 }) => {
   return (
@@ -96,7 +96,7 @@ const ProfileCard = ({ title, icon, value, delay = 0 }) => {
             color: "black",
           }}
         >
-          {value || "Не указано"}
+          {value || "Not specified"}
         </Typography>
       </Box>
     </motion.div>
@@ -147,14 +147,14 @@ const Profile = () => {
     phoneNumber: "",
     dob: "0001-01-01",
   });
-  const [imagePreview, ] = useState(null);
+  const [imagePreview] = useState(null);
   const [initialLoad, setInitialLoad] = useState(true);
 
   const getProfile = async () => {
     if (typeof window !== "undefined") {
       const token = localStorage.getItem("access_token");
       if (!token) {
-        console.log("Токен не найден!");
+        console.log("Token not found!");
         return;
       }
 
@@ -163,7 +163,7 @@ const Profile = () => {
         setUserId(decoded?.sid);
 
         if (!decoded?.sid) {
-          console.log("ID пользователя не найден в токене");
+          console.log("User ID not found in token");
           return;
         }
 
@@ -184,7 +184,7 @@ const Profile = () => {
       } catch (error) {
         setLoading(false);
         setInitialLoad(false);
-        console.log("Ошибка декодирования токена:", error);
+        console.log("Token decoding error:", error);
       }
     }
   };
@@ -228,7 +228,7 @@ const Profile = () => {
     setSuccess("");
 
     if (!userId) {
-      setError("ID пользователя не найден. Пожалуйста, войдите снова.");
+      setError("User ID not found. Please log in again.");
       return;
     }
 
@@ -259,7 +259,7 @@ const Profile = () => {
       );
 
       if (response.data.statusCode == "200") {
-        setSuccess("Профиль успешно обновлен!");
+        setSuccess("Profile successfully updated!");
         setOpenModal(false);
         // Refresh the user data
         getProfile();
@@ -267,14 +267,14 @@ const Profile = () => {
         setFile(null);
         setImagePreview(null);
       } else {
-        setError(response.data.message || "Не удалось обновить профиль");
+        setError(response.data.message || "Failed to update profile");
       }
 
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      setError("Ошибка обновления профиля: " + (error.message || "Неизвестная ошибка"));
-      console.log("Ошибка обновления профиля:", error);
+      setError("Profile update error: " + (error.message || "Unknown error"));
+      console.log("Profile update error:", error);
     }
   };
 
@@ -502,7 +502,7 @@ const Profile = () => {
                   >
                     {!user.image && user.userName?.charAt(0).toUpperCase()}
                   </Avatar>
-                  <Tooltip title="Редактировать профиль">
+                  <Tooltip title="Edit Profile">
                     <IconButton
                       size="small"
                       sx={{
@@ -574,7 +574,7 @@ const Profile = () => {
                   },
                 }}
               >
-                Редактировать профиль
+                Edit Profile
               </Button>
             </motion.div>
           </Box>
@@ -593,7 +593,7 @@ const Profile = () => {
                 sx={{ mb: 3, display: "flex", alignItems: "center" }}
               >
                 <PersonIcon sx={{ mr: 1, color: "primary.main" }} />
-                Личная информация
+                Personal Information
               </Typography>
             </motion.div>
 
@@ -609,37 +609,37 @@ const Profile = () => {
               }}
             >
               <ProfileCard
-                title="Имя"
+                title="First Name"
                 icon={<BadgeIcon />}
                 value={user.firstName}
                 delay={0.9}
               />
               <ProfileCard
-                title="Фамилия"
+                title="Last Name"
                 icon={<BadgeIcon />}
                 value={user.lastName}
                 delay={1.0}
               />
               <ProfileCard
-                title="Электронная почта"
+                title="Email"
                 icon={<EmailIcon />}
                 value={user.email}
                 delay={1.1}
               />
               <ProfileCard
-                title="Телефон"
+                title="Phone"
                 icon={<PhoneIcon />}
                 value={user.phoneNumber}
                 delay={1.2}
               />
               <ProfileCard
-                title="Имя пользователя"
+                title="Username"
                 icon={<PersonIcon />}
                 value={user.userName}
                 delay={1.3}
               />
               <ProfileCard
-                title="ID пользователя"
+                title="User ID"
                 icon={<FingerprintIcon />}
                 value={user.userId}
                 delay={1.4}
@@ -659,7 +659,7 @@ const Profile = () => {
                 sx={{ mb: 3, display: "flex", alignItems: "center" }}
               >
                 <KeyIcon sx={{ mr: 1, color: "primary.main" }} />
-                Роли и разрешения
+                Roles and Permissions
               </Typography>
             </motion.div>
 
@@ -714,7 +714,7 @@ const Profile = () => {
               }}
             >
               <Typography variant="h5" component="h2" fontWeight="bold">
-                Редактировать профиль
+                Edit Profile
               </Typography>
               <IconButton
                 onClick={() => {
@@ -820,7 +820,7 @@ const Profile = () => {
                     required
                     id="firstName"
                     name="firstName"
-                    label="Имя"
+                    label="First Name"
                     value={formData.firstName}
                     onChange={handleChange}
                     variant="outlined"
@@ -832,7 +832,7 @@ const Profile = () => {
                     required
                     id="lastName"
                     name="lastName"
-                    label="Фамилия"
+                    label="Last Name"
                     value={formData.lastName}
                     onChange={handleChange}
                     variant="outlined"
@@ -845,7 +845,7 @@ const Profile = () => {
                   required
                   id="email"
                   name="email"
-                  label="Электронная почта"
+                  label="Email"
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
@@ -858,7 +858,7 @@ const Profile = () => {
                   required
                   id="phoneNumber"
                   name="phoneNumber"
-                  label="Номер телефона"
+                  label="Phone Number"
                   value={formData.phoneNumber}
                   onChange={handleChange}
                   variant="outlined"
@@ -870,7 +870,7 @@ const Profile = () => {
                   required
                   id="dob"
                   name="dob"
-                  label="Дата рождения"
+                  label="Date of Birth"
                   type="date"
                   value={formData.dob}
                   onChange={handleChange}
@@ -905,7 +905,7 @@ const Profile = () => {
                     px: 3,
                   }}
                 >
-                  Отмена
+                  Cancel
                 </Button>
 
                 <Button
@@ -929,10 +929,10 @@ const Profile = () => {
                   {loading ? (
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                       <CircularProgress size={16} sx={{ mr: 1 }} />
-                      <span>Сохранение...</span>
+                      <span>Saving...</span>
                     </Box>
                   ) : (
-                    "Сохранить изменения"
+                    "Save Changes"
                   )}
                 </Button>
               </Box>

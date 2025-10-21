@@ -1,38 +1,38 @@
 "use client";
 import { useCartStore } from "@/app/store/cart/cart";
 import { imgUrl } from "@/config/config";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { mainColor } from "@/theme/main";
+import axiosRequest from "@/utils/axiosRequest";
 import {
-  Box,
-  Typography,
-  Container,
-  Grid,
-  Paper,
-  IconButton,
-  Button,
-  Badge,
-  CircularProgress,
-  Chip,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Snackbar,
-  Alert,
-} from "@mui/material";
-import {
-  Delete as DeleteIcon,
   Add as AddIcon,
-  Remove as RemoveIcon,
   ArrowBack,
+  Delete as DeleteIcon,
+  Remove as RemoveIcon,
   ShoppingBag,
 } from "@mui/icons-material";
-import { mainColor } from "@/theme/main";
+import {
+  Alert,
+  Badge,
+  Box,
+  Button,
+  Chip,
+  CircularProgress,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  IconButton,
+  Paper,
+  Snackbar,
+  Typography,
+} from "@mui/material";
+import { AnimatePresence, motion } from "framer-motion";
 import { jwtDecode } from "jwt-decode";
-import axiosRequest from "@/utils/axiosRequest";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const Cart = () => {
   const {
@@ -66,7 +66,7 @@ const Cart = () => {
     if (typeof window !== "undefined") {
       const token = localStorage.getItem("access_token");
       if (!token) {
-        console.log("Токен не найден!");
+        console.log("Token not found!");
         return;
       }
 
@@ -74,7 +74,7 @@ const Cart = () => {
         const decoded = jwtDecode(token);
 
         if (!decoded?.sid) {
-          console.log("ID пользователя не найден в токене");
+          console.log("User ID not found in token");
           return;
         }
 
@@ -95,7 +95,7 @@ const Cart = () => {
         setLoading(false);
       } catch (error) {
         setLoading(false);
-        console.log("Ошибка декодирования токена:", error);
+        console.log("Token decoding error:", error);
       }
     }
   };
@@ -140,7 +140,7 @@ const Cart = () => {
     if (!userInfo.name || !userInfo.phone) {
       setNotification({
         open: true,
-        message: "Пожалуйста, заполните имя и телефон в вашем профиле",
+        message: "Please fill in your name and phone number in your profile",
         severity: "error",
       });
       return;
@@ -169,8 +169,7 @@ const Cart = () => {
       if (result.ok) {
         setNotification({
           open: true,
-          message:
-            "Заказ успешно отправлен! Мы свяжемся с вами в ближайшее время.",
+          message: "Order successfully sent! We will contact you soon.",
           severity: "success",
         });
         setCheckoutDialog(false);
@@ -182,7 +181,7 @@ const Cart = () => {
       console.error("Error sending to Telegram:", error);
       setNotification({
         open: true,
-        message: "Ошибка при отправке заказа. Пожалуйста, попробуйте еще раз.",
+        message: "Error sending order. Please try again.",
         severity: "error",
       });
     }
@@ -190,23 +189,23 @@ const Cart = () => {
 
   // Generate formatted order message for Telegram
   const generateOrderMessage = () => {
-    let message = `🛍️ <b>НОВЫЙ ЗАКАЗ</b>\n\n`;
-    message += `👤 <b>Клиент:</b> ${userInfo.name}\n`;
-    message += `📞 <b>Телефон:</b> ${userInfo.phone}\n`;
+    let message = `🛍️ <b>NEW ORDER</b>\n\n`;
+    message += `👤 <b>Client:</b> ${userInfo.name}\n`;
+    message += `📞 <b>Phone:</b> ${userInfo.phone}\n`;
 
     if (userInfo.address) {
-      message += `🏠 <b>Адрес:</b> ${userInfo.address}\n`;
+      message += `🏠 <b>Address:</b> ${userInfo.address}\n`;
     }
 
-    message += `\n📦 <b>Товары:</b>\n`;
+    message += `\n📦 <b>Products:</b>\n`;
 
     productsFromCart?.productsInCart?.forEach((item, index) => {
       message += `\n${index + 1}. ${item.product.productName}\n`;
-      message += `   • Бренд: ${item.product.brand || "Не указан"}\n`;
-      message += `   • Количество: ${item.quantity}\n`;
+      message += `   • Brand: ${item.product.brand || "Not specified"}\n`;
+      message += `   • Quantity: ${item.quantity}\n`;
     });
 
-    message += `\n⏰ <b>Время заказа:</b> ${new Date().toLocaleString()}`;
+    message += `\n⏰ <b>Order time:</b> ${new Date().toLocaleString()}`;
 
     return message;
   };
@@ -217,7 +216,7 @@ const Cart = () => {
       setNotification({
         open: true,
         message:
-          "Пожалуйста, обновите ваш профиль с именем и телефоном перед оформлением заказа",
+          "Please update your profile with name and phone number before placing an order",
         severity: "warning",
       });
       return;
@@ -232,8 +231,6 @@ const Cart = () => {
   const handleCloseNotification = () => {
     setNotification((prev) => ({ ...prev, open: false }));
   };
-
-
 
   // Check if user info is complete
   const isUserInfoComplete = userInfo.name && userInfo.phone;
@@ -288,7 +285,7 @@ const Cart = () => {
               textFillColor: "transparent",
             }}
           >
-            Ваша Корзина
+            Your Cart
           </Typography>
 
           <Button
@@ -306,7 +303,7 @@ const Cart = () => {
               },
             }}
           >
-            Вернуться в Магазин
+            Back to Store
           </Button>
         </Box>
       </motion.div>
@@ -341,10 +338,10 @@ const Cart = () => {
               sx={{ fontSize: 80, color: mainColor, opacity: 0.6, mb: 2 }}
             />
             <Typography variant="h5" fontWeight="bold" mb={2}>
-              Ваша корзина пуста
+              Your cart is empty
             </Typography>
             <Typography color="text.secondary" mb={4}>
-              Похоже, вы еще не добавили товары
+              It looks like you haven't added any products yet
             </Typography>
             <Button
               component={Link}
@@ -359,7 +356,7 @@ const Cart = () => {
                 boxShadow: "0px 4px 20px rgba(93, 63, 211, 0.25)",
               }}
             >
-              Найти Товары
+              Find Products
             </Button>
           </Paper>
         </motion.div>
@@ -405,7 +402,7 @@ const Cart = () => {
                         component="span"
                         sx={{ display: "flex", alignItems: "center" }}
                       >
-                        <ShoppingBag sx={{ mr: 1 }} /> Корзина
+                        <ShoppingBag sx={{ mr: 1 }} /> Cart
                       </Box>
                     </Badge>
                   </Typography>
@@ -424,7 +421,7 @@ const Cart = () => {
                       },
                     }}
                   >
-                    Очистить Все
+                    Clear All
                   </Button>
                 </Box>
 
@@ -628,7 +625,7 @@ const Cart = () => {
                 }}
               >
                 <Typography variant="h6" fontWeight="bold" mb={3}>
-                  Итог заказа
+                  Order Summary
                 </Typography>
 
                 {/* User Info Preview */}
@@ -641,7 +638,7 @@ const Cart = () => {
                   }}
                 >
                   <Typography variant="subtitle2" fontWeight="bold" mb={1}>
-                    Данные для оформить:
+                    Data to complete:
                   </Typography>
                   <Typography
                     variant="body2"
@@ -649,7 +646,7 @@ const Cart = () => {
                       color: userInfo.name ? "text.primary" : "error.main",
                     }}
                   >
-                    <strong>Имя:</strong> {userInfo.name || "Не указано"}
+                    <strong>Name:</strong> {userInfo.name || "Not specified"}
                   </Typography>
                   <Typography
                     variant="body2"
@@ -657,7 +654,7 @@ const Cart = () => {
                       color: userInfo.phone ? "text.primary" : "error.main",
                     }}
                   >
-                    <strong>Телефон:</strong> {userInfo.phone || "Не указан"}
+                    <strong>Phone:</strong> {userInfo.phone || "Not specified"}
                   </Typography>
 
                   {!isUserInfoComplete && (
@@ -668,7 +665,7 @@ const Cart = () => {
                       component={Link}
                       href="/profile" // Adjust this route to your profile page
                     >
-                      Обновить профиль
+                      Update Profile
                     </Button>
                   )}
                 </Box>
@@ -695,7 +692,7 @@ const Cart = () => {
                     },
                   }}
                 >
-                  {isUserInfoComplete ? "Оформить заказ" : "Заполните профиль"}
+                  {isUserInfoComplete ? "Place Order" : "Fill Profile"}
                 </Button>
 
                 {!isUserInfoComplete && (
@@ -704,7 +701,7 @@ const Cart = () => {
                     color="error"
                     sx={{ mt: 1, textAlign: "center", color: "text.primary" }}
                   >
-                    Заполните имя и телефон в профиле для оформления заказа
+                    Fill in name and phone in profile to place order
                   </Typography>
                 )}
               </Paper>
@@ -722,12 +719,12 @@ const Cart = () => {
       >
         <DialogTitle>
           <Typography variant="h6" fontWeight="bold">
-            Подтверждение заказа
+            Order Confirmation
           </Typography>
         </DialogTitle>
         <DialogContent>
           <Typography sx={{ color: "text.primary" }} variant="body1" mb={2}>
-            Вы уверены, что хотите оформить заказ?
+            Are you sure you want to place this order?
           </Typography>
 
           <Box sx={{ mb: 2 }}>
@@ -737,17 +734,17 @@ const Cart = () => {
               fontWeight="bold"
               mb={1}
             >
-              Данные для оформить:
+              Data to complete:
             </Typography>
             <Typography sx={{ color: "text.primary" }} variant="body2">
-              <strong>Имя:</strong> {userInfo.name}
+              <strong>Name:</strong> {userInfo.name}
             </Typography>
             <Typography sx={{ color: "text.primary" }} variant="body2">
-              <strong>Телефон:</strong> {userInfo.phone}
+              <strong>Phone:</strong> {userInfo.phone}
             </Typography>
             {userInfo.address && (
               <Typography sx={{ color: "text.primary" }} variant="body2">
-                <strong>Адрес:</strong> {userInfo.address}
+                <strong>Address:</strong> {userInfo.address}
               </Typography>
             )}
           </Box>
@@ -755,15 +752,14 @@ const Cart = () => {
           <Box
             sx={{ mt: 2, p: 2, backgroundColor: "grey.50", borderRadius: 1 }}
           >
-
             <Typography variant="body2" color="text.secondary">
-              После подтверждения заказ будет отправлен в Telegram и мы свяжемся
-              с вами для уточнения деталей
+              After confirmation, the order will be sent to Telegram and we will
+              contact you to clarify details
             </Typography>
           </Box>
         </DialogContent>
         <DialogActions sx={{ p: 3 }}>
-          <Button onClick={handleCloseDialog}>Отмена</Button>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
           <Button
             variant="contained"
             onClick={sendOrderToTelegram}
@@ -771,7 +767,7 @@ const Cart = () => {
               background: `linear-gradient(45deg, ${mainColor} 30%, ${mainColor} 90%)`,
             }}
           >
-            Подтвердить заказ
+            Confirm Order
           </Button>
         </DialogActions>
       </Dialog>

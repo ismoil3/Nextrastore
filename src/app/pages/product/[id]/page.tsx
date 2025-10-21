@@ -2,47 +2,47 @@
 
 import { apiUrl } from "@/config/config";
 import axiosRequest from "@/utils/axiosRequest";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import {
-  Typography,
   Box,
-  Grid,
-  Chip,
   Button,
-  ThemeProvider,
-  createTheme,
-  Modal,
-  Snackbar,
-  IconButton,
-  Divider,
-  Skeleton,
-  Fade,
-  CircularProgress,
-  Tooltip,
-  Stack,
   Card,
+  Chip,
+  CircularProgress,
+  createTheme,
+  Divider,
+  Fade,
+  Grid,
+  IconButton,
+  Modal,
+  Skeleton,
+  Snackbar,
+  Stack,
+  ThemeProvider,
+  Tooltip,
+  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 // Icons
+import Container from "@/app/components/shared/container/container";
+import { useCartStore } from "@/app/store/cart/cart";
+import { mainColor } from "@/theme/main";
 import {
-  Share,
-  Facebook,
-  Twitter,
-  WhatsApp,
-  ContentCopy,
   Check,
   ChevronLeft,
   ChevronRight,
+  ContentCopy,
+  Facebook,
+  Share,
   ShoppingBag,
+  Twitter,
+  WhatsApp,
   ZoomIn,
 } from "@mui/icons-material";
-import { useCartStore } from "@/app/store/cart/cart";
-import { mainColor } from "@/theme/main";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import Container from "@/app/components/shared/container/container";
 
 // New icons for Telegram
 import TelegramIcon from "@mui/icons-material/Telegram";
@@ -270,8 +270,7 @@ const ProductPage = () => {
 
   // Admin contact information
   const adminNumber = "+992 91 890 9050";
-  const messageText =
-    "Здравствуйте, я заинтересовался вашим объявлением на SAREZ. Ссылка:";
+  const messageText = "Hello, I am interested in your listing on SAREZ. Link:";
 
   // Site information for SEO
   const siteUrl = typeof window !== "undefined" ? window.location.origin : "";
@@ -298,7 +297,7 @@ const ProductPage = () => {
 
   const colorOptions = [
     {
-      name: product?.color ? product?.color : "по умолчанию",
+      name: product?.color ? product?.color : "default",
       code: product?.color ? product.color : "default",
     },
   ];
@@ -311,7 +310,7 @@ const ProductPage = () => {
 
   // Generate meta description from product data
   const generateMetaDescription = () => {
-    if (!product) return "Качественный товар от SAREZ";
+    if (!product) return "Quality product from SAREZ";
 
     const arrDesc = JSON.parse(product?.description || "[]");
     const mainDesc = arrDesc[0]?.description || arrDesc[0]?.value || "";
@@ -322,9 +321,9 @@ const ProductPage = () => {
 
     return (
       mainDesc ||
-      `Купить ${product.productName} по выгодной цене. ${
+      `Buy ${product.productName} at a favorable price. ${
         product.hasDiscount
-          ? `Со скидкой ${calculateDiscountPercentage()}%`
+          ? `With discount ${calculateDiscountPercentage()}%`
           : ""
       }`
     );
@@ -364,7 +363,7 @@ const ProductPage = () => {
     if (!product) return;
     try {
       await navigator.clipboard.writeText(productUrl);
-      setSnackbarMessage("✓ Ссылка скопирована");
+      setSnackbarMessage("✓ Link copied");
       setOpenSnackbar(true);
       handleShareClose();
     } catch (error) {
@@ -379,7 +378,7 @@ const ProductPage = () => {
   const handleAddToCart = async () => {
     if (!product) return;
     setSnackbarMessage(
-      product.productInMyCart ? "✓ Корзина обновлена" : "✓ Добавлено в корзину"
+      product.productInMyCart ? "✓ Cart updated" : "✓ Added to cart"
     );
     await addProductToCart(product.id);
     await getById(id as string);
@@ -448,8 +447,8 @@ const ProductPage = () => {
     return (
       <>
         <Head>
-          <title>Загрузка... | SAREZ</title>
-          <meta name="description" content="Загрузка информации о товаре" />
+          <title>Loading... | SAREZ</title>
+          <meta name="description" content="Loading product information" />
         </Head>
         <Container>
           <Grid container spacing={{ xs: 2, md: 4 }}>
@@ -620,15 +619,15 @@ const ProductPage = () => {
     return (
       <>
         <Head>
-          <title>Товар не найден | SAREZ</title>
-          <meta name="description" content="Запрошенный товар не найден" />
+          <title>Product not found | SAREZ</title>
+          <meta name="description" content="Requested product not found" />
         </Head>
         <Container>
           <Typography variant="h5" color="error" gutterBottom>
-            Товар не найден
+            Product not found
           </Typography>
           <Button variant="contained" color="primary" href="/" sx={{ mt: 2 }}>
-            Вернуться на главную
+            Return to home
           </Button>
         </Container>
       </>
@@ -645,7 +644,7 @@ const ProductPage = () => {
         <meta name="description" content={generateMetaDescription()} />
         <meta
           name="keywords"
-          content={`${product.productName}, ${product.brand}, купить, цена, SAREZ`}
+          content={`${product.productName}, ${product.brand}, buy, price, SAREZ`}
         />
         <meta name="author" content="SAREZ" />
 
@@ -881,7 +880,7 @@ const ProductPage = () => {
 
                     {/* Zoom Indicator */}
                     {!isMobile && (
-                      <Tooltip title={zoomImage ? "Уменьшить" : "Увеличить"}>
+                      <Tooltip title={zoomImage ? "Reduce" : "Enlarge"}>
                         <IconButton
                           sx={{
                             position: "absolute",
@@ -960,7 +959,7 @@ const ProductPage = () => {
                       >
                         <img
                           src={`${apiUrl}/images/${item.images}`}
-                          alt={`Миниатюра ${index + 1} товара ${
+                          alt={`Thumbnail ${index + 1} of product ${
                             product.productName
                           }`}
                           style={{
@@ -1044,7 +1043,7 @@ const ProductPage = () => {
                   {/* Contact Admin Section */}
                   <Box sx={{ mb: { xs: 3, md: 4 } }}>
                     <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
-                      Связаться с продавцом
+                      Contact seller
                     </Typography>
                     <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
                       <Button
@@ -1083,7 +1082,7 @@ const ProductPage = () => {
                   {/* Color Selector */}
                   <Box sx={{ mb: { xs: 3, md: 4 } }}>
                     <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
-                      Цвет
+                      Color
                     </Typography>
                     <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
                       {colorOptions.map((color) => (
@@ -1144,9 +1143,7 @@ const ProductPage = () => {
                     }}
                     disabled={product.productInMyCart}
                   >
-                    {product.productInMyCart
-                      ? "В корзине"
-                      : "Добавить в корзину"}
+                    {product.productInMyCart ? "In cart" : "Add to cart"}
                   </Button>
                 </Card>
               </Box>
@@ -1177,7 +1174,7 @@ const ProductPage = () => {
                   },
                 }}
               >
-                Описание и характеристики
+                Description and specifications
               </Typography>
             </Stack>
 
@@ -1272,7 +1269,7 @@ const ProductPage = () => {
                 }}
               >
                 <Typography variant="h6" sx={{ mb: 3, fontWeight: 600 }}>
-                  Поделиться товаром
+                  Share product
                 </Typography>
                 <Box
                   sx={{

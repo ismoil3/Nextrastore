@@ -1,10 +1,10 @@
 "use client";
-import { memo } from "react";
-import { Box, Typography } from "@mui/material";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import StarIcon from "@mui/icons-material/Star";
-import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import StarIcon from "@mui/icons-material/Star";
+import { Box, Typography } from "@mui/material";
+import { memo } from "react";
 
 interface ServicesSectionProps {
   mainColor: string;
@@ -14,23 +14,23 @@ const ServicesSection = memo(({ mainColor }: ServicesSectionProps) => {
   const services = [
     {
       icon: <LocalShippingIcon />,
-      title: "Бесплатная доставка",
-      desc: "Для заказов от 5000₽",
+      title: "Free delivery",
+      desc: "For orders from 5000₽",
     },
     {
       icon: <StarIcon />,
-      title: "Гарантия качества",
-      desc: "Проверенные качественные товары",
+      title: "Quality guarantee",
+      desc: "Verified quality products",
     },
     {
       icon: <ShoppingBagIcon />,
-      title: "Легкий возврат",
-      desc: "30-дневная политика возврата",
+      title: "Easy return",
+      desc: "30-day return policy",
     },
     {
       icon: <LocalOfferIcon />,
-      title: "Специальные предложения",
-      desc: "Новые акции каждую неделю",
+      title: "Special offers",
+      desc: "New promotions every week",
     },
   ];
 

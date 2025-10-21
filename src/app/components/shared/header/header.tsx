@@ -110,11 +110,11 @@ const Header = () => {
             getProductsFromCart();
           }
         } catch (error) {
-          console.log("Недействительный токен:", error);
+          console.log("Invalid token:", error);
           setIsLoggedIn(false);
         }
       } else {
-        console.warn("Токен не найден в localStorage");
+        console.warn("Token not found in localStorage");
         setIsLoggedIn(false);
       }
     }
@@ -125,19 +125,23 @@ const Header = () => {
   };
 
   const navigationLinks = [
-    { label: "Товары", path: "/pages/product", icon: <CategoryOutlinedIcon /> },
     {
-      label: "Каталог",
+      label: "Products",
+      path: "/pages/product",
+      icon: <CategoryOutlinedIcon />,
+    },
+    {
+      label: "Catalog",
       path: "/pages/catalog",
       icon: <CategoryOutlinedIcon />,
     },
     {
-      label: "Избранное",
+      label: "Favorites",
       path: "/pages/wishlist",
       icon: <FavoriteBorderOutlinedIcon />,
     },
     {
-      label: "Уведомления",
+      label: "Notifications",
       path: "/pages/notifications",
       icon: <NotificationsOutlinedIcon />,
     },
@@ -179,7 +183,7 @@ const Header = () => {
                 }}
                 onClick={() => router.push("/")}
               >
-               <img className="w-[130px] " src="/logo.png" alt="" />
+                <img className="w-[130px] " src="/logo.png" alt="" />
               </Box>
 
               {/* Search Box - Animated */}
@@ -202,7 +206,7 @@ const Header = () => {
               >
                 <TextField
                   variant="outlined"
-                  placeholder="Поиск товаров..."
+                  placeholder="Search products..."
                   fullWidth
                   onFocus={() => setSearchFocused(true)}
                   onBlur={() => setSearchFocused(false)}
@@ -299,7 +303,7 @@ const Header = () => {
                   <Box
                     sx={{ display: "flex", alignItems: "center", gap: "10px" }}
                   >
-                    <Tooltip title="Корзина">
+                    <Tooltip title="Cart">
                       <IconButton
                         onClick={() => router.push("/pages/cart")}
                         sx={{
@@ -333,7 +337,7 @@ const Header = () => {
                       </IconButton>
                     </Tooltip>
 
-                    <Tooltip title="Профиль">
+                    <Tooltip title="Profile">
                       <Box
                         onClick={() => router.push("/pages/profile")}
                         sx={{
@@ -394,7 +398,7 @@ const Header = () => {
                       boxShadow: "0px 4px 10px rgba(59, 130, 246, 0.25)",
                     }}
                   >
-                    Войти
+                    Login
                   </Button>
                 )}
               </Box>
@@ -434,7 +438,7 @@ const Header = () => {
             }}
           >
             <BottomNavigationAction
-              label="Главная"
+              label="Home"
               value="/"
               icon={
                 <HomeOutlinedIcon
@@ -447,7 +451,7 @@ const Header = () => {
             />
 
             <BottomNavigationAction
-              label="Товары"
+              label="Products"
               value="/pages/product"
               icon={
                 <CategoryOutlinedIcon
@@ -463,7 +467,7 @@ const Header = () => {
             />
 
             <BottomNavigationAction
-              label="Поиск"
+              label="Search"
               onClick={() => toggleDrawer()}
               icon={
                 <SearchIcon
@@ -473,7 +477,7 @@ const Header = () => {
             />
 
             <BottomNavigationAction
-              label="Корзина"
+              label="Cart"
               value="/pages/cart"
               icon={
                 <Badge
@@ -501,7 +505,7 @@ const Header = () => {
             />
 
             <BottomNavigationAction
-              label="Профиль"
+              label="Profile"
               value="/pages/profile"
               icon={
                 isLoggedIn ? (
@@ -551,7 +555,7 @@ const Header = () => {
       >
         <TextField
           variant="outlined"
-          placeholder="Поиск товаров..."
+          placeholder="Search products..."
           fullWidth
           autoFocus
           value={searchQuery}
@@ -613,7 +617,7 @@ const Header = () => {
                     },
                   }}
                 >
-                  Поиск
+                  Search
                 </Button>
               </InputAdornment>
             ),

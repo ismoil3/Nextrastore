@@ -1,11 +1,9 @@
-
-import { Box, Typography, Button } from "@mui/material";
-import { alpha } from "@mui/material/styles";
 import { mainColor } from "@/theme/main";
+import { Box, Button, Typography } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import Link from "next/link";
 
 export default function NotFound() {
-
   return (
     <Box
       sx={{
@@ -36,14 +34,15 @@ export default function NotFound() {
       </Typography>
 
       <Typography variant="h5" sx={{ fontWeight: 600, color: "text.primary" }}>
-        Страница не найдена
+        Page not found
       </Typography>
 
       <Typography
         variant="body1"
         sx={{ color: "text.secondary", maxWidth: 400 }}
       >
-        Похоже, вы перешли по неверной ссылке или страница была удалена.
+        It looks like you've followed an incorrect link or the page has been
+        removed.
       </Typography>
 
       <Link href={"/"}>
@@ -64,7 +63,7 @@ export default function NotFound() {
             },
           }}
         >
-          На главную
+          Go to Home
         </Button>
       </Link>
     </Box>

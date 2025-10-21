@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -21,27 +21,27 @@ import {
   Stepper,
   Step,
   StepLabel,
-  Stack
+  Stack,
 } from "@mui/material";
-import { 
-  Visibility, 
-  VisibilityOff, 
-  PersonAdd, 
-  Email, 
-  Phone, 
-  Lock, 
+import {
+  Visibility,
+  VisibilityOff,
+  PersonAdd,
+  Email,
+  Phone,
+  Lock,
   LockOpen,
   CheckCircle,
   ArrowBack,
-  ChevronRight
+  ChevronRight,
 } from "@mui/icons-material";
 import { useAuth } from "@/app/store/auth/useAuth";
 import { mainColor } from "@/theme/main";
 
 export default function RegistrationPage() {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('1000'));
-  
+  const isMobile = useMediaQuery(theme.breakpoints.down("1000"));
+
   //  color scheme
   const secondaryColor = "#22C55E"; // Green accent for success elements
   const tertiaryColor = "#F97316"; // Orange for accents
@@ -49,7 +49,7 @@ export default function RegistrationPage() {
   const lightText = "#64748B"; // Slate-500
   const subtleBg = "#F8FAFC"; // Slate-50
   const cardBg = "white";
-  
+
   const { loading, registration, error } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -77,29 +77,29 @@ export default function RegistrationPage() {
 
   const validatePassword = (password) => {
     if (password.length < 6) {
-      return "Пароль должен содержать не менее 6 символов";
+      return "Password must contain at least 6 characters"; // translated error message
     }
     if (!/\d/.test(password)) {
-      return "Пароль должен содержать хотя бы одну цифру";
+      return "Password must contain at least one digit"; // translated error message
     }
     if (!/[A-Z]/.test(password)) {
-      return "Пароль должен содержать хотя бы одну заглавную букву";
+      return "Password must contain at least one uppercase letter"; // translated error message
     }
     return "";
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     if (currentStep === 1) {
       if (!formData.userName || !formData.email || !formData.phoneNumber) {
-        setErrors(prev => ({ ...prev, form: "Пожалуйста, заполните все поля" }));
+        setErrors((prev) => ({ ...prev, form: "Please fill in all fields" })); // translated error message
         return;
       }
       setCurrentStep(2);
       return;
     }
-    
+
     const passwordError = validatePassword(formData.password);
     if (passwordError) {
       setErrors((prev) => ({ ...prev, password: passwordError }));
@@ -109,7 +109,7 @@ export default function RegistrationPage() {
     if (formData.password !== formData.confirmPassword) {
       setErrors((prev) => ({
         ...prev,
-        confirmPassword: "Пароли не совпадают",
+        confirmPassword: "Passwords do not match", // translated error message
       }));
       return;
     }
@@ -117,7 +117,7 @@ export default function RegistrationPage() {
     if (!acceptTerms) {
       setErrors((prev) => ({
         ...prev,
-        form: "Пожалуйста, примите условия и положения",
+        form: "Please accept the terms and conditions", // translated error message
       }));
       return;
     }
@@ -133,7 +133,7 @@ export default function RegistrationPage() {
   const hasMinLength = formData.password.length >= 6;
   const hasDigit = /\d/.test(formData.password);
   const hasUppercase = /[A-Z]/.test(formData.password);
-  
+
   const getPasswordStrength = () => {
     let strength = 0;
     if (hasMinLength) strength++;
@@ -141,40 +141,54 @@ export default function RegistrationPage() {
     if (hasUppercase) strength++;
     return strength;
   };
-  
+
   const passwordStrength = getPasswordStrength();
-  
+
   const getPasswordStrengthColor = () => {
     switch (passwordStrength) {
-      case 0: return "#EF4444"; // Red
-      case 1: return "#F97316"; // Orange
-      case 2: return "#FACC15"; // Yellow
-      case 3: return "#22C55E"; // Green
-      default: return "#CBD5E1"; // Slate-300
+      case 0:
+        return "#EF4444"; // Red
+      case 1:
+        return "#F97316"; // Orange
+      case 2:
+        return "#FACC15"; // Yellow
+      case 3:
+        return "#22C55E"; // Green
+      default:
+        return "#CBD5E1"; // Slate-300
     }
   };
-  
+
   const getPasswordStrengthText = () => {
     switch (passwordStrength) {
-      case 0: return "Слабый";
-      case 1: return "Средний";
-      case 2: return "Хороший";
-      case 3: return "Надежный";
-      default: return "";
+      case 0:
+        return "Weak"; // translated strength text
+      case 1:
+        return "Fair"; // translated strength text
+      case 2:
+        return "Good"; // translated strength text
+      case 3:
+        return "Strong"; // translated strength text
+      default:
+        return "";
     }
   };
 
   const PasswordStrengthMeter = () => (
     <Box sx={{ mb: 3, mt: 1 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
         <Typography variant="body2" color="text.secondary">
-          Надежность пароля
+          Password Strength {/* translated label */}
         </Typography>
-        <Typography variant="body2" fontWeight="medium" sx={{ color: getPasswordStrengthColor() }}>
+        <Typography
+          variant="body2"
+          fontWeight="medium"
+          sx={{ color: getPasswordStrengthColor() }}
+        >
           {getPasswordStrengthText()}
         </Typography>
       </Box>
-      <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+      <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
         {[0, 1, 2].map((index) => (
           <Box
             key={index}
@@ -182,41 +196,51 @@ export default function RegistrationPage() {
               height: 4,
               flex: 1,
               borderRadius: 2,
-              bgcolor: index < passwordStrength ? getPasswordStrengthColor() : '#E2E8F0',
-              transition: 'background-color 0.3s ease'
+              bgcolor:
+                index < passwordStrength
+                  ? getPasswordStrengthColor()
+                  : "#E2E8F0",
+              transition: "background-color 0.3s ease",
             }}
           />
         ))}
       </Box>
-      
+
       <Stack spacing={1}>
-        <PasswordRequirement met={hasMinLength} text="Минимум 6 символов" />
-        <PasswordRequirement met={hasDigit} text="Хотя бы одна цифра" />
-        <PasswordRequirement met={hasUppercase} text="Хотя бы одна заглавная буква" />
+        <PasswordRequirement met={hasMinLength} text="At least 6 characters" />{" "}
+        {/* translated requirement */}
+        <PasswordRequirement met={hasDigit} text="At least one digit" />{" "}
+        {/* translated requirement */}
+        <PasswordRequirement
+          met={hasUppercase}
+          text="At least one uppercase letter"
+        />{" "}
+        {/* translated requirement */}
       </Stack>
     </Box>
   );
-  
+
   const PasswordRequirement = ({ met, text }) => (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <CheckCircle fontSize="small" sx={{ 
-        mr: 1, 
-        color: met ? secondaryColor : 'text.disabled',
-        transition: 'color 0.3s ease' 
-      }} />
-      <Typography 
-        variant="body2" 
-        sx={{ 
+    <Box sx={{ display: "flex", alignItems: "center" }}>
+      <CheckCircle
+        fontSize="small"
+        sx={{
+          mr: 1,
+          color: met ? secondaryColor : "text.disabled",
+          transition: "color 0.3s ease",
+        }}
+      />
+      <Typography
+        variant="body2"
+        sx={{
           color: met ? darkText : lightText,
-          transition: 'color 0.3s ease'
+          transition: "color 0.3s ease",
         }}
       >
         {text}
       </Typography>
     </Box>
   );
-
-
 
   const commonTextFieldProps = {
     variant: "outlined",
@@ -273,17 +297,19 @@ export default function RegistrationPage() {
             overflow: "hidden",
           }}
         >
-          <Box sx={{
-            width: '100%',
-            height: '100%',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            zIndex: 0,
-            opacity: 0.2,
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }} />
-          
+          <Box
+            sx={{
+              width: "100%",
+              height: "100%",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              zIndex: 0,
+              opacity: 0.2,
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fillRule='evenodd'%3E%3Cg fill='%23ffffff' fillOpacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            }}
+          />
+
           <Box
             sx={{
               width: "80%",
@@ -297,76 +323,94 @@ export default function RegistrationPage() {
           >
             <Box sx={{ mb: 6 }}>
               <Typography variant="h3" fontWeight="bold" mb={2}>
-                Создайте аккаунт
+                Create Your Account {/* translated heading */}
               </Typography>
-              
-              <Typography variant="h6" sx={{ opacity: 0.9, fontWeight: 400, lineHeight: 1.5 }}>
-                Получите доступ ко всем функциям нашей платформы и присоединяйтесь к нашему сообществу
+
+              <Typography
+                variant="h6"
+                sx={{ opacity: 0.9, fontWeight: 400, lineHeight: 1.5 }}
+              >
+                Get access to all features of our platform and join our
+                community {/* translated subheading */}
               </Typography>
             </Box>
-            
-            <Box 
-              sx={{ 
-                mb: 6, 
-                p: 4, 
-                bgcolor: 'rgba(255, 255, 255, 0.15)', 
+
+            <Box
+              sx={{
+                mb: 6,
+                p: 4,
+                bgcolor: "rgba(255, 255, 255, 0.15)",
                 borderRadius: 3,
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.2)'
+                backdropFilter: "blur(10px)",
+                border: "1px solid rgba(255, 255, 255, 0.2)",
               }}
             >
               <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-                <Avatar 
-                  src="/avatar-1.jpg" 
+                <Avatar
+                  src="/avatar-1.jpg"
                   sx={{ width: 56, height: 56, border: "2px solid white" }}
                 />
                 <Box sx={{ ml: 2.5 }}>
                   <Typography variant="body1" fontWeight="medium">
-                    `Это платформа полностью изменила мой рабочий процесс. Настоятельно рекомендую!`
+                    &quot;This platform completely changed my workflow. Highly
+                    recommend!&quot;
                   </Typography>
                   <Typography variant="body2" sx={{ opacity: 0.8, mt: 0.5 }}>
-                    Анна С., Дизайнер UX/UI
+                    Anna S., UX/UI Designer {/* translated attribution */}
                   </Typography>
                 </Box>
               </Box>
-              
+
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
                   {[1, 2, 3, 4, 5].map((star) => (
-                    <svg key={star} width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#FFF" />
+                    <svg
+                      key={star}
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                        fill="#FFF"
+                      />
                     </svg>
                   ))}
                 </Box>
                 <Typography variant="body2" sx={{ opacity: 0.8 }}>
-                  4.8/5 на основе более 3000 отзывов
+                  4.8/5 based on over 3000 reviews{" "}
+                  {/* translated rating text */}
                 </Typography>
               </Box>
             </Box>
-            
+
             <Box>
               <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
                 <CheckCircle sx={{ mr: 2, color: tertiaryColor }} />
                 <Typography variant="body1" fontWeight="medium">
-                  Быстрая регистрация за несколько шагов
+                  Quick registration in a few steps {/* translated feature */}
                 </Typography>
               </Box>
               <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
                 <CheckCircle sx={{ mr: 2, color: tertiaryColor }} />
                 <Typography variant="body1" fontWeight="medium">
-                  Персонализированный интерфейс для каждого пользователя
+                  Personalized interface for each user{" "}
+                  {/* translated feature */}
                 </Typography>
               </Box>
               <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
                 <CheckCircle sx={{ mr: 2, color: tertiaryColor }} />
                 <Typography variant="body1" fontWeight="medium">
-                  Высокий уровень безопасности и защиты данных
+                  High level of security and data protection{" "}
+                  {/* translated feature */}
                 </Typography>
               </Box>
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <CheckCircle sx={{ mr: 2, color: tertiaryColor }} />
                 <Typography variant="body1" fontWeight="medium">
-                  Круглосуточная поддержка пользователей
+                  24/7 user support {/* translated feature */}
                 </Typography>
               </Box>
             </Box>
@@ -393,74 +437,85 @@ export default function RegistrationPage() {
               borderRadius: 4,
               overflow: "hidden",
               backgroundColor: cardBg,
-              border: '1px solid rgba(203, 213, 225, 0.5)'
+              border: "1px solid rgba(203, 213, 225, 0.5)",
             }}
           >
             {/* Header with stepper */}
-            <Box sx={{ mb: 4, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+            <Box
+              sx={{
+                mb: 4,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+              }}
+            >
               {currentStep === 2 && (
-                <Button 
+                <Button
                   onClick={handleBackToStep1}
                   startIcon={<ArrowBack />}
-                  sx={{ 
-                    color: lightText, 
+                  sx={{
+                    color: lightText,
                     mb: 2,
-                    textTransform: 'none',
-                    fontWeight: 'normal',
-                    '&:hover': {
-                      bgcolor: 'transparent',
-                      color: darkText
-                    }
+                    textTransform: "none",
+                    fontWeight: "normal",
+                    "&:hover": {
+                      bgcolor: "transparent",
+                      color: darkText,
+                    },
                   }}
                 >
-                  Вернуться к личным данным
+                  Back to personal information {/* translated button text */}
                 </Button>
               )}
-            
-              <Typography 
-                variant="h4" 
-                fontWeight="bold" 
+
+              <Typography
+                variant="h4"
+                fontWeight="bold"
                 color={darkText}
                 gutterBottom
               >
-                {currentStep === 1 ? "Регистрация аккаунта" : "Настройка безопасности"}
+                {currentStep === 1 ? "Account Registration" : "Security Setup"}{" "}
+                {/* translated headings */}
               </Typography>
               <Typography variant="body1" color={lightText} mb={2}>
-                {currentStep === 1 
-                  ? "Введите ваши данные для создания нового аккаунта" 
-                  : "Создайте надежный пароль для защиты вашего аккаунта"}
+                {currentStep === 1
+                  ? "Enter your details to create a new account" // translated description
+                  : "Create a strong password to protect your account"}{" "}
+                {/* translated description */}
               </Typography>
-              
-              <Box sx={{ width: '100%', mt: 1 }}>
-                <Stepper 
-                  activeStep={currentStep - 1} 
+
+              <Box sx={{ width: "100%", mt: 1 }}>
+                <Stepper
+                  activeStep={currentStep - 1}
                   alternativeLabel
                   sx={{
-                    '& .MuiStepLabel-root .Mui-active': {
+                    "& .MuiStepLabel-root .Mui-active": {
                       color: mainColor,
                     },
-                    '& .MuiStepLabel-root .Mui-completed': {
+                    "& .MuiStepLabel-root .Mui-completed": {
                       color: secondaryColor,
-                    }
+                    },
                   }}
                 >
                   <Step>
-                    <StepLabel>Личная информация</StepLabel>
+                    <StepLabel>Personal Information</StepLabel>{" "}
+                    {/* translated step label */}
                   </Step>
                   <Step>
-                    <StepLabel>Безопасность</StepLabel>
+                    <StepLabel>Security</StepLabel>{" "}
+                    {/* translated step label */}
                   </Step>
                 </Stepper>
               </Box>
             </Box>
-            
+
             {errors.form && (
-              <Alert 
-                severity="error" 
-                sx={{ 
-                  mb: 3, 
+              <Alert
+                severity="error"
+                sx={{
+                  mb: 3,
                   borderRadius: 2,
-                  "& .MuiAlert-icon": { color: "#EF4444" } 
+                  "& .MuiAlert-icon": { color: "#EF4444" },
                 }}
                 variant="filled"
               >
@@ -474,11 +529,11 @@ export default function RegistrationPage() {
                 <>
                   <TextField
                     {...commonTextFieldProps}
-                    label="Имя пользователя"
+                    label="Username" // translated label
                     name="userName"
                     value={formData.userName}
                     onChange={handleChange}
-                    placeholder="Иван Иванов"
+                    placeholder="John Doe" // translated placeholder
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -489,12 +544,12 @@ export default function RegistrationPage() {
                   />
                   <TextField
                     {...commonTextFieldProps}
-                    label="Электронная почта"
+                    label="Email Address" // translated label
                     name="email"
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="example@mail.ru"
+                    placeholder="example@mail.com" // translated placeholder
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -505,11 +560,11 @@ export default function RegistrationPage() {
                   />
                   <TextField
                     {...commonTextFieldProps}
-                    label="Номер телефона"
+                    label="Phone Number" // translated label
                     name="phoneNumber"
                     value={formData.phoneNumber}
                     onChange={handleChange}
-                    placeholder="+7 (999) 123-45-67"
+                    placeholder="+1 (555) 123-4567" // translated placeholder
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -540,19 +595,15 @@ export default function RegistrationPage() {
                     }}
                     type="submit"
                   >
-                    Продолжить
+                    Continue {/* translated button text */}
                   </Button>
-
-                
-
-                
                 </>
               ) : (
                 // Step 2: Password setup
                 <>
                   <TextField
                     {...commonTextFieldProps}
-                    label="Пароль"
+                    label="Password" // translated label
                     name="password"
                     type={showPassword ? "text" : "password"}
                     value={formData.password}
@@ -578,12 +629,12 @@ export default function RegistrationPage() {
                       ),
                     }}
                   />
-                  
+
                   <PasswordStrengthMeter />
-                  
+
                   <TextField
                     {...commonTextFieldProps}
-                    label="Подтвердите пароль"
+                    label="Confirm Password" // translated label
                     name="confirmPassword"
                     type={showPassword ? "text" : "password"}
                     value={formData.confirmPassword}
@@ -625,13 +676,21 @@ export default function RegistrationPage() {
                     }
                     label={
                       <Typography variant="body2">
-                        Я принимаю{" "}
-                        <Link href="#" sx={{ color: mainColor, fontWeight: 500 }} underline="hover">
-                          пользовательское соглашение
+                        I accept the {/* translated checkbox label */}
+                        <Link
+                          href="#"
+                          sx={{ color: mainColor, fontWeight: 500 }}
+                          underline="hover"
+                        >
+                          terms of service {/* translated link text */}
                         </Link>{" "}
-                        и{" "}
-                        <Link href="#" sx={{ color: mainColor, fontWeight: 500 }} underline="hover">
-                          политику конфиденциальности
+                        and{" "}
+                        <Link
+                          href="#"
+                          sx={{ color: mainColor, fontWeight: 500 }}
+                          underline="hover"
+                        >
+                          privacy policy {/* translated link text */}
                         </Link>
                       </Typography>
                     }
@@ -639,9 +698,9 @@ export default function RegistrationPage() {
                   />
 
                   {error && (
-                    <Alert 
-                      severity="error" 
-                      variant="filled" 
+                    <Alert
+                      severity="error"
+                      variant="filled"
                       sx={{ mt: 1, mb: 2.5, borderRadius: 2 }}
                     >
                       {error}
@@ -672,7 +731,7 @@ export default function RegistrationPage() {
                     {loading ? (
                       <CircularProgress size={24} color="inherit" />
                     ) : (
-                      "Создать аккаунт"
+                      "Create Account" // translated button text
                     )}
                   </Button>
                 </>
@@ -681,19 +740,19 @@ export default function RegistrationPage() {
 
             <Box sx={{ mt: 4, textAlign: "center" }}>
               <Typography variant="body2" color={lightText}>
-                Уже есть аккаунт?{" "}
-                <Link 
-                  href="/login" 
-                  sx={{ 
-                    color: mainColor, 
+                Already have an account? {/* translated text */}
+                <Link
+                  href="/login"
+                  sx={{
+                    color: mainColor,
                     fontWeight: 500,
                     textDecoration: "none",
                     "&:hover": {
-                      textDecoration: "underline"
-                    }
+                      textDecoration: "underline",
+                    },
                   }}
                 >
-                  Войти
+                  Sign In {/* translated link text */}
                 </Link>
               </Typography>
             </Box>
