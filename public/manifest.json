@@ -13,7 +13,7 @@
       "type": "image/png"
     },
     {
-      "src": "/favicon.ico",
+      "src": "/mini-logo.png",
       "sizes": "32x32",
       "type": "image/x-icon"
     }
