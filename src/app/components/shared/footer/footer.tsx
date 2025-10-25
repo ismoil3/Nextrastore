@@ -8,6 +8,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Container from "../container/container";
 
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import TelegramIcon from "@mui/icons-material/Telegram";
+
 const Footer = () => {
   const path = usePathname();
 
@@ -98,21 +101,20 @@ const Footer = () => {
           >
             <IconButton
               sx={{ color: "white", "&:hover": { color: "black" } }}
-              onClick={() => window.open("https://facebook.com", "_blank")}
+              onClick={() =>
+                window.open("https://wa.me/+992918909050", "_blank")
+              }
             >
-              <FacebookIcon />
+              <WhatsAppIcon />
             </IconButton>
+
             <IconButton
               sx={{ color: "white", "&:hover": { color: "black" } }}
-              onClick={() => window.open("https://instagram.com", "_blank")}
+              onClick={() =>
+                window.open("https://t.me/+992918909050", "_blank")
+              }
             >
-              <InstagramIcon />
-            </IconButton>
-            <IconButton
-              sx={{ color: "white", "&:hover": { color: "black" } }}
-              onClick={() => window.open("https://twitter.com", "_blank")}
-            >
-              <TwitterIcon />
+              <TelegramIcon />
             </IconButton>
           </Box>
         </Box>

@@ -35,9 +35,11 @@ import {
   Email as EmailIcon,
   Fingerprint as FingerprintIcon,
   Key as KeyIcon,
+  Logout,
   Person as PersonIcon,
   Phone as PhoneIcon,
 } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
 
 const ProfileCard = ({ title, icon, value, delay = 0 }) => {
   return (
@@ -149,6 +151,7 @@ const Profile = () => {
   });
   const [imagePreview] = useState(null);
   const [initialLoad, setInitialLoad] = useState(true);
+  const router = useRouter()
 
   const getProfile = async () => {
     if (typeof window !== "undefined") {
@@ -278,6 +281,12 @@ const Profile = () => {
     }
   };
 
+  function handleLogout() {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("access_token");
+      router.push("/login");
+    }
+  }
   // Background animation variants
   const bgVariants = {
     hidden: { opacity: 0 },
@@ -575,6 +584,28 @@ const Profile = () => {
                 }}
               >
                 Edit Profile
+              </Button>
+              <Button
+                variant="contained"
+                startIcon={<Logout />}
+                onClick={() => handleLogout()}
+                sx={{
+                  mt: isMobile ? 3 : 0,
+                  borderRadius: "12px",
+                  textTransform: "none",
+                  py: 1.2,
+                  px: 3,
+                  background: `linear-gradient(135deg, ${mainColor} 0%, #3f51b5 100%)`,
+                  boxShadow: "0 6px 15px rgba(66, 165, 245, 0.3)",
+                  "&:hover": {
+                    boxShadow: "0 8px 20px rgba(66, 165, 245, 0.4)",
+                  },
+                  display: "flex",
+                  width:"100%",
+                  mt:"10px"
+                }}
+              >
+                Logout
               </Button>
             </motion.div>
           </Box>
