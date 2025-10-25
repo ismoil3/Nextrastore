@@ -19,7 +19,7 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "Buy smartphones: iPhone, Samsung, Xiaomi, Oppo Tajikistan",
   description:
-    "BestPrice online store — smartphones iPhone, Samsung, Xiaomi, Oppo, Tecno, Infinix and others at competitive prices with delivery to Tajikistan. Warranty and service.!",
+    "Sarez online store — smartphones iPhone, Samsung, Xiaomi, Oppo, Tecno, Infinix and others at competitive prices with delivery to Tajikistan. Warranty and service.!",
   keywords: [
     "smartphones Tajikistan",
     "buy iPhone Dushanbe",
@@ -38,11 +38,11 @@ export const metadata: Metadata = {
     "Nokia",
     "Google Pixel",
   ],
-  authors: [{ name: "BestPrice Team", url: "https://www.sarezmobile.com" }],
-  publisher: "BestPrice",
-  creator: "BestPrice Developers",
+  authors: [{ name: "Sarez Team", url: "https://www.sarezmobile.com" }],
+  publisher: "Sarez",
+  creator: "Sarez Developers",
   generator: "Next.js",
-  applicationName: "BestPrice",
+  applicationName: "Sarez",
   category: "ecommerce",
   classification: "Smartphones, Mobile Phones, Electronics",
   icons: {
@@ -54,17 +54,17 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.sarezmobile.com"),
   openGraph: {
     title:
-      "BestPrice — Buy smartphones iPhone, Samsung, Xiaomi, Oppo and other brands",
+      "Sarez — Buy smartphones iPhone, Samsung, Xiaomi, Oppo and other brands",
     description:
-      "BestPrice — online smartphone store in Tajikistan. iPhone, Samsung, Xiaomi, Oppo, Realme, Huawei and other brands at low prices.",
+      "Sarez — online smartphone store in Tajikistan. iPhone, Samsung, Xiaomi, Oppo, Realme, Huawei and other brands at low prices.",
     url: "https://www.sarezmobile.com",
-    siteName: "BestPrice",
+    siteName: "Sarez",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "BestPrice — smartphones in Tajikistan",
+        alt: "Sarez — smartphones in Tajikistan",
       },
     ],
     locale: "ru_RU",
@@ -73,12 +73,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "BestPrice — smartphones in Tajikistan",
+    title: "Sarez — smartphones in Tajikistan",
     description:
       "Buy smartphones Apple iPhone, Samsung Galaxy, Xiaomi, Oppo and other brands online. Delivery to Tajikistan.",
     images: ["/og-image.jpg"],
-    creator: "@bestprice",
-    site: "@bestprice",
+    creator: "@Sarez",
+    site: "@Sarez",
   },
   robots: {
     index: true,
@@ -101,18 +101,18 @@ export const metadata: Metadata = {
   },
   appleWebApp: {
     capable: true,
-    title: "BestPrice",
+    title: "Sarez",
     statusBarStyle: "default",
   },
   manifest: "/manifest.json",
   appLinks: {
     ios: {
-      url: "bestprice://home",
+      url: "Sarez://home",
       app_store_id: "1234567890",
     },
     android: {
-      url: "bestprice://home",
-      package: "tj.bestprice.app",
+      url: "Sarez://home",
+      package: "tj.Sarez.app",
     },
     web: {
       url: "https://www.sarezmobile.com",
