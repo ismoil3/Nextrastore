@@ -1,8 +1,6 @@
 "use client";
 import { mainColor } from "@/theme/main";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import TwitterIcon from "@mui/icons-material/Twitter";
+
 import { Box, IconButton, Typography } from "@mui/material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
