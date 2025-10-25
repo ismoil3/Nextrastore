@@ -47,8 +47,6 @@ export const metadata: Metadata = {
   classification: "Smartphones, Mobile Phones, Electronics",
   icons: {
     icon: "/mini-logo.png",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
   },
 
   metadataBase: new URL("https://www.sarezmobile.com"),
@@ -61,7 +59,7 @@ export const metadata: Metadata = {
     siteName: "Sarez",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/mini-logo.png",
         width: 1200,
         height: 630,
         alt: "Sarez — smartphones in Tajikistan",
@@ -76,7 +74,7 @@ export const metadata: Metadata = {
     title: "Sarez — smartphones in Tajikistan",
     description:
       "Buy smartphones Apple iPhone, Samsung Galaxy, Xiaomi, Oppo and other brands online. Delivery to Tajikistan.",
-    images: ["/og-image.jpg"],
+    images: ["/mini-logo.png"],
     creator: "@Sarez",
     site: "@Sarez",
   },
